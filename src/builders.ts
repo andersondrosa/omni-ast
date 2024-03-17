@@ -25,6 +25,7 @@ import {
   AssignmentOperator,
   TryStatement,
   CatchClause,
+  ThrowStatement,
 } from "./types";
 
 export type TypeAST = { type: "json:ast"; body: Node };
@@ -90,6 +91,10 @@ export const tryStatement = (
   finalizer?: BlockStatement
 ): TryStatement => {
   return { type: "TryStatement", block, handler, finalizer };
+};
+
+export const throwStatement = (argument: Expression): ThrowStatement => {
+  return { type: "ThrowStatement", argument };
 };
 
 export const catchStatement = (
