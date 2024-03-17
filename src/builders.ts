@@ -23,6 +23,8 @@ import {
   SwitchCase,
   AssignmentExpression,
   AssignmentOperator,
+  TryStatement,
+  CatchClause,
 } from "./types";
 
 export type TypeAST = { type: "json:ast"; body: Node };
@@ -80,6 +82,21 @@ export const returnStatement = (
   argument: Expression | null | undefined
 ): ReturnStatement => {
   return { type: "ReturnStatement", argument };
+};
+
+export const tryStatement = (
+  block: BlockStatement,
+  handler: CatchClause,
+  finalizer?: BlockStatement
+): TryStatement => {
+  return { type: "TryStatement", block, handler, finalizer };
+};
+
+export const catchStatement = (
+  param: Pattern,
+  body: BlockStatement
+): CatchClause => {
+  return { type: "CatchClause", param, body };
 };
 
 export const callExpression = (callee, args: Expression[]): CallExpression => ({
@@ -193,5 +210,6 @@ export const destructure = (json): Pattern => {
   return { type: "ObjectPattern", properties };
 };
 
-export const func = (args: Pattern[], blocks: Statement[]) =>
-  functionExpression(args, blockStatement(blocks));
+export const func = (args: Pattern[], blocks: Statement[]) => {
+  return functionExpression(null, args, blockStatement(blocks));
+};

@@ -86,18 +86,16 @@ export const ReturnStatement = (stmt: Types.ReturnStatement) => {
 };
 
 export const IfStatement = (stmt: Types.IfStatement) => {
-  let code = `if (${serialize(stmt.test)}) ${serialize(stmt.consequent)}`;
-  if (stmt.alternate) {
-    code += ` else ${serialize(stmt.alternate)}`;
-  }
-  return code;
+  return `if (${serialize(stmt.test)}) ${serialize(stmt.consequent)} ${
+    stmt.alternate ? ` else ${serialize(stmt.alternate)}` : ""
+  }`;
 };
 
 export const BreakStatement = () => {
   return "break";
 };
 
-export const ContinueStatement = (node) => {
+export const ContinueStatement = () => {
   return "continue";
 };
 
@@ -106,14 +104,12 @@ export const ThrowStatement = (node: Types.ThrowStatement) => {
 };
 
 export const TryStatement = (node: Types.TryStatement) => {
-  let code = `try { ${serialize(node.block)} }`;
-  if (node.handler) {
-    code += `catch (${serialize(node.handler.param)}) { ${serialize(
+  let code = `try ${serialize(node.block)}`;
+  if (node.handler)
+    code += ` catch (${serialize(node.handler.param)}) ${serialize(
       node.handler.body
-    )} }`;
-  }
-  if (node.finalizer) return code + `finally { ${serialize(node.finalizer)} }`;
-  return code;
+    )}`;
+  return code + (node.finalizer ? `finally ${serialize(node.finalizer)}` : "");
 };
 
 export const ForStatement = (node: Types.ForStatement) => {
