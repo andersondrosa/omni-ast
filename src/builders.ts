@@ -35,25 +35,31 @@ import {
   ConditionalExpression,
   UnaryExpression,
   UnaryOperator,
-  ObjectPattern,
-  AssignmentProperty,
-  RestElement,
   ObjectExpression,
   Property,
   AwaitExpression,
   NewExpression,
+  TemplateElement,
+  TemplateLiteral,
 } from "./types";
 
-export type TypeAST = { type: "#AST"; body: Node };
+export const ast = (body: Node) => ({ type: "#AST", body });
 
-export const ast = (body: Node): TypeAST => ({ type: "#AST", body });
+/** ========================================================================= */
+// BUILDERS
 
-export const jsonExpression = (body: JsonTypes): JsonExpression => {
-  return { type: "JsonExpression", body };
-};
-
-export const identifier = (name: string): Identifier => {
-  return { type: "Identifier", name };
+export const arrowFunctionExpression = (
+  params: Pattern[],
+  body,
+  async?: true
+): ArrowFunctionExpression => {
+  return {
+    type: "ArrowFunctionExpression",
+    expression: false,
+    params,
+    body,
+    async,
+  };
 };
 
 export const assignmentExpression = (
@@ -64,71 +70,26 @@ export const assignmentExpression = (
   return { type: "AssignmentExpression", operator, left, right };
 };
 
-export const lit = (value: string | boolean | number | null): Literal => {
-  return {
-    type: "Literal",
-    value,
-    raw: typeof value === "string" ? `"${value}"` : String(value),
-  };
-};
-
-export const objectExpression = (properties: Property[]): ObjectExpression => {
-  return { type: "ObjectExpression", properties };
-};
-
-// export const assignmentProperty = (
-//   properties: ""
-// ): AssignmentProperty => {
-//   return { type: "Property",  };
-// };
-
-export const blockStatement = (body: Statement[]): BlockStatement => {
-  return { type: "BlockStatement", body };
-};
-
-export const chainExpression = (expression: ChainElement): ChainExpression => {
-  return { type: "ChainExpression", expression };
-};
-
-export const arrowFunctionExpression = (
-  params: Pattern[],
-  body,
-  async?: true
-): ArrowFunctionExpression => ({
-  type: "ArrowFunctionExpression",
-  expression: false,
-  params,
-  body,
-  async,
-});
-
-export const functionExpression = (
-  id: Identifier | null | undefined,
-  args: Pattern[],
-  body: BlockStatement,
-  async?: true
-): FunctionExpression => {
-  return { type: "FunctionExpression", id, params: args, body, async };
-};
-
-export const returnStatement = (
-  argument: Expression | null | undefined
-): ReturnStatement => {
-  return { type: "ReturnStatement", argument };
-};
-
 export const awaitExpression = (
   argument: Expression | null | undefined
 ): AwaitExpression => {
   return { type: "AwaitExpression", argument };
 };
 
-export const tryStatement = (
-  block: BlockStatement,
-  handler: CatchClause,
-  finalizer?: BlockStatement
-): TryStatement => {
-  return { type: "TryStatement", block, handler, finalizer };
+export const binaryExpression = (
+  operator: BinaryOperator,
+  left: Expression,
+  right: Expression
+): BinaryExpression => {
+  return { type: "BinaryExpression", left, right, operator };
+};
+
+export const blockStatement = (body: Statement[]): BlockStatement => {
+  return { type: "BlockStatement", body };
+};
+
+export const callExpression = (callee, args: Expression[]): CallExpression => {
+  return { type: "CallExpression", callee, arguments: args, optional: false };
 };
 
 export const catchStatement = (
@@ -138,64 +99,30 @@ export const catchStatement = (
   return { type: "CatchClause", param, body };
 };
 
-export const throwStatement = (argument: Expression): ThrowStatement => {
-  return { type: "ThrowStatement", argument };
+export const chainExpression = (expression: ChainElement): ChainExpression => {
+  return { type: "ChainExpression", expression };
 };
 
-export const callExpression = (callee, args: Expression[]): CallExpression => ({
-  type: "CallExpression",
-  callee,
-  arguments: args,
-  optional: false,
-});
-
-export const newExpression = (callee, args: Expression[]): NewExpression => {
-  return { type: "NewExpression", callee, arguments: args };
+export const conditionalExpression = (
+  test: Expression,
+  consequent: Expression,
+  alternate: Expression
+): ConditionalExpression => {
+  return { type: "ConditionalExpression", test, consequent, alternate };
 };
 
-export const memberExpression = (
-  object,
-  property,
-  computed: boolean = false,
-  optional: boolean = false
-): MemberExpression => ({
-  type: "MemberExpression",
-  object,
-  property,
-  computed,
-  optional,
-});
+export const constantDeclaration = (id, init): VariableDeclaration => {
+  return {
+    type: "VariableDeclaration",
+    kind: "const",
+    declarations: [{ type: "VariableDeclarator", id, init }],
+  };
+};
 
-export const constantDeclaration = (id, init): VariableDeclaration => ({
-  type: "VariableDeclaration",
-  kind: "const",
-  declarations: [{ type: "VariableDeclarator", id, init }],
-});
-
-export const letDeclaration = (name, init): VariableDeclaration => ({
-  type: "VariableDeclaration",
-  kind: "let",
-  declarations: [{ type: "VariableDeclarator", id: identifier(name), init }],
-});
-
-export const ifStatement = (
-  test: Expression,
-  consequent: Statement,
-  alternate?: Statement | null
-): IfStatement => ({
-  type: "IfStatement",
-  test,
-  consequent,
-  alternate: alternate ?? null,
-});
-
-export const forStatement = (
-  init: Expression | VariableDeclaration | null | undefined,
-  test: Expression,
-  update: Expression | null | undefined,
-  body: Statement
-): ForStatement => {
-  return { type: "ForStatement", init, test, update, body };
+export const expressionStatement = (
+  expression: Expression
+): ExpressionStatement => {
+  return { type: "ExpressionStatement", expression };
 };
 
 export const forInStatement = (
@@ -206,12 +133,95 @@ export const forInStatement = (
   return { type: "ForInStatement", body, left, right };
 };
 
-export const updateExpression = (
-  operator: UpdateOperator,
-  argument: Expression,
-  prefix: boolean = false
-): UpdateExpression => {
-  return { type: "UpdateExpression", operator, argument, prefix };
+export const forStatement = (
+  init: Expression | VariableDeclaration | null | undefined,
+  test: Expression,
+  update: Expression | null | undefined,
+  body: Statement
+): ForStatement => {
+  return { type: "ForStatement", init, test, update, body };
+};
+
+export const functionExpression = (
+  id: Identifier | null | undefined,
+  args: Pattern[],
+  body: BlockStatement,
+  async?: true
+): FunctionExpression => {
+  return { type: "FunctionExpression", id, params: args, body, async };
+};
+
+export const identifier = (name: string): Identifier => {
+  return { type: "Identifier", name };
+};
+
+export const ifStatement = (
+  test: Expression,
+  consequent: Statement,
+  alternate?: Statement | null
+): IfStatement => {
+  return {
+    type: "IfStatement",
+    test,
+    consequent,
+    alternate: alternate ?? null,
+  };
+};
+
+export const jsonExpression = (body: JsonTypes): JsonExpression => {
+  return { type: "JsonExpression", body };
+};
+
+export const letDeclaration = (name, init): VariableDeclaration => {
+  return {
+    type: "VariableDeclaration",
+    kind: "let",
+    declarations: [{ type: "VariableDeclarator", id: identifier(name), init }],
+  };
+};
+
+export const literal = (value: string | boolean | number | null): Literal => {
+  return {
+    type: "Literal",
+    value,
+    raw: typeof value === "string" ? `"${value}"` : String(value),
+  };
+};
+
+export const memberExpression = (
+  object,
+  property,
+  computed: boolean = false,
+  optional: boolean = false
+): MemberExpression => {
+  return {
+    type: "MemberExpression",
+    object,
+    property,
+    computed,
+    optional,
+  };
+};
+
+export const newExpression = (callee, args: Expression[]): NewExpression => {
+  return { type: "NewExpression", callee, arguments: args };
+};
+
+export const objectExpression = (properties: Property[]): ObjectExpression => {
+  return { type: "ObjectExpression", properties };
+};
+
+export const returnStatement = (
+  argument: Expression | null | undefined
+): ReturnStatement => {
+  return { type: "ReturnStatement", argument };
+};
+
+export const switchCase = (
+  test: Expression | null | undefined,
+  consequent: Statement[]
+): SwitchCase => {
+  return { type: "SwitchCase", consequent, test };
 };
 
 export const switchStatement = (
@@ -221,11 +231,48 @@ export const switchStatement = (
   return { type: "SwitchStatement", cases, discriminant };
 };
 
-export const switchCase = (
-  test: Expression | null | undefined,
-  consequent: Statement[]
-): SwitchCase => {
-  return { type: "SwitchCase", consequent, test };
+export const templateElement = (
+  value: {
+    raw: string;
+    cooked?: string;
+  },
+  tail = false
+): TemplateElement => {
+  return { type: "TemplateElement", value, tail };
+};
+
+export const templateLiteral = (
+  quasis: TemplateElement[],
+  expressions: Expression[],
+): TemplateLiteral => {
+  return { type: "TemplateLiteral", quasis, expressions };
+};
+
+export const throwStatement = (argument: Expression): ThrowStatement => {
+  return { type: "ThrowStatement", argument };
+};
+
+export const tryStatement = (
+  block: BlockStatement,
+  handler: CatchClause,
+  finalizer?: BlockStatement
+): TryStatement => {
+  return { type: "TryStatement", block, handler, finalizer };
+};
+
+export const unaryExpression = (
+  operator: UnaryOperator,
+  argument: Expression
+): UnaryExpression => {
+  return { type: "UnaryExpression", operator, argument, prefix: true };
+};
+
+export const updateExpression = (
+  operator: UpdateOperator,
+  argument: Expression,
+  prefix: boolean = false
+): UpdateExpression => {
+  return { type: "UpdateExpression", operator, argument, prefix };
 };
 
 export const variableDeclaration = (
@@ -238,36 +285,19 @@ export const variableDeclaration = (
 export const variableDeclarator = (
   id: Pattern,
   init?: Expression | null
-): VariableDeclarator => ({
-  type: "VariableDeclarator",
-  id,
-  init: init ?? null,
-});
-
-export const binaryExpression = (
-  operator: BinaryOperator,
-  left: Expression,
-  right: Expression
-): BinaryExpression => ({ type: "BinaryExpression", left, right, operator });
-
-export const expressionStatement = (
-  expression: Expression
-): ExpressionStatement => ({ type: "ExpressionStatement", expression });
-
-export const unaryExpression = (
-  operator: UnaryOperator,
-  argument: Expression
-): UnaryExpression => {
-  return { type: "UnaryExpression", operator, argument, prefix: true };
+): VariableDeclarator => {
+  return {
+    type: "VariableDeclarator",
+    id,
+    init: init ?? null,
+  };
 };
 
-export const conditionalExpression = (
-  test: Expression,
-  consequent: Expression,
-  alternate: Expression
-): ConditionalExpression => {
-  return { type: "ConditionalExpression", test, consequent, alternate };
-};
+/** ========================================================================= */
+// ALIASES
+export const lit = literal;
+
+/** ========================================================================= */
 
 export const destructure = (json): Pattern => {
   const properties: any[] = [];
@@ -296,8 +326,4 @@ export const destructure = (json): Pattern => {
       ]);
   }
   return { type: "ObjectPattern", properties };
-};
-
-export const func = (args: Pattern[], blocks: Statement[]) => {
-  return functionExpression(null, args, blockStatement(blocks));
 };

@@ -167,6 +167,24 @@ export const SwitchStatement = (node: Types.SwitchStatement) => {
     .join("; ")}; }`;
 };
 
+export const TemplateElement = (node: Types.TemplateElement) => {
+  return node.value.raw;
+};
+
+export const TemplateLiteral = (node: Types.TemplateLiteral) => {
+  return (
+    "`" +
+    node.quasis
+      .map(
+        (x, i) =>
+          serialize(x) +
+          (x.tail ? "" : "${" + serialize(node.expressions[i]) + "}")
+      )
+      .join("") +
+    "`"
+  );
+};
+
 export const ThrowStatement = (node: Types.ThrowStatement) => {
   return "throw " + serialize(node.argument);
 };
@@ -245,4 +263,6 @@ const nodes = {
   Property,
   AwaitExpression,
   NewExpression,
+  TemplateLiteral,
+  TemplateElement,
 };

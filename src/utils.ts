@@ -119,8 +119,10 @@ export function parseOmniAST(ast: Node) {
 
   if (Array.isArray(ast)) return ast.map(parseOmniAST);
 
-  if (!ast.hasOwnProperty("type") || typeof ast["type"] != "string")
-    throw Error("Invalid AST");
+  if (!ast.hasOwnProperty("type")) return ast;
+
+  if (typeof ast["type"] != "string")
+    throw Error("Invalid AST. Type is invalid");
 
   if (ast.type == "ObjectExpression")
     return { type: "JsonExpression", body: ObjectExpressionToJSON(ast) };
