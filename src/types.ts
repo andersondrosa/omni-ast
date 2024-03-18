@@ -329,7 +329,7 @@ export interface ObjectExpression extends BaseExpression {
 export interface Property extends BaseNode {
   type: "Property";
   key: Expression;
-  value: Expression | Pattern; // Could be an AssignmentProperty
+  value: Expression | Pattern;
   kind: "init" | "get" | "set";
   method: boolean;
   shorthand: boolean;

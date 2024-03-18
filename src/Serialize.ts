@@ -50,6 +50,12 @@ export const ChainExpression = (node: Types.ChainExpression) => {
   return serialize(node.expression);
 };
 
+export const ConditionalExpression = (node: Types.ConditionalExpression) => {
+  return `${serialize(node.test)} ? ${serialize(node.consequent)} : ${serialize(
+    node.alternate
+  )}`;
+};
+
 export const MemberExpression = (node: Types.MemberExpression) => {
   let str = [serialize(node.object)];
   if (node.optional) str.push(node.computed ? "?." : "?");
@@ -211,4 +217,5 @@ export const nodes = {
   UpdateExpression,
   ForExpression,
   ChainExpression,
+  ConditionalExpression,
 };

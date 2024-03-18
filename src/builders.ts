@@ -32,6 +32,7 @@ import {
   ForInStatement,
   ChainExpression,
   ChainElement,
+  ConditionalExpression,
 } from "./types";
 
 export type TypeAST = { type: "json:ast"; body: Node };
@@ -220,6 +221,14 @@ export const binaryExpression = (
 export const expressionStatement = (
   expression: Expression
 ): ExpressionStatement => ({ type: "ExpressionStatement", expression });
+
+export const conditionalExpression = (
+  test: Expression,
+  consequent: Expression,
+  alternate: Expression
+): ConditionalExpression => {
+  return { type: "ConditionalExpression", test, consequent, alternate };
+};
 
 export const destructure = (json): Pattern => {
   const properties: any[] = [];
