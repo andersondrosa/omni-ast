@@ -33,13 +33,15 @@ describe("ChainExpression", () => {
             memberExpression(
               memberExpression(identifier("base"), identifier("foo")),
               identifier("bar"),
-              { optional: true }
+              false,
+              true
             ),
             identifier("optional"),
-            { computed: true, optional: true }
+            true,
+            true
           ),
           lit("strict"),
-          { computed: true, optional: false }
+          true
         )
       )
     );

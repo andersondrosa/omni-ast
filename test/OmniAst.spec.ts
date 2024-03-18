@@ -13,9 +13,9 @@ import {
   memberExpression,
   returnStatement,
 } from "../src/builders";
-import { cleanAST, parseOmniAST } from "../src/utils";
-import { stringify } from "../src";
-import { VariableDeclaration } from "../src/types";
+import { cleanAST, parseAST, parseOmniAST } from "../src/utils";
+import { generate } from "../src";
+import { Node, VariableDeclaration } from "../src/types";
 
 const acorn = require("acorn");
 const options = { ecmaVersion: "latest" };
@@ -49,22 +49,55 @@ describe("OmniAST", () => {
 
   //
 
-  it.skip("Hybrid", () => {
+  it("Render test", () => {
     const script = `({ 
-      "json": "here", 
-      "value": { "myFunc": jsAgain({ "json": "again" }) }
+      json: "here", 
+      myFunc: jsAgain({ json: "again" }) 
     })`;
 
-    const acornAST = acorn.parse(script, options).body[0].expression;
+    const realAST = acorn.parse(script, options).body[0].expression;
+    const cleanAcornAST = cleanAST(realAST);
 
-    const AST = parseOmniAST(cleanAST(acornAST));
+    dir(cleanAcornAST);
+    
+    const omniAst = parseOmniAST(cleanAcornAST as Node);
 
-    const generated = `(${stringify({ type: "json:ast", body: AST })})`;
+    dir(omniAst);
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(generated));
+    const generated = `(${serialize(omniAst)})`;
+
+    console.log(generated);
   });
 
-  it.skip("Test", () => {
+  it("Hybrid", () => {
+    const script = `({ 
+      json: "here", 
+      myFunc: jsAgain({ json: "again" }) 
+    })`;
+
+    const realAST = acorn.parse(script, options).body[0].expression;
+
+    expect(realAST).toMatchSnapshot();
+
+    const cleanAcornAST = cleanAST(realAST);
+
+    expect(cleanAcornAST).toMatchSnapshot();
+
+    const omniAst = parseOmniAST(cleanAcornAST as Node);
+
+    const AST = parseAST(omniAst);
+
+    // expect(AST).toMatchObject(cleanAcornAST);
+
+    const generated = `(${serialize(omniAst)})`;
+
+    // console.log(tokenizer(script), "\n>>");
+    console.log(tokenizer(generated));
+
+    // expect(tokenizer(script)).toMatchObject(tokenizer(generated));
+  });
+
+  it("Test", () => {
     const script = `({ myVar: myFn(['value']) })`;
 
     const ast = acorn.parse(script, options).body[0].expression;
@@ -76,7 +109,7 @@ describe("OmniAST", () => {
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
-  it.skip("Test stringify", () => {
+  it("Test generate", () => {
     //
     const data = ast(
       arrowFunctionExpression(
@@ -93,7 +126,7 @@ describe("OmniAST", () => {
     );
 
     console.dir(data, { depth: 10 });
-    const generated = stringify({ data });
+    const generated = generate({ data });
 
     console.log(generated);
     // const id = (id) => (x) => x["#id"] == id;
@@ -108,7 +141,7 @@ describe("OmniAST", () => {
     //   return state;
     // });
 
-    // const generated = stringify({ data });
+    // const generated = generate({ data });
 
     // log(generated);
   });

@@ -65,9 +65,7 @@ describe("ForStatement", () => {
       identifier("object"),
       expressionStatement(
         callExpression(identifier("console.log"), [
-          memberExpression(identifier("object"), identifier("key"), {
-            computed: true,
-          }),
+          memberExpression(identifier("object"), identifier("key"), true),
         ])
       )
     );

@@ -6,7 +6,8 @@ export function tokenizer(code: string) {
   let token;
   while ((token = tokenizer.getToken())) {
     if (token.type.label == "eof") break;
-    tokens.push(token.value || token.type.label);
+    if (token.type.label == "string") tokens.push(`"${token.value}"`);
+    else tokens.push(token.value || token.type.label);
   }
   return tokens;
 }

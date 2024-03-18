@@ -1,16 +1,15 @@
 import { parseOmniAST } from "./utils";
 import { serialize } from "./Serialize";
-import { generate } from ".";
 import { JsonTypes, ObjectExpression, Property } from "./types";
 
 export const jsonParseValue = (node: any) => {
   if (node.type == "Literal") return node.value;
   if (node.type == "ArrayExpression") return node.elements.map(jsonParseValue);
   if (node.type == "ObjectExpression") return ObjectExpressionToJSON(node);
-  return { type: "json:ast", body: parseOmniAST(node) };
+  return { type: "#AST", body: parseOmniAST(node) };
 };
 
-export function stringify(node: JsonTypes) {
+export function generate(node: JsonTypes) {
   //
   const recursive = (value) => {
     //
@@ -22,13 +21,11 @@ export function stringify(node: JsonTypes) {
 
     if (Array.isArray(value)) return `[${value.map(recursive).join(",")}]`;
 
-    if (value.type == "json:ast") return generate(value.body);
+    if (value.type == "#AST") return serialize(value.body);
 
-    const props = Object.entries(value).map(
-      ([key, val]) => `${key}: ${recursive(val)}`
-    );
-
-    return `{ ${props.join(", ")} }`;
+    return `{ ${Object.entries(value)
+      .map(([key, val]) => `${key}: ${recursive(val)}`)
+      .join(", ")} }`;
   };
 
   return recursive(node);
@@ -36,7 +33,7 @@ export function stringify(node: JsonTypes) {
 
 export function ObjectExpressionToJSON(expr: ObjectExpression) {
   const entries = expr.properties.map((prop: Property) => {
-    const key = serialize(prop.key);
+    const key = serialize(prop.key)
     if (prop.computed) return [`[${key}]`, jsonParseValue(prop.value)];
     return [key, jsonParseValue(prop.value)];
   });

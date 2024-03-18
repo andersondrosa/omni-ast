@@ -1,9 +1,9 @@
 import * as Types from "./types";
-import { stringify } from "./JsonGenerate";
+import { generate } from "./JsonGenerate";
 import { BaseNode } from "./types";
 
 // (data: JsonTypes | BaseNode) {
-//   if (!data || typeof data != "object") return JSON.stringify(data);
+//   if (!data || typeof data != "object") return JSON.generate(data);
 
 //   if (Array.isArray(data)) return data.map((x) => generate(x)).join("; ");
 
@@ -16,17 +16,15 @@ import { BaseNode } from "./types";
 
 export const serialize = (node: BaseNode) => {
   if (!node) return "";
-  if (!node.type) return JSON.stringify(node);
+  if (!node.type) return JSON.generate(node);
   if (nodes.hasOwnProperty(node.type)) return nodes[node.type](node);
   throw Error("Unknown type: " + node.type);
 };
 
-export const generate = serialize;
-
 const comma = ", ";
 
 export const JsonExpression = (node) => {
-  return stringify(node.body);
+  return generate(node.body);
 };
 
 export const Identifier = (node: Types.Identifier) => {
@@ -39,7 +37,7 @@ export const Literal = (node) => {
 
 export const BlockStatement = (node: Types.BlockStatement) => {
   const statements = node.body.map(serialize).join("; ");
-  return `{ ${statements} }`;
+  return `{ ${statements}; }`;
 };
 
 export const ExpressionStatement = (node: Types.ExpressionStatement) => {
@@ -54,6 +52,10 @@ export const ConditionalExpression = (node: Types.ConditionalExpression) => {
   return `${serialize(node.test)} ? ${serialize(node.consequent)} : ${serialize(
     node.alternate
   )}`;
+};
+
+export const LogicalExpression = (node: Types.LogicalExpression) => {
+  return `${serialize(node.left)} ${node.operator} ${serialize(node.right)}`;
 };
 
 export const MemberExpression = (node: Types.MemberExpression) => {
@@ -118,6 +120,14 @@ export const ThrowStatement = (node: Types.ThrowStatement) => {
   return "throw " + serialize(node.argument);
 };
 
+export const UnaryExpression = (node: Types.UnaryExpression) => {
+  return (
+    node.operator +
+    (node.operator.length == 1 ? "" : " ") +
+    serialize(node.argument)
+  );
+};
+
 export const TryStatement = (node: Types.TryStatement) => {
   let code = `try ${serialize(node.block)}`;
   if (node.handler)
@@ -152,7 +162,7 @@ export const WhileStatement = (node: Types.WhileStatement) => {
 export const SwitchStatement = (node: Types.SwitchStatement) => {
   return `switch (${serialize(node.discriminant)}) { ${node.cases
     .map(serialize)
-    .join("; ")} }`;
+    .join("; ")}; }`;
 };
 
 export const SwitchCase = (node: Types.SwitchCase) => {
@@ -184,6 +194,17 @@ export const UpdateExpression = (node: Types.UpdateExpression) => {
   return node.prefix
     ? node.operator + serialize(node.argument)
     : serialize(node.argument) + node.operator;
+};
+
+export const ObjectExpression = (node: Types.ObjectExpression) => {
+  const code = node.properties.map(serialize).join(", ");
+  return code.length == 0 ? "{ }" : `{ ${code} }`;
+};
+
+export const Property = (node: Types.Property) => {
+  return `${
+    node.computed ? `[${serialize(node.key)}]` : serialize(node.key)
+  }: ${serialize(node.value)}`;
 };
 
 export const nodes = {
@@ -218,4 +239,8 @@ export const nodes = {
   ForExpression,
   ChainExpression,
   ConditionalExpression,
+  LogicalExpression,
+  UnaryExpression,
+  ObjectExpression,
+  Property,
 };

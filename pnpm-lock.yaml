@@ -19,6 +19,9 @@ dependencies:
     version: 0.29.1
 
 devDependencies:
+  '@babel/types':
+    specifier: ^7.24.0
+    version: 7.24.0
   '@rollup/plugin-commonjs':
     specifier: ^25.0.7
     version: 25.0.7(rollup@4.13.0)

@@ -25,9 +25,9 @@ describe("TryStatement", () => {
   it("Should Works", () => {
     //
     const script = `try {
-      foo.bar()
+      foo.bar();
     } catch(e) {
-      console.dir(e.message)
+      console.dir(e.message);
     }`;
 
     // const AST = cleanAST(acorn.parse(script, options)).body[0];
@@ -66,9 +66,9 @@ describe("TryStatement", () => {
   it("Should Throw and Catch error", () => {
     //
     const script = `try {
-      throw Error("Test message")
+      throw Error("Test message");
     } catch(e) {
-      console.dir(e.message)
+      console.dir(e.message);
     }`;
 
     // const AST = cleanAST(acorn.parse(script, options)).body[0];

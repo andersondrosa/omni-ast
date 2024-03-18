@@ -19,45 +19,27 @@ const acorn = require("acorn");
 const options = { ecmaVersion: "latest" };
 const dir = (x) => console.dir(x, { depth: 12 });
 
-describe("IfStatement", () => {
+describe("LogicalExpression", () => {
   //
   it("Should Works", () => {
     //
-    const script = `if (x < 11) { console.log("ok"); }`;
-
-    const ast = ifStatement(
-      binaryExpression("<", identifier("x"), lit(11)),
-      blockStatement([
-        expressionStatement(
-          callExpression(identifier("console.log"), [lit("ok")])
-        ),
-      ])
-    );
-
-    const code = serialize(ast);
-
-    console.log(script, "\n>>");
-    console.log(code);
-
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
-  });
-
-  it("Should Works with inline conditional", () => {
-    //
-    const script = `const fooIsBar = foo == "bar" ? true : false`;
+    const script = `const fooIsBar = foo == "bar" && true || "nope"`;
 
     const AST = cleanAST(acorn.parse(script, options)).body[0];
     dir(AST);
 
     const ast = variableDeclaration("const", [
-      variableDeclarator(
-        identifier("fooIsBar"),
-        conditionalExpression(
-          binaryExpression("==", identifier("foo"), lit("bar")),
-          lit(true),
-          lit(false)
-        )
-      ),
+      variableDeclarator(identifier("fooIsBar"), {
+        type: "LogicalExpression",
+        left: {
+          type: "LogicalExpression",
+          left: binaryExpression("==", identifier("foo"), lit("bar")),
+          operator: "&&",
+          right: { type: "Literal", value: true, raw: "true" },
+        },
+        operator: "||",
+        right: { type: "Literal", value: "nope", raw: '"nope"' },
+      }),
     ]);
 
     const code = serialize(ast);
@@ -73,8 +55,8 @@ describe("IfStatement", () => {
     const result2 = eval(
       `(() => { const foo = "other"; ${code}; return fooIsBar; })()`
     );
-    expect(result2).toBe(false);
+    expect(result2).toEqual("nope");
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(script).toMatchObject(code);
   });
 });

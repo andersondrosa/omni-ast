@@ -278,6 +278,7 @@ export interface VariableDeclarator extends BaseNode {
 }
 
 export interface ExpressionMap {
+  JsonExpression: JsonExpression;
   ArrayExpression: ArrayExpression;
   ArrowFunctionExpression: ArrowFunctionExpression;
   AssignmentExpression: AssignmentExpression;
@@ -318,12 +319,12 @@ export interface ThisExpression extends BaseExpression {
 
 export interface ArrayExpression extends BaseExpression {
   type: "ArrayExpression";
-  elements: Array<Expression | null>; // SpreadElement
+  elements: Array<Expression | null>;
 }
 
 export interface ObjectExpression extends BaseExpression {
   type: "ObjectExpression";
-  properties: Property[]; // SpreadElement
+  properties: Property[];
 }
 
 export interface Property extends BaseNode {

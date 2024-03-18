@@ -19,7 +19,7 @@ describe("FunctionExpression", () => {
   //
   it("Should Works", () => {
     //
-    const script = `function main() { return value }`;
+    const script = `function main() { return value; }`;
 
     const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
     // dir(AST);

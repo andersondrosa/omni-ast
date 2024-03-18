@@ -1,0 +1,157 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`OmniAST > Hybrid 1`] = `
+Node {
+  "end": 72,
+  "properties": [
+    Node {
+      "computed": false,
+      "end": 22,
+      "key": Node {
+        "end": 14,
+        "name": "json",
+        "start": 10,
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "start": 10,
+      "type": "Property",
+      "value": Node {
+        "end": 22,
+        "raw": "\\"here\\"",
+        "start": 16,
+        "type": "Literal",
+        "value": "here",
+      },
+    },
+    Node {
+      "computed": false,
+      "end": 65,
+      "key": Node {
+        "end": 37,
+        "name": "myFunc",
+        "start": 31,
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "start": 31,
+      "type": "Property",
+      "value": Node {
+        "arguments": [
+          Node {
+            "end": 64,
+            "properties": [
+              Node {
+                "computed": false,
+                "end": 62,
+                "key": Node {
+                  "end": 53,
+                  "name": "json",
+                  "start": 49,
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "start": 49,
+                "type": "Property",
+                "value": Node {
+                  "end": 62,
+                  "raw": "\\"again\\"",
+                  "start": 55,
+                  "type": "Literal",
+                  "value": "again",
+                },
+              },
+            ],
+            "start": 47,
+            "type": "ObjectExpression",
+          },
+        ],
+        "callee": Node {
+          "end": 46,
+          "name": "jsAgain",
+          "start": 39,
+          "type": "Identifier",
+        },
+        "end": 65,
+        "optional": false,
+        "start": 39,
+        "type": "CallExpression",
+      },
+    },
+  ],
+  "start": 1,
+  "type": "ObjectExpression",
+}
+`;
+
+exports[`OmniAST > Hybrid 2`] = `
+{
+  "properties": [
+    {
+      "computed": false,
+      "key": {
+        "name": "json",
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "type": "Property",
+      "value": {
+        "raw": "\\"here\\"",
+        "type": "Literal",
+        "value": "here",
+      },
+    },
+    {
+      "computed": false,
+      "key": {
+        "name": "myFunc",
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "type": "Property",
+      "value": {
+        "arguments": [
+          {
+            "properties": [
+              {
+                "computed": false,
+                "key": {
+                  "name": "json",
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "type": "Property",
+                "value": {
+                  "raw": "\\"again\\"",
+                  "type": "Literal",
+                  "value": "again",
+                },
+              },
+            ],
+            "type": "ObjectExpression",
+          },
+        ],
+        "callee": {
+          "name": "jsAgain",
+          "type": "Identifier",
+        },
+        "optional": false,
+        "type": "CallExpression",
+      },
+    },
+  ],
+  "type": "ObjectExpression",
+}
+`;

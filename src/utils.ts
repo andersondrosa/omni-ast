@@ -1,10 +1,40 @@
-import { generate } from ".";
 import { ObjectExpressionToJSON } from "./JsonGenerate";
-import { Syntax as _ } from "./constants";
+import { Node, Property } from "../src/types";
+import { lit, objectExpression } from "./builders";
+import { serialize } from "./Serialize";
+
+type Options = { pre?; post?; skipProperty? };
+
+export function simpleTraverse(root, options: Options = {}) {
+  var pre = options.pre;
+  var post = options.post;
+  var skipProperty = options.skipProperty;
+
+  function visit(node, parent, prop?, idx?) {
+    if (!node || typeof node.type !== "string") return;
+
+    var res = undefined;
+    if (pre) res = pre(node, parent, prop, idx);
+
+    if (res !== false) {
+      for (const prop in node) {
+        if (skipProperty ? skipProperty(prop, node) : prop[0] === "$") continue;
+        const child = node[prop];
+        if (Array.isArray(child)) {
+          for (var i = 0; i < child.length; i++) visit(child[i], node, prop, i);
+        } else visit(child, node, prop);
+      }
+    }
+
+    if (post) post(node, parent, prop, idx);
+  }
+
+  visit(root, null);
+}
 
 export const Mock = new Proxy({ fn: {} } as any, {
   get(target, name, receiver) {
-    return { type: _.Identifier, name };
+    return { type: "Identifier", name };
   },
 });
 
@@ -83,25 +113,76 @@ export function cleanAST(ast): any {
   return res;
 }
 
-export function parseOmniAST(ast) {
+export function parseOmniAST(ast: Node) {
   //
   if (typeof ast != "object" || ast === null) return ast;
 
   if (Array.isArray(ast)) return ast.map(parseOmniAST);
 
-  if (!ast.hasOwnProperty("type") || typeof ast["type"] != "string") return ast;
+  if (!ast.hasOwnProperty("type") || typeof ast["type"] != "string")
+    throw Error("Invalid AST");
 
-  if (ast["type"] == "ObjectExpression")
+  if (ast.type == "ObjectExpression")
     return { type: "JsonExpression", body: ObjectExpressionToJSON(ast) };
 
-  return Object.fromEntries(
-    Object.entries(ast).map((e) => [e[0], parseOmniAST(e[1])])
-  );
+  const omniAst = {};
+  for (const key in ast) {
+    omniAst[key] = parseOmniAST(ast[key]);
+  }
+  return omniAst;
+}
+
+export function parseAST(value: Node) {
+  //
+  const astFindJSON = (ast: Node) => {
+    //
+    if (Array.isArray(ast)) return ast.map(astFindJSON);
+
+    if (ast.type == "JsonExpression") return jsonToAST(ast.body);
+
+    const _ast: Node = {} as Node;
+    for (const key in ast) {
+      _ast[key] =
+        typeof ast[key] === "object" && ast[key] != null
+          ? astFindJSON(ast[key])
+          : ast[key];
+    }
+    return _ast;
+  };
+
+  const jsonToAST = (value) => {
+    //
+    if (typeof value != "object") return lit(value);
+
+    if (Array.isArray(value))
+      return { type: "ArrayExpression", elements: value.map(jsonToAST) };
+
+    if (value.type == "#AST") return astFindJSON(value.body);
+
+    const properties: Property[] = [];
+
+    for (const key in value) {
+      const row = value[key];
+      properties.push({
+        type: "Property",
+        key: lit(key),
+        value:
+          typeof row != "object" || row === null ? lit(row) : jsonToAST(row),
+        computed: false,
+        kind: "init",
+        method: false,
+        shorthand: false,
+      });
+    }
+    return objectExpression(properties);
+  };
+
+  return astFindJSON(value);
 }
 
 export const tryGenerate = (ast) => {
   try {
-    return generate(ast);
+    return serialize(ast);
   } catch (e) {
     return `[${e.message}]`;
   }
