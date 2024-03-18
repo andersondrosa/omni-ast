@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/Serialize";
+import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
 import {
   expressionStatement,

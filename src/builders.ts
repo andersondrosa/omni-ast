@@ -41,6 +41,7 @@ import {
   ObjectExpression,
   Property,
   AwaitExpression,
+  NewExpression,
 } from "./types";
 
 export type TypeAST = { type: "#AST"; body: Node };
@@ -147,6 +148,10 @@ export const callExpression = (callee, args: Expression[]): CallExpression => ({
   arguments: args,
   optional: false,
 });
+
+export const newExpression = (callee, args: Expression[]): NewExpression => {
+  return { type: "NewExpression", callee, arguments: args };
+};
 
 export const memberExpression = (
   object,

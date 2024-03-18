@@ -1,5 +1,5 @@
 import { parseOmniAST } from "./utils";
-import { serialize } from "./Serialize";
+import { serialize } from "./generators";
 import { JsonTypes, ObjectExpression, Property } from "./types";
 
 export const jsonParseValue = (node: any) => {

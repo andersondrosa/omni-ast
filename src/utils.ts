@@ -1,7 +1,7 @@
 import { ObjectExpressionToJSON } from "./JsonGenerate";
 import { Node, Property } from "../src/types";
 import { lit, objectExpression } from "./builders";
-import { serialize } from "./Serialize";
+import { serialize } from "./generators";
 
 type Options = { pre?; post?; skipProperty? };
 

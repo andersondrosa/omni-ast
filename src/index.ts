@@ -1,4 +1,4 @@
 import { generate } from "./JsonGenerate";
-import { serialize } from "./Serialize";
+import { serialize } from "./generators";
 
 export { generate, serialize };

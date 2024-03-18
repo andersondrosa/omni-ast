@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/Serialize";
+import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
 import {
   callExpression,
   identifier,
   memberExpression,
+  newExpression,
 } from "../../src/builders";
 import { cleanAST } from "../../src/utils";
 
@@ -16,14 +17,14 @@ describe("CallExpression", () => {
   //
   it("Should Works", () => {
     //
-    const script = "foo.member.bar(bar.test(alpha.x.y.z(), beta.test))";
+    const script = "new foo.member.bar(bar.test(alpha.x.y.z(), beta.test))";
 
     const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
     // dir(AST);
 
     // const code = serialize(AST) as string;
     const code = serialize(
-      callExpression(
+      newExpression(
         memberExpression(
           memberExpression(identifier("foo"), identifier("member")),
           identifier("bar")
