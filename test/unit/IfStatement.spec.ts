@@ -15,7 +15,7 @@ describe("IfStatement", () => {
   //
   it("Should Works", () => {
     //
-    const script = `if ((x < 11)) { console.log("ok") }`;
+    const script = `if (x < 11) { console.log("ok") }`;
 
     const ast = ifStatement(
       binaryExpression("<", identifier("x"), lit(11)),

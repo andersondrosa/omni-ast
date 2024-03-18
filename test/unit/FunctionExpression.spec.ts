@@ -15,7 +15,7 @@ const acorn = require("acorn");
 const options = { ecmaVersion: "latest" };
 const dir = (x) => console.dir(x, { depth: 12 });
 
-describe("FunctionStatement", () => {
+describe("FunctionExpression", () => {
   //
   it("Should Works", () => {
     //

@@ -47,7 +47,12 @@ export const ExpressionStatement = (node: Types.ExpressionStatement) => {
 };
 
 export const MemberExpression = (node: Types.MemberExpression) => {
-  return serialize(node.object) + "." + serialize(node.property);
+  return (
+    serialize(node.object) +
+    (node.computed
+      ? "[" + serialize(node.property) + "]"
+      : "." + serialize(node.property))
+  );
 };
 
 export const CallExpression = (node: Types.CallExpression) => {
@@ -115,19 +120,19 @@ export const TryStatement = (node: Types.TryStatement) => {
 export const ForStatement = (node: Types.ForStatement) => {
   return `for (${serialize(node.init)}; ${serialize(node.test)}; ${serialize(
     node.update
-  )}) { ${serialize(node.body)} }`;
+  )}) ${serialize(node.body)}`;
 };
 
 export const ForInStatement = (node: Types.ForInStatement) => {
-  return `for (${serialize(node.left)} in ${serialize(
-    node.right
-  )}) { ${serialize(node.body)} }`;
+  return `for (${serialize(node.left)} in ${serialize(node.right)}) ${serialize(
+    node.body
+  )}`;
 };
 
 export const ForOfStatement = (node: Types.ForOfStatement) => {
-  return `for (${serialize(node.left)} of ${serialize(
-    node.right
-  )}) { ${serialize(node.body)} }`;
+  return `for (${serialize(node.left)} of ${serialize(node.right)}) ${serialize(
+    node.body
+  )}`;
 };
 
 export const WhileStatement = (node: Types.WhileStatement) => {
@@ -156,7 +161,19 @@ export const AssignmentExpression = (node: Types.AssignmentExpression) => {
 export const BinaryExpression = (node: Types.BinaryExpression) => {
   const left = serialize(node.left);
   const right = serialize(node.right);
-  return `(${left} ${node.operator} ${right})`;
+  return `${left} ${node.operator} ${right}`;
+};
+
+export const ForExpression = (node: Types.ForStatement) => {
+  return `for (${serialize(node.init)}; ${serialize(node.test)}; ${serialize(
+    node.update
+  )}) ${node.body}`;
+};
+
+export const UpdateExpression = (node: Types.UpdateExpression) => {
+  return node.prefix
+    ? node.operator + serialize(node.argument)
+    : serialize(node.argument) + node.operator;
 };
 
 export const nodes = {
@@ -187,4 +204,6 @@ export const nodes = {
   SwitchStatement,
   SwitchCase,
   BinaryExpression,
+  UpdateExpression,
+  ForExpression,
 };

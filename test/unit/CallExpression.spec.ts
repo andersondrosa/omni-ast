@@ -12,7 +12,7 @@ const acorn = require("acorn");
 const options = { ecmaVersion: "latest" };
 const dir = (x) => console.dir(x, { depth: 12 });
 
-describe("SwitchStatement", () => {
+describe("CallExpression", () => {
   //
   it("Should Works", () => {
     //

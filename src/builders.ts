@@ -26,6 +26,10 @@ import {
   TryStatement,
   CatchClause,
   ThrowStatement,
+  ForStatement,
+  UpdateExpression,
+  UpdateOperator,
+  ForInStatement,
 } from "./types";
 
 export type TypeAST = { type: "json:ast"; body: Node };
@@ -93,15 +97,15 @@ export const tryStatement = (
   return { type: "TryStatement", block, handler, finalizer };
 };
 
-export const throwStatement = (argument: Expression): ThrowStatement => {
-  return { type: "ThrowStatement", argument };
-};
-
 export const catchStatement = (
   param: Pattern,
   body: BlockStatement
 ): CatchClause => {
   return { type: "CatchClause", param, body };
+};
+
+export const throwStatement = (argument: Expression): ThrowStatement => {
+  return { type: "ThrowStatement", argument };
 };
 
 export const callExpression = (callee, args: Expression[]): CallExpression => ({
@@ -145,6 +149,31 @@ export const ifStatement = (
   consequent,
   alternate: alternate ?? null,
 });
+
+export const forStatement = (
+  init: Expression | VariableDeclaration | null | undefined,
+  test: Expression,
+  update: Expression | null | undefined,
+  body: Statement
+): ForStatement => {
+  return { type: "ForStatement", init, test, update, body };
+};
+
+export const forInStatement = (
+  left: Pattern | VariableDeclaration,
+  right: Expression,
+  body: Statement
+): ForInStatement => {
+  return { type: "ForInStatement", body, left, right };
+};
+
+export const updateExpression = (
+  operator: UpdateOperator,
+  argument: Expression,
+  prefix: boolean = false
+): UpdateExpression => {
+  return { type: "UpdateExpression", operator, argument, prefix };
+};
 
 export const switchStatement = (
   discriminant: Expression,
