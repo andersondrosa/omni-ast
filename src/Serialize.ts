@@ -3,7 +3,7 @@ import { generate } from "./JsonGenerate";
 import { BaseNode } from "./types";
 
 // (data: JsonTypes | BaseNode) {
-//   if (!data || typeof data != "object") return JSON.generate(data);
+//   if (!data || typeof data != "object") return JSON.stringify(data);
 
 //   if (Array.isArray(data)) return data.map((x) => generate(x)).join("; ");
 
@@ -16,7 +16,7 @@ import { BaseNode } from "./types";
 
 export const serialize = (node: BaseNode) => {
   if (!node) return "";
-  if (!node.type) return JSON.generate(node);
+  if (!node.type) return JSON.stringify(node);
   if (nodes.hasOwnProperty(node.type)) return nodes[node.type](node);
   throw Error("Unknown type: " + node.type);
 };
@@ -81,12 +81,14 @@ export const ArrowFunctionExpression = (
   node: Types.ArrowFunctionExpression
 ) => {
   const params = node.params.map(Identifier as any).join(comma);
-  return `(${params}) => ${serialize(node.body)}`;
+  return `${node.async ? "async " : ""}(${params}) => ${serialize(node.body)}`;
 };
 
 export const FunctionExpression = (node: Types.FunctionExpression) => {
   const params = node.params.map(Identifier as any).join(comma);
-  return `function ${serialize(node.id)}(${params}) ${serialize(node.body)}`;
+  return `${node.async ? "async " : ""}function ${serialize(
+    node.id
+  )}(${params}) ${serialize(node.body)}`;
 };
 
 export const VariableDeclaration = (stmt: Types.VariableDeclaration) => {
@@ -100,6 +102,10 @@ export const VariableDeclarator = (stmt: Types.VariableDeclarator) => {
 
 export const ReturnStatement = (stmt: Types.ReturnStatement) => {
   return "return " + serialize(stmt.argument);
+};
+
+export const AwaitExpression = (stmt: Types.AwaitExpression) => {
+  return "await " + serialize(stmt.argument);
 };
 
 export const IfStatement = (stmt: Types.IfStatement) => {
@@ -243,4 +249,5 @@ export const nodes = {
   UnaryExpression,
   ObjectExpression,
   Property,
+  AwaitExpression,
 };

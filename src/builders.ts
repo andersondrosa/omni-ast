@@ -40,6 +40,7 @@ import {
   RestElement,
   ObjectExpression,
   Property,
+  AwaitExpression,
 } from "./types";
 
 export type TypeAST = { type: "#AST"; body: Node };
@@ -113,6 +114,12 @@ export const returnStatement = (
   argument: Expression | null | undefined
 ): ReturnStatement => {
   return { type: "ReturnStatement", argument };
+};
+
+export const awaitExpression = (
+  argument: Expression | null | undefined
+): AwaitExpression => {
+  return { type: "AwaitExpression", argument };
 };
 
 export const tryStatement = (

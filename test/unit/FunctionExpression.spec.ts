@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { serialize } from "../../src/Serialize";
 import { tokenizer } from "../utils/tokenizer";
 import {
+  awaitExpression,
   blockStatement,
   callExpression,
   functionExpression,
@@ -19,16 +20,19 @@ describe("FunctionExpression", () => {
   //
   it("Should Works", () => {
     //
-    const script = `function main() { return value; }`;
+    const script = `async function main() { 
+      return await value;
+    }`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
+    // const AST = cleanAST(acorn.parse(script, options)).body[0];
     // dir(AST);
 
     const code = serialize(
       functionExpression(
         identifier("main"),
         [],
-        blockStatement([returnStatement(identifier("value"))])
+        blockStatement([returnStatement(awaitExpression(identifier("value")))]),
+        true
       )
     );
 
