@@ -278,23 +278,26 @@ export interface VariableDeclarator extends BaseNode {
 }
 
 export interface ExpressionMap {
-  JsonExpression: JsonExpression;
   ArrayExpression: ArrayExpression;
   ArrowFunctionExpression: ArrowFunctionExpression;
   AssignmentExpression: AssignmentExpression;
   AwaitExpression: AwaitExpression;
   BinaryExpression: BinaryExpression;
   CallExpression: CallExpression;
+  ChainExpression: ChainExpression;
   ConditionalExpression: ConditionalExpression;
   FunctionExpression: FunctionExpression;
   Identifier: Identifier;
   Literal: Literal;
   LogicalExpression: LogicalExpression;
   MemberExpression: MemberExpression;
+  NewExpression: NewExpression;
   ObjectExpression: ObjectExpression;
   SequenceExpression: SequenceExpression;
   TaggedTemplateExpression: TaggedTemplateExpression;
   TemplateLiteral: TemplateLiteral;
+  ThisExpression: ThisExpression;
+  UnaryExpression: UnaryExpression;
   UpdateExpression: UpdateExpression;
 }
 
@@ -302,16 +305,16 @@ export type Expression = ExpressionMap[keyof ExpressionMap];
 
 export interface BaseExpression extends BaseNode {}
 
-// export type ChainElement = SimpleCallExpression | MemberExpression;
+export type ChainElement = SimpleCallExpression | MemberExpression;
 
-// export interface ChainExpression extends BaseExpression {
-//   type: "ChainExpression";
-//   expression: ChainElement;
-// }
+export interface ChainExpression extends BaseExpression {
+  type: "ChainExpression";
+  expression: ChainElement;
+}
 
-// export interface ThisExpression extends BaseExpression {
-//   type: "ThisExpression";
-// }
+export interface ThisExpression extends BaseExpression {
+  type: "ThisExpression";
+}
 
 export interface ArrayExpression extends BaseExpression {
   type: "ArrayExpression";
@@ -323,14 +326,9 @@ export interface ObjectExpression extends BaseExpression {
   properties: Property[]; // SpreadElement
 }
 
-// export interface PrivateIdentifier extends BaseNode {
-//   type: "PrivateIdentifier";
-//   name: string;
-// }
-
 export interface Property extends BaseNode {
   type: "Property";
-  key: Expression; // | PrivateIdentifier;
+  key: Expression;
   value: Expression | Pattern; // Could be an AssignmentProperty
   kind: "init" | "get" | "set";
   method: boolean;
@@ -340,7 +338,7 @@ export interface Property extends BaseNode {
 
 export interface PropertyDefinition extends BaseNode {
   type: "PropertyDefinition";
-  key: Expression; // | PrivateIdentifier;
+  key: Expression;
   value?: Expression | null | undefined;
   computed: boolean;
   static: boolean;

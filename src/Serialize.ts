@@ -46,13 +46,17 @@ export const ExpressionStatement = (node: Types.ExpressionStatement) => {
   return serialize(node.expression);
 };
 
+export const ChainExpression = (node: Types.ChainExpression) => {
+  return serialize(node.expression);
+};
+
 export const MemberExpression = (node: Types.MemberExpression) => {
-  return (
-    serialize(node.object) +
-    (node.computed
-      ? "[" + serialize(node.property) + "]"
-      : "." + serialize(node.property))
-  );
+  let str = [serialize(node.object)];
+  if (node.optional) str.push(node.computed ? "?." : "?");
+  str.push(node.computed ? "[" : ".");
+  str.push(serialize(node.property));
+  if (node.computed) str.push("]");
+  return str.join("");
 };
 
 export const CallExpression = (node: Types.CallExpression) => {
@@ -206,4 +210,5 @@ export const nodes = {
   BinaryExpression,
   UpdateExpression,
   ForExpression,
+  ChainExpression,
 };

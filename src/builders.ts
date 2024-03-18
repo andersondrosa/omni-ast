@@ -30,6 +30,8 @@ import {
   UpdateExpression,
   UpdateOperator,
   ForInStatement,
+  ChainExpression,
+  ChainElement,
 } from "./types";
 
 export type TypeAST = { type: "json:ast"; body: Node };
@@ -62,6 +64,10 @@ export const lit = (value: string | boolean | number | null): Literal => {
 
 export const blockStatement = (body: Statement[]): BlockStatement => {
   return { type: "BlockStatement", body };
+};
+
+export const chainExpression = (expression: ChainElement): ChainExpression => {
+  return { type: "ChainExpression", expression };
 };
 
 export const arrowFunctionExpression = (
