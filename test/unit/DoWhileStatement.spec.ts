@@ -9,11 +9,9 @@ describe("DoWhileStatement", () => {
   //
   it("Should works", () => {
     //
-    const script = `for(let i = 0; i < 10; i++) { 
-      console.log("iteration:", i); 
-    }`;
+    const script = `let i = 0; do { i++; } while (i < 100)`;
 
-    const AST = cleanAST(acornParse(script).body[0]);
+    const AST = cleanAST(acornParse(script));
 
     const code = serialize(AST);
 
@@ -24,30 +22,19 @@ describe("DoWhileStatement", () => {
     const generatedFunction = buildFunction(AST);
 
     expect(generatedFunction).toEqual(
-      `(b) => b.forStatement(
-        b.variableDeclaration("let", [
-          b.variableDeclarator(b.identifier("i"), b.literal(0))
-        ]), 
-        b.binaryExpression(
-          "<", b.identifier("i"), 
-          b.literal(10)), 
-          b.updateExpression(
-            "++", 
-            b.identifier("i")), 
+      `(b) => 
+        b.program([
+          b.variableDeclaration("let", [
+            b.variableDeclarator(b.identifier("i"), b.literal(0))
+          ]), 
+          b.doWhileStatement(
             b.blockStatement([
-              b.expressionStatement(
-                b.callExpression(
-                  b.memberExpression(
-                    b.identifier("console"), 
-                    b.identifier("log")
-                  ), 
-                  [b.literal("iteration:"), b.identifier("i")]
-                )
-              )
-            ]
+              b.expressionStatement(b.updateExpression("++", b.identifier("i")))
+            ]), 
+            b.binaryExpression("<", b.identifier("i"), b.literal(100))
           )
-        )
-        `.replace(/\n\s+/g, "")
+        ])
+    `.replace(/\n\s+/g, "")
     );
 
     const evaluatedAST = evaluate(generatedFunction);
@@ -55,6 +42,8 @@ describe("DoWhileStatement", () => {
     expect(evaluatedAST).toMatchObject(AST);
 
     const evaluatedCode = serialize(evaluatedAST);
+
+    console.log(evaluatedCode);
 
     expect(evaluatedCode).toMatchObject(code);
   });

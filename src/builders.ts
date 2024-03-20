@@ -2,7 +2,6 @@ import {
   Identifier,
   VariableDeclaration,
   MemberExpression,
-  CallExpression,
   Pattern,
   Statement,
   ReturnStatement,
@@ -43,7 +42,6 @@ import {
   TemplateLiteral,
   ObjectPattern,
   AssignmentProperty,
-  RestElement,
   ArrayPattern,
   BreakStatement,
   ContinueStatement,
@@ -56,17 +54,18 @@ import {
   ArrayExpression,
   SimpleCallExpression,
   ForOfStatement,
+  DoWhileStatement,
 } from "./types";
 
 export const ast = (body: Node) => ({ type: "#AST", body });
 
 // BUILDERS
-export const arrayPattern = (elements: Pattern[]): ArrayPattern => {
-  return { type: "ArrayPattern", elements };
-};
-/* -------------------------------------------------------------------------- */
 export const arrayExpression = (elements: Expression[]): ArrayExpression => {
   return { type: "ArrayExpression", elements };
+};
+/* -------------------------------------------------------------------------- */
+export const arrayPattern = (elements: Pattern[]): ArrayPattern => {
+  return { type: "ArrayPattern", elements };
 };
 /* -------------------------------------------------------------------------- */
 export const arrowFunctionExpression = (
@@ -95,16 +94,12 @@ export const assignmentExpression = (
 export const assignmentProperty = (
   key: Expression,
   value?: Pattern,
-  shorthand = false
+  shorthand?: Boolean
 ): AssignmentProperty => {
-  return {
-    type: "Property",
-    key,
-    value,
-    kind: "init",
-    method: false,
-    shorthand,
-  };
+  const node = { type: "Property", key, kind: "init" } as AssignmentProperty;
+  if (value) node.value = value;
+  if (shorthand) node.shorthand = Boolean(shorthand);
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const awaitExpression = (
@@ -167,6 +162,13 @@ export const continueExpression = (label: Identifier): ContinueStatement => {
   return { type: "ContinueStatement", label };
 };
 /* -------------------------------------------------------------------------- */
+export const doWhileStatement = (
+  body: Statement,
+  test: Expression
+): DoWhileStatement => {
+  return { type: "DoWhileStatement", body, test };
+};
+/* -------------------------------------------------------------------------- */
 export const emptyStatement = (): EmptyStatement => {
   return { type: "EmptyStatement" };
 };
@@ -189,9 +191,11 @@ export const forOfStatement = (
   left: Pattern | VariableDeclaration,
   right: Expression,
   body: Statement,
-  _await: boolean
+  _await?: true
 ): ForOfStatement => {
-  return { type: "ForOfStatement", body, left, right, await: _await || false };
+  const node: ForOfStatement = { type: "ForOfStatement", body, left, right };
+  if (_await === true) node["await"] = true;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const forStatement = (
@@ -216,7 +220,7 @@ export const functionDeclaration = (
     params: args,
     body,
   };
-  if (async) node.async = async;
+  if (async === true) node.async = async;
   return node;
 };
 /* -------------------------------------------------------------------------- */
@@ -233,7 +237,7 @@ export const functionExpression = (
     body,
   };
   if (id) node.id = id;
-  if (async) node.async = async;
+  if (async == true) node.async = async;
   return node;
 };
 /* -------------------------------------------------------------------------- */
@@ -244,14 +248,11 @@ export const identifier = (name: string): Identifier => {
 export const ifStatement = (
   test: Expression,
   consequent: Statement,
-  alternate?: Statement | null
+  alternate?: Statement
 ): IfStatement => {
-  return {
-    type: "IfStatement",
-    test,
-    consequent,
-    alternate: alternate ?? null,
-  };
+  const node: IfStatement = { type: "IfStatement", test, consequent };
+  if (node) node.alternate = alternate;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const logicalExpression = (
@@ -267,11 +268,19 @@ export const jsonExpression = (body: JsonTypes): JsonExpression => {
 };
 /* -------------------------------------------------------------------------- */
 export const literal = (value: string | boolean | number | null): Literal => {
-  return {
-    type: "Literal",
-    value,
-    raw: typeof value === "string" ? `"${value}"` : String(value),
-  };
+  const node: Literal = { type: "Literal", value };
+  switch (typeof value) {
+    case "bigint":
+      node.raw = String(value) + "n";
+      node["bigint"] = String(value);
+      break;
+    case "string":
+      node.raw = `"${value}"`;
+      break;
+    default:
+      node.raw = String(value);
+  }
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const memberExpression = (
@@ -306,16 +315,12 @@ export const program = (body: Statement[]): Program => {
 /* -------------------------------------------------------------------------- */
 export const property = (
   key: Expression,
-  value: Expression | Pattern
+  value: Expression | Pattern,
+  shorthand?: boolean
 ): Property => {
-  return {
-    type: "Property",
-    key,
-    kind: "init",
-    method: false,
-    shorthand: false,
-    value,
-  };
+  const node: Property = { type: "Property", key, kind: "init", value };
+  if (shorthand) node.shorthand = shorthand;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const returnStatement = (
@@ -342,7 +347,9 @@ export const templateElement = (
   value: { raw: string; cooked?: string },
   tail = false
 ): TemplateElement => {
-  return { type: "TemplateElement", value, tail };
+  const node: TemplateElement = { type: "TemplateElement", value };
+  if (tail === true) node.tail = true;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const templateLiteral = (
@@ -361,7 +368,9 @@ export const tryStatement = (
   handler: CatchClause,
   finalizer?: BlockStatement
 ): TryStatement => {
-  return { type: "TryStatement", block, handler, finalizer };
+  const node: TryStatement = { type: "TryStatement", block, handler };
+  if (finalizer) node.finalizer = finalizer;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const unaryExpression = (
@@ -374,9 +383,15 @@ export const unaryExpression = (
 export const updateExpression = (
   operator: UpdateOperator,
   argument: Expression,
-  prefix: boolean = false
+  prefix?: boolean
 ): UpdateExpression => {
-  return { type: "UpdateExpression", operator, argument, prefix };
+  const node = {
+    type: "UpdateExpression",
+    operator,
+    argument,
+  } as UpdateExpression;
+  if (prefix) node.prefix = Boolean(prefix);
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const variableDeclaration = (
@@ -390,7 +405,9 @@ export const variableDeclarator = (
   id: Pattern,
   init?: Expression | null
 ): VariableDeclarator => {
-  return { type: "VariableDeclarator", id, init: init ?? null };
+  const node: VariableDeclarator = { type: "VariableDeclarator", id };
+  if (init) node.init = init;
+  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const whileStatement = (
@@ -407,33 +424,3 @@ export const constantDeclaration = (id): VariableDeclaration =>
   variableDeclaration("const", [variableDeclarator(identifier(id))]);
 export const letDeclaration = (id): VariableDeclaration =>
   variableDeclaration("let", [variableDeclarator(identifier(id))]);
-
-/** ========================================================================= */
-
-export const destructure = (json): Pattern => {
-  const properties: any[] = [];
-  for (const name in json) {
-    if (json[name] === true)
-      properties.push([
-        {
-          type: "Property",
-          shorthand: true,
-          key: { type: "Identifier", name },
-          kind: "init",
-          value: { type: "Identifier", name },
-        },
-      ]);
-    else
-      properties.push([
-        {
-          type: "Property",
-          shorthand: false,
-          key: { type: "Identifier", name },
-          kind: "init",
-          value: { type: "Identifier", name: destructure(json[name]) },
-        },
-      ]);
-  }
-  return { type: "ObjectPattern", properties };
-};
-/* -------------------------------------------------------------------------- */

@@ -1,10 +1,7 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, cleanAST, serialize } from "../../dist";
+import { builder, cleanAST, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 const {
   awaitExpression,
@@ -19,14 +16,13 @@ const {
 
 describe("FunctionExpression", () => {
   //
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = `async function main(foo, { bar: [ baz ] }) { 
       return await baz;
     }`;
 
     const AST = cleanAST(acornParse(script)).body[0];
-    dir(AST);
 
     const code = serialize(
       functionExpression(
@@ -44,9 +40,6 @@ describe("FunctionExpression", () => {
         true
       )
     );
-
-    dir(script);
-    dir(code);
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
   });

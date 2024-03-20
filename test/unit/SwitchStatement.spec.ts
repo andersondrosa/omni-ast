@@ -1,11 +1,8 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../dist";
+import { builder, serialize } from "../../src";
 import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 const {
   expressionStatement,
@@ -19,7 +16,7 @@ const {
 
 describe("SwitchStatement", () => {
   //
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = `switch(true) { 
       case true: 
@@ -28,8 +25,6 @@ describe("SwitchStatement", () => {
         foo = "bar"; 
         bar = "baz";
     }`;
-
-    dir(cleanAST(acornParse(script)).body[0]);
 
     const ast = switchStatement(lit(true), [
       switchCase(lit(true), [
@@ -47,11 +42,7 @@ describe("SwitchStatement", () => {
       ]),
     ]);
 
-    // dir(ast);
     const code = serialize(ast);
-
-    dir(script);
-    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });

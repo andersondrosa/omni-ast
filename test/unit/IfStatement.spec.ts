@@ -1,10 +1,7 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, cleanAST, serialize } from "../../dist";
+import { builder, cleanAST, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 const {
   blockStatement,
@@ -21,7 +18,7 @@ const {
 
 describe("IfStatement", () => {
   //
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = `if (x < 11) { console.log("ok"); }`;
 
@@ -36,18 +33,14 @@ describe("IfStatement", () => {
 
     const code = serialize(ast);
 
-    dir(script);
-    dir(code);
-
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
 
-  it("Should Works with inline conditional", () => {
+  it("Should works with inline conditional", () => {
     //
     const script = `const fooIsBar = foo == "bar" ? true : false`;
 
     const AST = cleanAST(acornParse(script)).body[0];
-    dir(AST);
 
     const ast = variableDeclaration("const", [
       variableDeclarator(
@@ -61,9 +54,6 @@ describe("IfStatement", () => {
     ]);
 
     const code = serialize(ast);
-
-    dir(script);
-    dir(code);
 
     const result = eval(
       `(() => { const foo = "bar"; ${code}; return fooIsBar; })()`

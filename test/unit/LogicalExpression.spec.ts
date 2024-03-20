@@ -1,10 +1,7 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../dist";
+import { builder, serialize } from "../../src";
 import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 const {
   identifier,
@@ -16,12 +13,11 @@ const {
 
 describe("LogicalExpression", () => {
   //
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = `const fooIsBar = foo == "bar" && true || "nope"`;
 
     const AST = cleanAST(acornParse(script)).body[0];
-    dir(AST);
 
     const ast = variableDeclaration("const", [
       variableDeclarator(identifier("fooIsBar"), {
@@ -38,9 +34,6 @@ describe("LogicalExpression", () => {
     ]);
 
     const code = serialize(ast);
-
-    dir(script);
-    dir(code);
 
     const result = eval(
       `(() => { const foo = "bar"; ${code}; return fooIsBar; })()`

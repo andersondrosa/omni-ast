@@ -94,14 +94,12 @@ exports[`OmniAST > Hybrid 2`] = `
 {
   "properties": [
     {
-      "computed": false,
       "key": {
         "name": "json",
         "type": "Identifier",
       },
       "kind": "init",
       "method": false,
-      "shorthand": false,
       "type": "Property",
       "value": {
         "raw": "\\"here\\"",
@@ -110,28 +108,24 @@ exports[`OmniAST > Hybrid 2`] = `
       },
     },
     {
-      "computed": false,
       "key": {
         "name": "myFunc",
         "type": "Identifier",
       },
       "kind": "init",
       "method": false,
-      "shorthand": false,
       "type": "Property",
       "value": {
         "arguments": [
           {
             "properties": [
               {
-                "computed": false,
                 "key": {
                   "name": "json",
                   "type": "Identifier",
                 },
                 "kind": "init",
                 "method": false,
-                "shorthand": false,
                 "type": "Property",
                 "value": {
                   "raw": "\\"again\\"",
@@ -147,7 +141,6 @@ exports[`OmniAST > Hybrid 2`] = `
           "name": "jsAgain",
           "type": "Identifier",
         },
-        "optional": false,
         "type": "CallExpression",
       },
     },

@@ -1,0 +1,1450 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Test all expressions > Should works 1`] = `
+"(React, moment, toast, reactIcons, services) => {
+  const { useState, createElement } = React;
+  const {
+    bi: { BiChevronLeft },
+  } = reactIcons;
+  const UpdateItemService = services(\\"UpdateRoleService\\");
+
+  return function EditTableScreen({ item, model, goBackUrl }) {
+    const [name, setName] = useState(item.props.name);
+    const [text, setText] = useState(item.props.text);
+    const [saving, setSaving] = useState(false);
+
+    const handleClick = () => {
+      setSaving(true);
+
+      const promise = UpdateItemService(model.name, item.id, {
+        model: model.name,
+        props: { name, text },
+        tags: [],
+      }).finally(() => setSaving(false));
+
+      toast.promise(promise, {
+        pending: \\"Salvando dados...\\",
+        success: \\"Os dados foram salvos!\\",
+        error: \\"Não foi possível salvar a atualização\\",
+      });
+    };
+
+    return createElement(
+      \\"div\\",
+      { className: \\"h-screen px-4 py-8 max-w-xl m-auto\\" },
+      createElement(
+        \\"div\\",
+        { className: \\"bg-white border rounded py-6\\" },
+        createElement(
+          \\"div\\",
+          { className: \\"px-6 text-lg\\" },
+          \\"Editar \\",
+          model.label
+        ),
+        createElement(
+          \\"div\\",
+          { className: \\"p-4 flex flex-col gap-4\\" },
+          createElement(
+            \\"div\\",
+            null,
+            createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Nome\\"),
+            createElement(\\"input\\", {
+              type: \\"text\\",
+              className: \\"form-input\\",
+              value: name,
+              onChange: (e) => setName(e.target.value),
+            })
+          ),
+          createElement(
+            \\"div\\",
+            null,
+            createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Descrição\\"),
+            createElement(\\"textarea\\", {
+              className: \\"form-input\\",
+              value: text,
+              onChange: (e) => setText(e.target.value),
+              rows: 10,
+            })
+          )
+        ),
+        createElement(
+          \\"div\\",
+          { className: \\"px-6 flex items-center gap-3\\" },
+          createElement(
+            \\"div\\",
+            { className: \\"grow text-sm text-slate-500\\" },
+            moment(item.created_at).fromNow()
+          ),
+          createElement(
+            \\"a\\",
+            { className: \\"btn btn-default pl-1\\", href: goBackUrl },
+            createElement(BiChevronLeft, { size: 24 }),
+            \\" Voltar\\"
+          ),
+          createElement(
+            \\"button\\",
+            {
+              className: \\"btn btn-primary\\",
+              onClick: handleClick,
+              disabled: saving,
+            },
+            \\"Salvar alterações\\"
+          )
+        )
+      )
+    );
+  };
+};
+"
+`;
+
+exports[`Test all expressions > Should works 2`] = `
+{
+  "body": [
+    {
+      "expression": {
+        "body": {
+          "body": [
+            {
+              "declarations": [
+                {
+                  "id": {
+                    "properties": [
+                      {
+                        "key": {
+                          "name": "useState",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "type": "Property",
+                        "value": {
+                          "name": "useState",
+                          "type": "Identifier",
+                        },
+                      },
+                      {
+                        "key": {
+                          "name": "createElement",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "type": "Property",
+                        "value": {
+                          "name": "createElement",
+                          "type": "Identifier",
+                        },
+                      },
+                    ],
+                    "type": "ObjectPattern",
+                  },
+                  "init": {
+                    "name": "React",
+                    "type": "Identifier",
+                  },
+                  "type": "VariableDeclarator",
+                },
+              ],
+              "kind": "const",
+              "type": "VariableDeclaration",
+            },
+            {
+              "declarations": [
+                {
+                  "id": {
+                    "properties": [
+                      {
+                        "key": {
+                          "name": "bi",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "type": "Property",
+                        "value": {
+                          "properties": [
+                            {
+                              "key": {
+                                "name": "BiChevronLeft",
+                                "type": "Identifier",
+                              },
+                              "kind": "init",
+                              "method": false,
+                              "shorthand": true,
+                              "type": "Property",
+                              "value": {
+                                "name": "BiChevronLeft",
+                                "type": "Identifier",
+                              },
+                            },
+                          ],
+                          "type": "ObjectPattern",
+                        },
+                      },
+                    ],
+                    "type": "ObjectPattern",
+                  },
+                  "init": {
+                    "name": "reactIcons",
+                    "type": "Identifier",
+                  },
+                  "type": "VariableDeclarator",
+                },
+              ],
+              "kind": "const",
+              "type": "VariableDeclaration",
+            },
+            {
+              "declarations": [
+                {
+                  "id": {
+                    "name": "UpdateItemService",
+                    "type": "Identifier",
+                  },
+                  "init": {
+                    "arguments": [
+                      {
+                        "raw": "\\"UpdateRoleService\\"",
+                        "type": "Literal",
+                        "value": "UpdateRoleService",
+                      },
+                    ],
+                    "callee": {
+                      "name": "services",
+                      "type": "Identifier",
+                    },
+                    "type": "CallExpression",
+                  },
+                  "type": "VariableDeclarator",
+                },
+              ],
+              "kind": "const",
+              "type": "VariableDeclaration",
+            },
+            {
+              "argument": {
+                "body": {
+                  "body": [
+                    {
+                      "declarations": [
+                        {
+                          "id": {
+                            "elements": [
+                              {
+                                "name": "name",
+                                "type": "Identifier",
+                              },
+                              {
+                                "name": "setName",
+                                "type": "Identifier",
+                              },
+                            ],
+                            "type": "ArrayPattern",
+                          },
+                          "init": {
+                            "arguments": [
+                              {
+                                "object": {
+                                  "object": {
+                                    "name": "item",
+                                    "type": "Identifier",
+                                  },
+                                  "property": {
+                                    "name": "props",
+                                    "type": "Identifier",
+                                  },
+                                  "type": "MemberExpression",
+                                },
+                                "property": {
+                                  "name": "name",
+                                  "type": "Identifier",
+                                },
+                                "type": "MemberExpression",
+                              },
+                            ],
+                            "callee": {
+                              "name": "useState",
+                              "type": "Identifier",
+                            },
+                            "type": "CallExpression",
+                          },
+                          "type": "VariableDeclarator",
+                        },
+                      ],
+                      "kind": "const",
+                      "type": "VariableDeclaration",
+                    },
+                    {
+                      "declarations": [
+                        {
+                          "id": {
+                            "elements": [
+                              {
+                                "name": "text",
+                                "type": "Identifier",
+                              },
+                              {
+                                "name": "setText",
+                                "type": "Identifier",
+                              },
+                            ],
+                            "type": "ArrayPattern",
+                          },
+                          "init": {
+                            "arguments": [
+                              {
+                                "object": {
+                                  "object": {
+                                    "name": "item",
+                                    "type": "Identifier",
+                                  },
+                                  "property": {
+                                    "name": "props",
+                                    "type": "Identifier",
+                                  },
+                                  "type": "MemberExpression",
+                                },
+                                "property": {
+                                  "name": "text",
+                                  "type": "Identifier",
+                                },
+                                "type": "MemberExpression",
+                              },
+                            ],
+                            "callee": {
+                              "name": "useState",
+                              "type": "Identifier",
+                            },
+                            "type": "CallExpression",
+                          },
+                          "type": "VariableDeclarator",
+                        },
+                      ],
+                      "kind": "const",
+                      "type": "VariableDeclaration",
+                    },
+                    {
+                      "declarations": [
+                        {
+                          "id": {
+                            "elements": [
+                              {
+                                "name": "saving",
+                                "type": "Identifier",
+                              },
+                              {
+                                "name": "setSaving",
+                                "type": "Identifier",
+                              },
+                            ],
+                            "type": "ArrayPattern",
+                          },
+                          "init": {
+                            "arguments": [
+                              {
+                                "raw": "false",
+                                "type": "Literal",
+                                "value": false,
+                              },
+                            ],
+                            "callee": {
+                              "name": "useState",
+                              "type": "Identifier",
+                            },
+                            "type": "CallExpression",
+                          },
+                          "type": "VariableDeclarator",
+                        },
+                      ],
+                      "kind": "const",
+                      "type": "VariableDeclaration",
+                    },
+                    {
+                      "declarations": [
+                        {
+                          "id": {
+                            "name": "handleClick",
+                            "type": "Identifier",
+                          },
+                          "init": {
+                            "body": {
+                              "body": [
+                                {
+                                  "expression": {
+                                    "arguments": [
+                                      {
+                                        "raw": "true",
+                                        "type": "Literal",
+                                        "value": true,
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "setSaving",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                  "type": "ExpressionStatement",
+                                },
+                                {
+                                  "declarations": [
+                                    {
+                                      "id": {
+                                        "name": "promise",
+                                        "type": "Identifier",
+                                      },
+                                      "init": {
+                                        "arguments": [
+                                          {
+                                            "body": {
+                                              "arguments": [
+                                                {
+                                                  "raw": "false",
+                                                  "type": "Literal",
+                                                  "value": false,
+                                                },
+                                              ],
+                                              "callee": {
+                                                "name": "setSaving",
+                                                "type": "Identifier",
+                                              },
+                                              "type": "CallExpression",
+                                            },
+                                            "expression": true,
+                                            "params": [],
+                                            "type": "ArrowFunctionExpression",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "object": {
+                                            "arguments": [
+                                              {
+                                                "object": {
+                                                  "name": "model",
+                                                  "type": "Identifier",
+                                                },
+                                                "property": {
+                                                  "name": "name",
+                                                  "type": "Identifier",
+                                                },
+                                                "type": "MemberExpression",
+                                              },
+                                              {
+                                                "object": {
+                                                  "name": "item",
+                                                  "type": "Identifier",
+                                                },
+                                                "property": {
+                                                  "name": "id",
+                                                  "type": "Identifier",
+                                                },
+                                                "type": "MemberExpression",
+                                              },
+                                              {
+                                                "properties": [
+                                                  {
+                                                    "key": {
+                                                      "name": "model",
+                                                      "type": "Identifier",
+                                                    },
+                                                    "kind": "init",
+                                                    "method": false,
+                                                    "type": "Property",
+                                                    "value": {
+                                                      "object": {
+                                                        "name": "model",
+                                                        "type": "Identifier",
+                                                      },
+                                                      "property": {
+                                                        "name": "name",
+                                                        "type": "Identifier",
+                                                      },
+                                                      "type": "MemberExpression",
+                                                    },
+                                                  },
+                                                  {
+                                                    "key": {
+                                                      "name": "props",
+                                                      "type": "Identifier",
+                                                    },
+                                                    "kind": "init",
+                                                    "method": false,
+                                                    "type": "Property",
+                                                    "value": {
+                                                      "properties": [
+                                                        {
+                                                          "key": {
+                                                            "name": "name",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "kind": "init",
+                                                          "method": false,
+                                                          "shorthand": true,
+                                                          "type": "Property",
+                                                          "value": {
+                                                            "name": "name",
+                                                            "type": "Identifier",
+                                                          },
+                                                        },
+                                                        {
+                                                          "key": {
+                                                            "name": "text",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "kind": "init",
+                                                          "method": false,
+                                                          "shorthand": true,
+                                                          "type": "Property",
+                                                          "value": {
+                                                            "name": "text",
+                                                            "type": "Identifier",
+                                                          },
+                                                        },
+                                                      ],
+                                                      "type": "ObjectExpression",
+                                                    },
+                                                  },
+                                                  {
+                                                    "key": {
+                                                      "name": "tags",
+                                                      "type": "Identifier",
+                                                    },
+                                                    "kind": "init",
+                                                    "method": false,
+                                                    "type": "Property",
+                                                    "value": {
+                                                      "elements": [],
+                                                      "type": "ArrayExpression",
+                                                    },
+                                                  },
+                                                ],
+                                                "type": "ObjectExpression",
+                                              },
+                                            ],
+                                            "callee": {
+                                              "name": "UpdateItemService",
+                                              "type": "Identifier",
+                                            },
+                                            "type": "CallExpression",
+                                          },
+                                          "property": {
+                                            "name": "finally",
+                                            "type": "Identifier",
+                                          },
+                                          "type": "MemberExpression",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                      "type": "VariableDeclarator",
+                                    },
+                                  ],
+                                  "kind": "const",
+                                  "type": "VariableDeclaration",
+                                },
+                                {
+                                  "expression": {
+                                    "arguments": [
+                                      {
+                                        "name": "promise",
+                                        "type": "Identifier",
+                                      },
+                                      {
+                                        "properties": [
+                                          {
+                                            "key": {
+                                              "name": "pending",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"Salvando dados...\\"",
+                                              "type": "Literal",
+                                              "value": "Salvando dados...",
+                                            },
+                                          },
+                                          {
+                                            "key": {
+                                              "name": "success",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"Os dados foram salvos!\\"",
+                                              "type": "Literal",
+                                              "value": "Os dados foram salvos!",
+                                            },
+                                          },
+                                          {
+                                            "key": {
+                                              "name": "error",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"Não foi possível salvar a atualização\\"",
+                                              "type": "Literal",
+                                              "value": "Não foi possível salvar a atualização",
+                                            },
+                                          },
+                                        ],
+                                        "type": "ObjectExpression",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "object": {
+                                        "name": "toast",
+                                        "type": "Identifier",
+                                      },
+                                      "property": {
+                                        "name": "promise",
+                                        "type": "Identifier",
+                                      },
+                                      "type": "MemberExpression",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                  "type": "ExpressionStatement",
+                                },
+                              ],
+                              "type": "BlockStatement",
+                            },
+                            "expression": false,
+                            "params": [],
+                            "type": "ArrowFunctionExpression",
+                          },
+                          "type": "VariableDeclarator",
+                        },
+                      ],
+                      "kind": "const",
+                      "type": "VariableDeclaration",
+                    },
+                    {
+                      "argument": {
+                        "arguments": [
+                          {
+                            "raw": "\\"div\\"",
+                            "type": "Literal",
+                            "value": "div",
+                          },
+                          {
+                            "properties": [
+                              {
+                                "key": {
+                                  "name": "className",
+                                  "type": "Identifier",
+                                },
+                                "kind": "init",
+                                "method": false,
+                                "type": "Property",
+                                "value": {
+                                  "raw": "\\"h-screen px-4 py-8 max-w-xl m-auto\\"",
+                                  "type": "Literal",
+                                  "value": "h-screen px-4 py-8 max-w-xl m-auto",
+                                },
+                              },
+                            ],
+                            "type": "ObjectExpression",
+                          },
+                          {
+                            "arguments": [
+                              {
+                                "raw": "\\"div\\"",
+                                "type": "Literal",
+                                "value": "div",
+                              },
+                              {
+                                "properties": [
+                                  {
+                                    "key": {
+                                      "name": "className",
+                                      "type": "Identifier",
+                                    },
+                                    "kind": "init",
+                                    "method": false,
+                                    "type": "Property",
+                                    "value": {
+                                      "raw": "\\"bg-white border rounded py-6\\"",
+                                      "type": "Literal",
+                                      "value": "bg-white border rounded py-6",
+                                    },
+                                  },
+                                ],
+                                "type": "ObjectExpression",
+                              },
+                              {
+                                "arguments": [
+                                  {
+                                    "raw": "\\"div\\"",
+                                    "type": "Literal",
+                                    "value": "div",
+                                  },
+                                  {
+                                    "properties": [
+                                      {
+                                        "key": {
+                                          "name": "className",
+                                          "type": "Identifier",
+                                        },
+                                        "kind": "init",
+                                        "method": false,
+                                        "type": "Property",
+                                        "value": {
+                                          "raw": "\\"px-6 text-lg\\"",
+                                          "type": "Literal",
+                                          "value": "px-6 text-lg",
+                                        },
+                                      },
+                                    ],
+                                    "type": "ObjectExpression",
+                                  },
+                                  {
+                                    "raw": "\\"Editar \\"",
+                                    "type": "Literal",
+                                    "value": "Editar ",
+                                  },
+                                  {
+                                    "object": {
+                                      "name": "model",
+                                      "type": "Identifier",
+                                    },
+                                    "property": {
+                                      "name": "label",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "MemberExpression",
+                                  },
+                                ],
+                                "callee": {
+                                  "name": "createElement",
+                                  "type": "Identifier",
+                                },
+                                "type": "CallExpression",
+                              },
+                              {
+                                "arguments": [
+                                  {
+                                    "raw": "\\"div\\"",
+                                    "type": "Literal",
+                                    "value": "div",
+                                  },
+                                  {
+                                    "properties": [
+                                      {
+                                        "key": {
+                                          "name": "className",
+                                          "type": "Identifier",
+                                        },
+                                        "kind": "init",
+                                        "method": false,
+                                        "type": "Property",
+                                        "value": {
+                                          "raw": "\\"p-4 flex flex-col gap-4\\"",
+                                          "type": "Literal",
+                                          "value": "p-4 flex flex-col gap-4",
+                                        },
+                                      },
+                                    ],
+                                    "type": "ObjectExpression",
+                                  },
+                                  {
+                                    "arguments": [
+                                      {
+                                        "raw": "\\"div\\"",
+                                        "type": "Literal",
+                                        "value": "div",
+                                      },
+                                      {
+                                        "raw": "null",
+                                        "type": "Literal",
+                                        "value": null,
+                                      },
+                                      {
+                                        "arguments": [
+                                          {
+                                            "raw": "\\"label\\"",
+                                            "type": "Literal",
+                                            "value": "label",
+                                          },
+                                          {
+                                            "properties": [
+                                              {
+                                                "key": {
+                                                  "name": "htmlFor",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "\\"\\"",
+                                                  "type": "Literal",
+                                                  "value": "",
+                                                },
+                                              },
+                                            ],
+                                            "type": "ObjectExpression",
+                                          },
+                                          {
+                                            "raw": "\\"Nome\\"",
+                                            "type": "Literal",
+                                            "value": "Nome",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "name": "createElement",
+                                          "type": "Identifier",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                      {
+                                        "arguments": [
+                                          {
+                                            "raw": "\\"input\\"",
+                                            "type": "Literal",
+                                            "value": "input",
+                                          },
+                                          {
+                                            "properties": [
+                                              {
+                                                "key": {
+                                                  "name": "type",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "\\"text\\"",
+                                                  "type": "Literal",
+                                                  "value": "text",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "className",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "\\"form-input\\"",
+                                                  "type": "Literal",
+                                                  "value": "form-input",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "value",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "name": "name",
+                                                  "type": "Identifier",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "onChange",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "body": {
+                                                    "arguments": [
+                                                      {
+                                                        "object": {
+                                                          "object": {
+                                                            "name": "e",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "property": {
+                                                            "name": "target",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "type": "MemberExpression",
+                                                        },
+                                                        "property": {
+                                                          "name": "value",
+                                                          "type": "Identifier",
+                                                        },
+                                                        "type": "MemberExpression",
+                                                      },
+                                                    ],
+                                                    "callee": {
+                                                      "name": "setName",
+                                                      "type": "Identifier",
+                                                    },
+                                                    "type": "CallExpression",
+                                                  },
+                                                  "expression": true,
+                                                  "params": [
+                                                    {
+                                                      "name": "e",
+                                                      "type": "Identifier",
+                                                    },
+                                                  ],
+                                                  "type": "ArrowFunctionExpression",
+                                                },
+                                              },
+                                            ],
+                                            "type": "ObjectExpression",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "name": "createElement",
+                                          "type": "Identifier",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "createElement",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                  {
+                                    "arguments": [
+                                      {
+                                        "raw": "\\"div\\"",
+                                        "type": "Literal",
+                                        "value": "div",
+                                      },
+                                      {
+                                        "raw": "null",
+                                        "type": "Literal",
+                                        "value": null,
+                                      },
+                                      {
+                                        "arguments": [
+                                          {
+                                            "raw": "\\"label\\"",
+                                            "type": "Literal",
+                                            "value": "label",
+                                          },
+                                          {
+                                            "properties": [
+                                              {
+                                                "key": {
+                                                  "name": "htmlFor",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "\\"\\"",
+                                                  "type": "Literal",
+                                                  "value": "",
+                                                },
+                                              },
+                                            ],
+                                            "type": "ObjectExpression",
+                                          },
+                                          {
+                                            "raw": "\\"Descrição\\"",
+                                            "type": "Literal",
+                                            "value": "Descrição",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "name": "createElement",
+                                          "type": "Identifier",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                      {
+                                        "arguments": [
+                                          {
+                                            "raw": "\\"textarea\\"",
+                                            "type": "Literal",
+                                            "value": "textarea",
+                                          },
+                                          {
+                                            "properties": [
+                                              {
+                                                "key": {
+                                                  "name": "className",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "\\"form-input\\"",
+                                                  "type": "Literal",
+                                                  "value": "form-input",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "value",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "name": "text",
+                                                  "type": "Identifier",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "onChange",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "body": {
+                                                    "arguments": [
+                                                      {
+                                                        "object": {
+                                                          "object": {
+                                                            "name": "e",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "property": {
+                                                            "name": "target",
+                                                            "type": "Identifier",
+                                                          },
+                                                          "type": "MemberExpression",
+                                                        },
+                                                        "property": {
+                                                          "name": "value",
+                                                          "type": "Identifier",
+                                                        },
+                                                        "type": "MemberExpression",
+                                                      },
+                                                    ],
+                                                    "callee": {
+                                                      "name": "setText",
+                                                      "type": "Identifier",
+                                                    },
+                                                    "type": "CallExpression",
+                                                  },
+                                                  "expression": true,
+                                                  "params": [
+                                                    {
+                                                      "name": "e",
+                                                      "type": "Identifier",
+                                                    },
+                                                  ],
+                                                  "type": "ArrowFunctionExpression",
+                                                },
+                                              },
+                                              {
+                                                "key": {
+                                                  "name": "rows",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "10",
+                                                  "type": "Literal",
+                                                  "value": 10,
+                                                },
+                                              },
+                                            ],
+                                            "type": "ObjectExpression",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "name": "createElement",
+                                          "type": "Identifier",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "createElement",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                ],
+                                "callee": {
+                                  "name": "createElement",
+                                  "type": "Identifier",
+                                },
+                                "type": "CallExpression",
+                              },
+                              {
+                                "arguments": [
+                                  {
+                                    "raw": "\\"div\\"",
+                                    "type": "Literal",
+                                    "value": "div",
+                                  },
+                                  {
+                                    "properties": [
+                                      {
+                                        "key": {
+                                          "name": "className",
+                                          "type": "Identifier",
+                                        },
+                                        "kind": "init",
+                                        "method": false,
+                                        "type": "Property",
+                                        "value": {
+                                          "raw": "\\"px-6 flex items-center gap-3\\"",
+                                          "type": "Literal",
+                                          "value": "px-6 flex items-center gap-3",
+                                        },
+                                      },
+                                    ],
+                                    "type": "ObjectExpression",
+                                  },
+                                  {
+                                    "arguments": [
+                                      {
+                                        "raw": "\\"div\\"",
+                                        "type": "Literal",
+                                        "value": "div",
+                                      },
+                                      {
+                                        "properties": [
+                                          {
+                                            "key": {
+                                              "name": "className",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"grow text-sm text-slate-500\\"",
+                                              "type": "Literal",
+                                              "value": "grow text-sm text-slate-500",
+                                            },
+                                          },
+                                        ],
+                                        "type": "ObjectExpression",
+                                      },
+                                      {
+                                        "arguments": [],
+                                        "callee": {
+                                          "object": {
+                                            "arguments": [
+                                              {
+                                                "object": {
+                                                  "name": "item",
+                                                  "type": "Identifier",
+                                                },
+                                                "property": {
+                                                  "name": "created_at",
+                                                  "type": "Identifier",
+                                                },
+                                                "type": "MemberExpression",
+                                              },
+                                            ],
+                                            "callee": {
+                                              "name": "moment",
+                                              "type": "Identifier",
+                                            },
+                                            "type": "CallExpression",
+                                          },
+                                          "property": {
+                                            "name": "fromNow",
+                                            "type": "Identifier",
+                                          },
+                                          "type": "MemberExpression",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "createElement",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                  {
+                                    "arguments": [
+                                      {
+                                        "raw": "\\"a\\"",
+                                        "type": "Literal",
+                                        "value": "a",
+                                      },
+                                      {
+                                        "properties": [
+                                          {
+                                            "key": {
+                                              "name": "className",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"btn btn-default pl-1\\"",
+                                              "type": "Literal",
+                                              "value": "btn btn-default pl-1",
+                                            },
+                                          },
+                                          {
+                                            "key": {
+                                              "name": "href",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "name": "goBackUrl",
+                                              "type": "Identifier",
+                                            },
+                                          },
+                                        ],
+                                        "type": "ObjectExpression",
+                                      },
+                                      {
+                                        "arguments": [
+                                          {
+                                            "name": "BiChevronLeft",
+                                            "type": "Identifier",
+                                          },
+                                          {
+                                            "properties": [
+                                              {
+                                                "key": {
+                                                  "name": "size",
+                                                  "type": "Identifier",
+                                                },
+                                                "kind": "init",
+                                                "method": false,
+                                                "type": "Property",
+                                                "value": {
+                                                  "raw": "24",
+                                                  "type": "Literal",
+                                                  "value": 24,
+                                                },
+                                              },
+                                            ],
+                                            "type": "ObjectExpression",
+                                          },
+                                        ],
+                                        "callee": {
+                                          "name": "createElement",
+                                          "type": "Identifier",
+                                        },
+                                        "type": "CallExpression",
+                                      },
+                                      {
+                                        "raw": "\\" Voltar\\"",
+                                        "type": "Literal",
+                                        "value": " Voltar",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "createElement",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                  {
+                                    "arguments": [
+                                      {
+                                        "raw": "\\"button\\"",
+                                        "type": "Literal",
+                                        "value": "button",
+                                      },
+                                      {
+                                        "properties": [
+                                          {
+                                            "key": {
+                                              "name": "className",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "raw": "\\"btn btn-primary\\"",
+                                              "type": "Literal",
+                                              "value": "btn btn-primary",
+                                            },
+                                          },
+                                          {
+                                            "key": {
+                                              "name": "onClick",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "name": "handleClick",
+                                              "type": "Identifier",
+                                            },
+                                          },
+                                          {
+                                            "key": {
+                                              "name": "disabled",
+                                              "type": "Identifier",
+                                            },
+                                            "kind": "init",
+                                            "method": false,
+                                            "type": "Property",
+                                            "value": {
+                                              "name": "saving",
+                                              "type": "Identifier",
+                                            },
+                                          },
+                                        ],
+                                        "type": "ObjectExpression",
+                                      },
+                                      {
+                                        "raw": "\\"Salvar alterações\\"",
+                                        "type": "Literal",
+                                        "value": "Salvar alterações",
+                                      },
+                                    ],
+                                    "callee": {
+                                      "name": "createElement",
+                                      "type": "Identifier",
+                                    },
+                                    "type": "CallExpression",
+                                  },
+                                ],
+                                "callee": {
+                                  "name": "createElement",
+                                  "type": "Identifier",
+                                },
+                                "type": "CallExpression",
+                              },
+                            ],
+                            "callee": {
+                              "name": "createElement",
+                              "type": "Identifier",
+                            },
+                            "type": "CallExpression",
+                          },
+                        ],
+                        "callee": {
+                          "name": "createElement",
+                          "type": "Identifier",
+                        },
+                        "type": "CallExpression",
+                      },
+                      "type": "ReturnStatement",
+                    },
+                  ],
+                  "type": "BlockStatement",
+                },
+                "expression": false,
+                "id": {
+                  "name": "EditTableScreen",
+                  "type": "Identifier",
+                },
+                "params": [
+                  {
+                    "properties": [
+                      {
+                        "key": {
+                          "name": "item",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "type": "Property",
+                        "value": {
+                          "name": "item",
+                          "type": "Identifier",
+                        },
+                      },
+                      {
+                        "key": {
+                          "name": "model",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "type": "Property",
+                        "value": {
+                          "name": "model",
+                          "type": "Identifier",
+                        },
+                      },
+                      {
+                        "key": {
+                          "name": "goBackUrl",
+                          "type": "Identifier",
+                        },
+                        "kind": "init",
+                        "method": false,
+                        "shorthand": true,
+                        "type": "Property",
+                        "value": {
+                          "name": "goBackUrl",
+                          "type": "Identifier",
+                        },
+                      },
+                    ],
+                    "type": "ObjectPattern",
+                  },
+                ],
+                "type": "FunctionExpression",
+              },
+              "type": "ReturnStatement",
+            },
+          ],
+          "type": "BlockStatement",
+        },
+        "expression": false,
+        "params": [
+          {
+            "name": "React",
+            "type": "Identifier",
+          },
+          {
+            "name": "moment",
+            "type": "Identifier",
+          },
+          {
+            "name": "toast",
+            "type": "Identifier",
+          },
+          {
+            "name": "reactIcons",
+            "type": "Identifier",
+          },
+          {
+            "name": "services",
+            "type": "Identifier",
+          },
+        ],
+        "type": "ArrowFunctionExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Test all expressions > Should works 3`] = `"(React, moment, toast, reactIcons, services) => { const { useState: useState, createElement: createElement } = React; const { bi: { BiChevronLeft: BiChevronLeft } } = reactIcons; const UpdateItemService = services(\\"UpdateRoleService\\"); return function EditTableScreen({ item: item, model: model, goBackUrl: goBackUrl }) { const [name, setName] = useState(item.props.name); const [text, setText] = useState(item.props.text); const [saving, setSaving] = useState(false); const handleClick = () => { setSaving(true); const promise = UpdateItemService(model.name, item.id, { model: model.name, props: { name: name, text: text }, tags: [] }).finally(() => setSaving(false)); toast.promise(promise, { pending: \\"Salvando dados...\\", success: \\"Os dados foram salvos!\\", error: \\"Não foi possível salvar a atualização\\" }); }; return createElement(\\"div\\", { className: \\"h-screen px-4 py-8 max-w-xl m-auto\\" }, createElement(\\"div\\", { className: \\"bg-white border rounded py-6\\" }, createElement(\\"div\\", { className: \\"px-6 text-lg\\" }, \\"Editar \\", model.label), createElement(\\"div\\", { className: \\"p-4 flex flex-col gap-4\\" }, createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Nome\\"), createElement(\\"input\\", { type: \\"text\\", className: \\"form-input\\", value: name, onChange: (e) => setName(e.target.value) })), createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Descrição\\"), createElement(\\"textarea\\", { className: \\"form-input\\", value: text, onChange: (e) => setText(e.target.value), rows: 10 }))), createElement(\\"div\\", { className: \\"px-6 flex items-center gap-3\\" }, createElement(\\"div\\", { className: \\"grow text-sm text-slate-500\\" }, moment(item.created_at).fromNow()), createElement(\\"a\\", { className: \\"btn btn-default pl-1\\", href: goBackUrl }, createElement(BiChevronLeft, { size: 24 }), \\" Voltar\\"), createElement(\\"button\\", { className: \\"btn btn-primary\\", onClick: handleClick, disabled: saving }, \\"Salvar alterações\\")))); }; }"`;
+
+exports[`Test all expressions > Should works 4`] = `"b.program([b.expressionStatement(b.arrowFunctionExpression([b.identifier(\\"React\\"), b.identifier(\\"moment\\"), b.identifier(\\"toast\\"), b.identifier(\\"reactIcons\\"), b.identifier(\\"services\\")], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"useState\\"), b.identifier(\\"useState\\"), true), b.assignmentProperty(b.identifier(\\"createElement\\"), b.identifier(\\"createElement\\"), true)]), b.identifier(\\"React\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"bi\\"), b.objectPattern([b.assignmentProperty(b.identifier(\\"BiChevronLeft\\"), b.identifier(\\"BiChevronLeft\\"), true)]))]), b.identifier(\\"reactIcons\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"UpdateItemService\\"), b.callExpression(b.identifier(\\"services\\"), [b.literal(\\"UpdateRoleService\\")]))]), b.returnStatement(b.functionExpression(b.identifier(\\"EditTableScreen\\"), [b.objectPattern([b.assignmentProperty(b.identifier(\\"item\\"), b.identifier(\\"item\\"), true), b.assignmentProperty(b.identifier(\\"model\\"), b.identifier(\\"model\\"), true), b.assignmentProperty(b.identifier(\\"goBackUrl\\"), b.identifier(\\"goBackUrl\\"), true)])], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"name\\"), b.identifier(\\"setName\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"name\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"text\\"), b.identifier(\\"setText\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"text\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"saving\\"), b.identifier(\\"setSaving\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.literal(false)]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"handleClick\\"), b.arrowFunctionExpression([], b.blockStatement([b.expressionStatement(b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(true)])), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"promise\\"), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"UpdateItemService\\"), [b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\")), b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"id\\")), b.objectExpression([b.property(b.identifier(\\"model\\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\"))), b.property(b.identifier(\\"props\\"), b.objectExpression([b.property(b.identifier(\\"name\\"), b.identifier(\\"name\\"), true), b.property(b.identifier(\\"text\\"), b.identifier(\\"text\\"), true)])), b.property(b.identifier(\\"tags\\"), b.arrayExpression([]))])]), b.identifier(\\"finally\\")), [b.arrowFunctionExpression([], b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(false)]))]))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"toast\\"), b.identifier(\\"promise\\")), [b.identifier(\\"promise\\"), b.objectExpression([b.property(b.identifier(\\"pending\\"), b.literal(\\"Salvando dados...\\")), b.property(b.identifier(\\"success\\"), b.literal(\\"Os dados foram salvos!\\")), b.property(b.identifier(\\"error\\"), b.literal(\\"Não foi possível salvar a atualização\\"))])]))])))]), b.returnStatement(b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"h-screen px-4 py-8 max-w-xl m-auto\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"bg-white border rounded py-6\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 text-lg\\"))]), b.literal(\\"Editar \\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"label\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"p-4 flex flex-col gap-4\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Nome\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"input\\"), b.objectExpression([b.property(b.identifier(\\"type\\"), b.literal(\\"text\\")), b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"name\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setName\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))])))])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Descrição\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"textarea\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"text\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setText\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))]))), b.property(b.identifier(\\"rows\\"), b.literal(10))])])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 flex items-center gap-3\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"grow text-sm text-slate-500\\"))]), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"moment\\"), [b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"created_at\\"))]), b.identifier(\\"fromNow\\")), [])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"a\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-default pl-1\\")), b.property(b.identifier(\\"href\\"), b.identifier(\\"goBackUrl\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.identifier(\\"BiChevronLeft\\"), b.objectExpression([b.property(b.identifier(\\"size\\"), b.literal(24))])]), b.literal(\\" Voltar\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"button\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-primary\\")), b.property(b.identifier(\\"onClick\\"), b.identifier(\\"handleClick\\")), b.property(b.identifier(\\"disabled\\"), b.identifier(\\"saving\\"))]), b.literal(\\"Salvar alterações\\")])])])]))])))])))])"`;

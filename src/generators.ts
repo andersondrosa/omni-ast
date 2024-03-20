@@ -1,7 +1,7 @@
 import * as Types from "./types";
 import { BaseNode } from "./types";
 import { generate } from "./JsonGenerate";
-import { arrowFunctionExpression, identifier } from "./builders";
+import * as builder from "./builders";
 
 const comma = ", ";
 
@@ -88,8 +88,13 @@ export const ContinueStatement = () => {
 export const ExpressionStatement = (node: Types.ExpressionStatement) => {
   return serialize(node.expression);
 };
+
 export const EmptyStatement = (node: Types.EmptyStatement) => {
   return ";";
+};
+
+export const DoWhileStatement = (node: Types.DoWhileStatement) => {
+  return `do ${serialize(node.body)} while (${serialize(node.test)})`;
 };
 
 export const ForInStatement = (node: Types.ForInStatement) => {
@@ -139,7 +144,9 @@ export const JsonExpression = (node) => {
 };
 
 export const Literal = (node) => {
-  return typeof node.value == "string" ? node.raw : String(node.value);
+  return typeof node.value == "string" || node.bigint
+    ? node.raw
+    : String(node.value);
 };
 
 export const LogicalExpression = (node: Types.LogicalExpression) => {
@@ -238,7 +245,7 @@ export const UnaryExpression = (node: Types.UnaryExpression) => {
 };
 
 export const UpdateExpression = (node: Types.UpdateExpression) => {
-  return node.prefix
+  return node.prefix == true
     ? node.operator + serialize(node.argument)
     : serialize(node.argument) + node.operator;
 };
@@ -253,7 +260,7 @@ export const VariableDeclarator = (node: Types.VariableDeclarator) => {
 };
 
 export const WhileStatement = (node: Types.WhileStatement) => {
-  return `while (${serialize(node.test)}) { ${serialize(node.body)} }`;
+  return `while (${serialize(node.test)}) ${serialize(node.body)}`;
 };
 
 const nodes = {
@@ -300,9 +307,10 @@ const nodes = {
   VariableDeclaration,
   VariableDeclarator,
   WhileStatement,
+  DoWhileStatement,
 };
 
-export const buildersGenerate = (prefix) => {
+export const buildersGenerate = (prefix = "b") => {
   //
   function TextWrapper(text) {
     this.text = text;
@@ -311,6 +319,7 @@ export const buildersGenerate = (prefix) => {
   const build = (node: BaseNode, parent?: BaseNode) => {
     if (typeof node != "object") {
       if (typeof node === "string") return `"${node}"`;
+      if (typeof node == "bigint") return `${node}n`;
       return String(node);
     }
     if (!node) return "null";
@@ -324,6 +333,11 @@ export const buildersGenerate = (prefix) => {
       return builders[node.type](node, parent);
     throw Error("Unknown type: " + node.type);
   };
+
+  const buildFunction = (node: BaseNode) => `(${prefix}) => ${build(node)}`;
+
+  const evaluate = (generatedFunction: string) =>
+    eval(generatedFunction)(builder);
 
   const helper = (parent: Types.Node, name: string, ...params) => {
     const args = [];
@@ -382,6 +396,8 @@ export const buildersGenerate = (prefix) => {
       helper(n, "conditionalExpression", n.test, n.consequent, n.alternate),
     ContinueStatement: (n: Types.ContinueStatement, parent: Node) =>
       helper(n, "continueStatement", n.label),
+    DoWhileStatement: (n: Types.DoWhileStatement, parent: Node) =>
+      helper(n, "doWhileStatement", n.body, n.test),
     EmptyStatement: (n, parent: Node) => helper(n, "emptyStatement"),
     ExpressionStatement: (n: Types.ExpressionStatement, parent: Node) =>
       helper(n, "expressionStatement", n.expression),
@@ -415,7 +431,11 @@ export const buildersGenerate = (prefix) => {
       helper(n, "ifStatement", n.test, n.consequent, n.alternate),
     JsonExpression: (n: Types.JsonExpression, parent: Node) =>
       helper(n, "jsonExpression", JSON.stringify(n.body)),
-    Literal: (n, parent: Node) => helper(n, "literal", n.value),
+    Literal: (n: Types.Literal, parent: Node) => {
+      if (n.hasOwnProperty("bigint") && n["bigint"])
+        return helper(n, "literal", n.value);
+      return helper(n, "literal", n.value);
+    },
     LogicalExpression: (n: Types.LogicalExpression, parent: Node) =>
       helper(n, "logicalExpression", n.operator, n.left, n.right),
     MemberExpression: (n: Types.MemberExpression, parent: Node) =>
@@ -424,8 +444,8 @@ export const buildersGenerate = (prefix) => {
         "memberExpression",
         n.object,
         n.property,
-        n.computed || false,
-        n.optional || false
+        n.computed || undefined,
+        n.optional || undefined
       ),
     NewExpression: (n: Types.NewExpression, parent: Node) =>
       helper(n, "newExpression", n.callee, n.arguments),
@@ -438,16 +458,11 @@ export const buildersGenerate = (prefix) => {
       n: Types.Property,
       parent: Types.ObjectExpression | Types.ObjectPattern
     ) => {
-      if (parent.type === "ObjectPattern")
-        return helper(
-          n,
-          "assignmentProperty",
-          n.key,
-          n.value,
-          n.shorthand || undefined
-        );
+      if (parent.type === "ObjectPattern") {
+        return helper(n, "assignmentProperty", n.key, n.value, n.shorthand);
+      }
       if (parent.type === "ObjectExpression")
-        return helper(n, "property", n.key, n.value);
+        return helper(n, "property", n.key, n.value, n.shorthand);
     },
     ReturnStatement: (n: Types.ReturnStatement, parent: Node) =>
       helper(n, "returnStatement", n.argument),
@@ -455,13 +470,20 @@ export const buildersGenerate = (prefix) => {
       helper(n, "switchCase", n.test, n.consequent),
     SwitchStatement: (n: Types.SwitchStatement, parent: Node) =>
       helper(n, "switchStatement", n.discriminant, n.cases),
-    TemplateElement: (n: Types.TemplateElement, parent: Node) =>
-      helper(
+    TemplateElement: (n: Types.TemplateElement, parent: Node) => {
+      if (n.tail == true)
+        return helper(
+          n,
+          "templateElement",
+          new TextWrapper(JSON.stringify(n.value)),
+          true
+        );
+      return helper(
         n,
         "templateElement",
-        new TextWrapper(JSON.stringify(n.value)),
-        n.tail || undefined
-      ),
+        new TextWrapper(JSON.stringify(n.value))
+      );
+    },
     TemplateLiteral: (n: Types.TemplateLiteral, parent: Node) =>
       helper(n, "templateLiteral", n.quasis, n.expressions),
     ThrowStatement: (n: Types.ThrowStatement, parent: Node) =>
@@ -471,7 +493,9 @@ export const buildersGenerate = (prefix) => {
     UnaryExpression: (n: Types.UnaryExpression, parent: Node) =>
       helper(n, "unaryExpression", n.operator, n.argument),
     UpdateExpression: (n: Types.UpdateExpression, parent: Node) =>
-      helper(n, "updateExpression", n.operator, n.argument, n.prefix),
+      n.prefix == true
+        ? helper(n, "updateExpression", n.operator, n.argument, true)
+        : helper(n, "updateExpression", n.operator, n.argument),
     VariableDeclaration: (n: Types.VariableDeclaration, parent: Node) =>
       helper(n, "variableDeclaration", n.kind, n.declarations),
     VariableDeclarator: (n: Types.VariableDeclarator, parent: Node) =>
@@ -480,5 +504,5 @@ export const buildersGenerate = (prefix) => {
       helper(n, "whileStatement", n.test, n.body),
   };
 
-  return { build, builders };
+  return { build, buildFunction, evaluate, builders };
 };

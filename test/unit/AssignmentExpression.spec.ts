@@ -1,11 +1,9 @@
 import { cleanAST, parseOmniAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../dist";
+import { serialize } from "../../src";
 import { tokenizer } from "../utils/tokenizer";
 
 import { acornParse } from "../utils/acornParse";
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 describe("AssignmentExpression", () => {
   //
@@ -22,12 +20,11 @@ describe("AssignmentExpression", () => {
     expect(assignmentExpression.right.value).toBe(2);
   });
 
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = "value = object.method(foo.baz, baz)";
 
     const AST = cleanAST(acornParse(script)).body[0].expression;
-    dir(parseOmniAST(AST));
 
     const omniAST = {
       type: "AssignmentExpression",
@@ -39,28 +36,24 @@ describe("AssignmentExpression", () => {
           type: "MemberExpression",
           object: { type: "Identifier", name: "object" },
           property: { type: "Identifier", name: "method" },
-          computed: false,
-          optional: false,
         },
         arguments: [
           {
             type: "MemberExpression",
             object: { type: "Identifier", name: "foo" },
             property: { type: "Identifier", name: "baz" },
-            computed: false,
-            optional: false,
           },
           { type: "Identifier", name: "baz" },
         ],
-        optional: false,
       },
     };
 
-    const code = `${serialize(omniAST)}`;
+    const omniCode = `${serialize(omniAST)}`;
 
-    dir(script);
-    dir(code);
+    expect(tokenizer(script)).toMatchObject(tokenizer(omniCode));
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    const code = `${serialize(AST)}`;
+
+    expect(tokenizer(code)).toMatchObject(tokenizer(code));
   });
 });

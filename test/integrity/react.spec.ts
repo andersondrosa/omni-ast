@@ -1,11 +1,9 @@
 import { acornParse } from "../utils/acornParse";
 import { cleanAST, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
-import { lint } from "../utils/eslint";
 import fs from "fs";
 import { buildersGenerate } from "../../src/generators";
 import * as b from "../../src/builders";
-import { parseAST } from "../../src/utils";
 
 
 
@@ -14,13 +12,11 @@ describe("Test all expressions", () => {
   //
   it("Should works", async () => {
     //
-    const script = fs.readFileSync(__dirname + "/example.js").toString();
+    const script = fs.readFileSync(__dirname + "/react.js").toString();
 
     expect(script).toMatchSnapshot();
 
     const AST = cleanAST(acornParse(script));
-
-    console.log(AST.body[1]);
 
     expect(AST).toMatchSnapshot();
 
@@ -41,6 +37,8 @@ describe("Test all expressions", () => {
     expect(AST).toMatchObject(generatedAST);
 
     const generatedCode2 = serialize(generatedAST);
+
+    // console.log(generatedCode2);
 
     expect(generatedCode).toEqual(generatedCode2);
   });

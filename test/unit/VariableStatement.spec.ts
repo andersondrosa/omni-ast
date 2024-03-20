@@ -1,24 +1,16 @@
-import { builder, serialize } from "../../dist";
+import { builder as b, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
-
-const {
-  callExpression,
-  identifier,
-  memberExpression,
-  variableDeclaration,
-  variableDeclarator,
-} = builder;
-
-const defaultExpression = variableDeclarator(
-  identifier("foo"),
-  callExpression(memberExpression(identifier("alpha"), identifier("fn1")), [
-    memberExpression(identifier("bar"), identifier("baz")),
-    identifier("foo"),
-  ])
+const defaultExpression = b.variableDeclarator(
+  b.identifier("foo"),
+  b.callExpression(
+    b.memberExpression(b.identifier("alpha"), b.identifier("fn1")),
+    [
+      b.memberExpression(b.identifier("bar"), b.identifier("baz")),
+      b.identifier("foo"),
+    ]
+  )
 );
 
 describe("VariableStatement", () => {
@@ -27,12 +19,9 @@ describe("VariableStatement", () => {
     //
     const script = "const foo = alpha.fn1(bar.baz, foo)";
 
-    const ast = variableDeclaration("const", [defaultExpression]);
+    const ast = b.variableDeclaration("const", [defaultExpression]);
 
     const code = serialize(ast);
-
-    dir(script);
-    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -41,12 +30,9 @@ describe("VariableStatement", () => {
     //
     const script = "let foo = alpha.fn1(bar.baz, foo)";
 
-    const ast = variableDeclaration("let", [defaultExpression]);
+    const ast = b.variableDeclaration("let", [defaultExpression]);
 
     const code = serialize(ast);
-
-    dir(script);
-    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });

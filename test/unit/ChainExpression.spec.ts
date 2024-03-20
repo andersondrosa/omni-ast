@@ -1,10 +1,7 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../dist";
-import { cleanAST, parseOmniAST } from "../../src/utils";
+import { builder, serialize } from "../../src";
+import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-
-const log = false;
-const dir = (x) => log && console.dir(x, { depth: 12 });
 
 const {
   assignmentExpression,
@@ -16,12 +13,11 @@ const {
 
 describe("ChainExpression", () => {
   //
-  it("Should Works", () => {
+  it("Should works", () => {
     //
     const script = 'value = base.foo?.bar?.[optional]["strict"]';
 
     const AST = cleanAST(acornParse(script)).body[0].expression;
-    dir(parseOmniAST(AST));
 
     const omniAST = assignmentExpression(
       "=",
@@ -46,9 +42,6 @@ describe("ChainExpression", () => {
     );
 
     const code = `${serialize(omniAST)}`;
-
-    dir(script);
-    dir(code);
 
     expect(script).toMatchObject(code);
   });
