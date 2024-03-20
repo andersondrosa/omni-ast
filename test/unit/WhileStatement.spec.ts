@@ -13,7 +13,6 @@ describe("WhileStatement", () => {
 
     const AST = cleanAST(acornParse(script));
 
-    console.dir(AST, { depth: 12 });
     const code = serialize(AST);
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));

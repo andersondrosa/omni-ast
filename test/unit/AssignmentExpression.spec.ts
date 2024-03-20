@@ -1,59 +1,48 @@
-import { cleanAST, parseOmniAST } from "../../src/utils";
-import { describe, expect, it } from "vitest";
-import { serialize } from "../../src";
-import { tokenizer } from "../utils/tokenizer";
-
 import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../src";
+import { cleanAST } from "../../src/utils";
+import { describe, expect, it } from "vitest";
+import { tokenizer } from "../utils/tokenizer";
+import { buildersGenerate } from "../../src/generators";
 
 describe("AssignmentExpression", () => {
   //
-  it("should handle simple assignment", () => {
-    const input = "a = 2;";
-    const ast = acornParse(input);
-    const assignmentExpression = ast.body[0].expression;
-
-    expect(assignmentExpression.type).toBe("AssignmentExpression");
-    expect(assignmentExpression.operator).toBe("=");
-    expect(assignmentExpression.left.type).toBe("Identifier");
-    expect(assignmentExpression.left.name).toBe("a");
-    expect(assignmentExpression.right.type).toBe("Literal");
-    expect(assignmentExpression.right.value).toBe(2);
-  });
-
   it("Should works", () => {
     //
     const script = "value = object.method(foo.baz, baz)";
 
-    const AST = cleanAST(acornParse(script)).body[0].expression;
+    const AST = cleanAST(acornParse(script).body[0]);
 
-    const omniAST = {
-      type: "AssignmentExpression",
-      operator: "=",
-      left: { type: "Identifier", name: "value" },
-      right: {
-        type: "CallExpression",
-        callee: {
-          type: "MemberExpression",
-          object: { type: "Identifier", name: "object" },
-          property: { type: "Identifier", name: "method" },
-        },
-        arguments: [
-          {
-            type: "MemberExpression",
-            object: { type: "Identifier", name: "foo" },
-            property: { type: "Identifier", name: "baz" },
-          },
-          { type: "Identifier", name: "baz" },
-        ],
-      },
-    };
+    const code = serialize(AST);
 
-    const omniCode = `${serialize(omniAST)}`;
+    expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(omniCode));
+    const { buildFunction, evaluate } = buildersGenerate();
 
-    const code = `${serialize(AST)}`;
+    const generatedFunction = buildFunction(AST);
 
-    expect(tokenizer(code)).toMatchObject(tokenizer(code));
+    expect(generatedFunction).toEqual(
+      `(b) => b.expressionStatement(
+        b.assignmentExpression(
+          "=", 
+          b.identifier("value"), 
+          b.callExpression(
+            b.memberExpression(b.identifier("object"), b.identifier("method")), 
+            [
+              b.memberExpression(b.identifier("foo"), b.identifier("baz")), 
+              b.identifier("baz")
+            ]
+          )
+        )
+      )`.replace(/\n\s+/g, "")
+    );
+
+    const evaluatedAST = evaluate(generatedFunction);
+
+    expect(evaluatedAST).toMatchObject(AST);
+
+    const evaluatedCode = serialize(evaluatedAST);
+
+    expect(evaluatedCode).toMatchObject(code);
   });
 });
