@@ -1,14 +1,9 @@
+import * as b from "../../src/builders";
+import fs from "fs";
 import { acornParse } from "../utils/acornParse";
+import { buildersGenerate } from "../../src/generators";
 import { cleanAST, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
-import { lint } from "../utils/eslint";
-import fs from "fs";
-import { buildersGenerate } from "../../src/generators";
-import * as b from "../../src/builders";
-import { parseAST } from "../../src/utils";
-
-
-
 
 describe("Test all expressions", () => {
   //

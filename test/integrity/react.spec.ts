@@ -1,12 +1,9 @@
+import * as b from "../../src/builders";
+import fs from "fs";
 import { acornParse } from "../utils/acornParse";
+import { buildersGenerate } from "../../src/generators";
 import { cleanAST, serialize } from "../../src";
 import { describe, expect, it } from "vitest";
-import fs from "fs";
-import { buildersGenerate } from "../../src/generators";
-import * as b from "../../src/builders";
-
-
-
 
 describe("Test all expressions", () => {
   //
@@ -37,8 +34,6 @@ describe("Test all expressions", () => {
     expect(AST).toMatchObject(generatedAST);
 
     const generatedCode2 = serialize(generatedAST);
-
-    // console.log(generatedCode2);
 
     expect(generatedCode).toEqual(generatedCode2);
   });
