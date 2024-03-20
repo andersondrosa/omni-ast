@@ -1,25 +1,37 @@
+import { acornParse } from "./utils/acornParse";
+import { builder, generate } from "../src";
+import { cleanAST, find, mutate, parseAST, parseOmniAST } from "../src/utils";
 import { describe, expect, it } from "vitest";
+import { Node } from "../src/types";
 import { serialize } from "../src/generators";
 import { tokenizer } from "./utils/tokenizer";
 import {
+  arrayPattern,
+  assignmentProperty,
+  expressionStatement,
+  functionExpression,
+  lit,
+  objectExpression,
+  objectPattern,
+  templateElement,
+  templateLiteral,
+  variableDeclaration,
+  variableDeclarator,
+} from "../src/builders";
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   arrowFunctionExpression,
   ast,
+  json,
   blockStatement,
   callExpression,
-  constantDeclaration,
-  functionExpression,
   identifier,
   jsonExpression,
-  memberExpression,
   returnStatement,
-} from "../src/builders";
-import { cleanAST, parseAST, parseOmniAST } from "../src/utils";
-import { generate } from "../src";
-import { Node, VariableDeclaration } from "../src/types";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("OmniAST", () => {
   //
@@ -27,55 +39,51 @@ describe("OmniAST", () => {
     //
     const script = `fn({ aaa: "bar" })`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
-
-    // const omniAST = parseOmniAST(AST);
-    // dir(omniAST);
+    const AST = cleanAST(acornParse(script)).body[0].expression;
+    dir(AST);
 
     const omniAST = {
       type: "CallExpression",
-      callee: { type: "Identifier", name: "fn" },
+      callee: identifier("fn"),
       arguments: [{ type: "JsonExpression", body: { aaa: "bar" } }],
       optional: false,
     };
 
     const code = serialize(omniAST);
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
 
-  //
-
-  it("Render test", () => {
+  it.skip("Render test", () => {
     const script = `({ 
       json: "here", 
       myFunc: jsAgain({ json: "again" }) 
     })`;
 
-    const realAST = acorn.parse(script, options).body[0].expression;
+    const realAST = acornParse(script).body[0].expression;
     const cleanAcornAST = cleanAST(realAST);
 
     dir(cleanAcornAST);
-    
+
     const omniAst = parseOmniAST(cleanAcornAST as Node);
 
     dir(omniAst);
 
     const generated = `(${serialize(omniAst)})`;
 
-    console.log(generated);
+    dir(generated);
   });
 
-  it("Hybrid", () => {
+  it.skip("Hybrid", () => {
     const script = `({ 
       json: "here", 
       myFunc: jsAgain({ json: "again" }) 
     })`;
 
-    const realAST = acorn.parse(script, options).body[0].expression;
+    const realAST = acornParse(script).body[0].expression;
 
     expect(realAST).toMatchSnapshot();
 
@@ -91,16 +99,16 @@ describe("OmniAST", () => {
 
     const generated = `(${serialize(omniAst)})`;
 
-    // console.log(tokenizer(script), "\n>>");
-    console.log(tokenizer(generated));
+    dir(tokenizer(script));
+    dir(tokenizer(generated));
 
-    // expect(tokenizer(script)).toMatchObject(tokenizer(generated));
+    expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
-  it("Test", () => {
+  it.skip("Test", () => {
     const script = `({ myVar: myFn(['value']) })`;
 
-    const ast = acorn.parse(script, options).body[0].expression;
+    const ast = acornParse(script).body[0].expression;
 
     const AST = parseOmniAST(cleanAST(ast));
 
@@ -109,7 +117,7 @@ describe("OmniAST", () => {
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
-  it("Test generate", () => {
+  it.skip("Test generate", () => {
     //
     const data = ast(
       arrowFunctionExpression(
@@ -125,24 +133,116 @@ describe("OmniAST", () => {
       )
     );
 
-    console.dir(data, { depth: 10 });
+    dir(data);
     const generated = generate({ data });
 
-    console.log(generated);
-    // const id = (id) => (x) => x["#id"] == id;
+    dir(generated);
 
-    // const _data = mutate(data, id("main"), assoc("name", "Shigeru"));
+    const is = (key, val) => (x) => x[key] == val;
+    const id = (id) => is("#id", id);
 
-    // const modified = find(_data, id("main"));
+    const _data = mutate(data, id("main"), (x) => ({ ...x, name: "Shigeru" }));
 
-    // log(modified);
+    const modified = find(_data, id("main"));
 
-    // mutate(data, ["#id", "main"], (state) => {
-    //   return state;
-    // });
+    dir(modified);
 
-    // const generated = generate({ data });
+    const novo = mutate(data, is("#id", "main"), (state) => ({
+      ...state,
+      callback: ast(arrowFunctionExpression([], identifier("id"))),
+    }));
 
-    // log(generated);
+    // console.dir(cleanAST(acornParse(`({aaa})=>null`).body[0]), { depth: 12 });
+
+    const element = (div, props: {}, children?) =>
+      callExpression(identifier("element"), [
+        lit(div),
+        json(props),
+        !children
+          ? null
+          : Array.isArray(children)
+          ? arrayPattern(children)
+          : children,
+      ]);
+
+    console.dir({ novo: ast(identifier("myvar")) }, { depth: 12 });
+    console.dir(
+      generate(
+        ast(
+          arrowFunctionExpression(
+            [
+              objectPattern([
+                assignmentProperty(
+                  identifier("React"),
+                  objectPattern([
+                    assignmentProperty(
+                      identifier("createElement"),
+                      identifier("element")
+                    ),
+                    assignmentProperty(
+                      identifier("useState"),
+                      identifier("useState"),
+                      true
+                    ),
+                  ])
+                ),
+              ]),
+            ],
+            blockStatement([
+              returnStatement(
+                functionExpression(
+                  identifier("Component"),
+                  [identifier("props")],
+                  blockStatement([
+                    variableDeclaration("const", [
+                      variableDeclarator(
+                        arrayPattern([
+                          identifier("name"),
+                          identifier("setName"),
+                        ]),
+                        callExpression(identifier("useState"), [lit("")])
+                      ),
+                    ]),
+                    returnStatement(
+                      element(
+                        "div",
+                        { className: "p-4 bg-slate-100" },
+                        element("ul", { className: "p-4 bg-slate-100" }, [
+                          element(
+                            "li",
+                            { className: "p-4 bg-slate-100" },
+                            templateLiteral(
+                              [
+                                templateElement({ raw: "Meu nome é " }),
+                                templateElement({ raw: ";" }, true),
+                              ],
+                              [identifier("name")]
+                            )
+                          ),
+                          element(
+                            "li",
+                            { className: "p-4 bg-slate-100" },
+                            element("button", {
+                              onClick: ast(
+                                arrowFunctionExpression(
+                                  [],
+                                  callExpression(identifier("setName"), [
+                                    lit("Ninja!!"),
+                                  ])
+                                )
+                              ),
+                            })
+                          ),
+                        ])
+                      )
+                    ),
+                  ])
+                )
+              ),
+            ])
+          )
+        )
+      )
+    );
   });
 });

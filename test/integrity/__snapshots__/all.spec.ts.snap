@@ -1,0 +1,1305 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Test all expressions > Should Works 1`] = `
+"let foo = 42;
+const bar = \\"Hello World\\";
+function add(a, b) {
+  return a + b;
+}
+if (foo > 10) {
+  console.log(bar);
+} else {
+  console.log(\\"foo is less than or equal to 10\\");
+}
+for (let i = 0; i < 5; i++) {
+  console.log(\`Loop index: \${i}\`);
+}
+while (foo < 45) {
+  console.log(\\"foo is less than 45\\");
+  foo++;
+}
+try {
+  nonExistentFunction();
+} catch (error) {
+  console.error(\\"An error occurred\\");
+} finally {
+  console.log(\\"Cleanup can go here\\");
+}
+const obj = {
+  key: \\"value\\",
+  method: function () {
+    console.log(\\"method called\\");
+  },
+};
+const date = new Date();
+console.log(date.getFullYear());
+let negation = -foo;
+let sum = foo + 5;
+let logical = foo > 5 && foo < 50;
+const arrowFunc = (x) => x * 2;
+const arr = [1, 2, 3, arrowFunc(4)];
+const { key: keyValue } = obj;
+const [firstElement] = arr;
+foo = 100;
+for (const value of arr) {
+  console.log(value);
+}
+for (const key in obj) {
+  if (Object.hasOwnProperty.call(obj, key)) {
+    const element = obj[key];
+    console.log(element);
+  }
+}
+switch (foo) {
+  case 100:
+    console.log(\\"foo is 100\\");
+    break;
+  default:
+    console.log(\\"default case\\");
+}
+async function fetchData() {
+  const data = await fetch(\\"https://example.com\\");
+  return data.json();
+}
+console.log(add(3, 4));
+console.log(obj?.method?.());
+const isFooLarge = foo > 100 ? \\"Large\\" : \\"Small\\";
+console.log(\`foo is \${isFooLarge}\`);
+"
+`;
+
+exports[`Test all expressions > Should Works 2`] = `
+{
+  "body": [
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "foo",
+            "type": "Identifier",
+          },
+          "init": {
+            "raw": "42",
+            "type": "Literal",
+            "value": 42,
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "bar",
+            "type": "Identifier",
+          },
+          "init": {
+            "raw": "\\"Hello World\\"",
+            "type": "Literal",
+            "value": "Hello World",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "body": {
+        "body": [
+          {
+            "argument": {
+              "left": {
+                "name": "a",
+                "type": "Identifier",
+              },
+              "operator": "+",
+              "right": {
+                "name": "b",
+                "type": "Identifier",
+              },
+              "type": "BinaryExpression",
+            },
+            "type": "ReturnStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "id": {
+        "name": "add",
+        "type": "Identifier",
+      },
+      "params": [
+        {
+          "name": "a",
+          "type": "Identifier",
+        },
+        {
+          "name": "b",
+          "type": "Identifier",
+        },
+      ],
+      "type": "FunctionDeclaration",
+    },
+    {
+      "alternate": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "raw": "\\"foo is less than or equal to 10\\"",
+                  "type": "Literal",
+                  "value": "foo is less than or equal to 10",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "consequent": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "name": "bar",
+                  "type": "Identifier",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "test": {
+        "left": {
+          "name": "foo",
+          "type": "Identifier",
+        },
+        "operator": ">",
+        "right": {
+          "raw": "10",
+          "type": "Literal",
+          "value": 10,
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "IfStatement",
+    },
+    {
+      "body": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "expressions": [
+                    {
+                      "name": "i",
+                      "type": "Identifier",
+                    },
+                  ],
+                  "quasis": [
+                    {
+                      "tail": false,
+                      "type": "TemplateElement",
+                      "value": {
+                        "cooked": "Loop index: ",
+                        "raw": "Loop index: ",
+                      },
+                    },
+                    {
+                      "tail": true,
+                      "type": "TemplateElement",
+                      "value": {
+                        "cooked": "",
+                        "raw": "",
+                      },
+                    },
+                  ],
+                  "type": "TemplateLiteral",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "init": {
+        "declarations": [
+          {
+            "id": {
+              "name": "i",
+              "type": "Identifier",
+            },
+            "init": {
+              "raw": "0",
+              "type": "Literal",
+              "value": 0,
+            },
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "let",
+        "type": "VariableDeclaration",
+      },
+      "test": {
+        "left": {
+          "name": "i",
+          "type": "Identifier",
+        },
+        "operator": "<",
+        "right": {
+          "raw": "5",
+          "type": "Literal",
+          "value": 5,
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "ForStatement",
+      "update": {
+        "argument": {
+          "name": "i",
+          "type": "Identifier",
+        },
+        "operator": "++",
+        "prefix": false,
+        "type": "UpdateExpression",
+      },
+    },
+    {
+      "body": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "raw": "\\"foo is less than 45\\"",
+                  "type": "Literal",
+                  "value": "foo is less than 45",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+          {
+            "expression": {
+              "argument": {
+                "name": "foo",
+                "type": "Identifier",
+              },
+              "operator": "++",
+              "prefix": false,
+              "type": "UpdateExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "test": {
+        "left": {
+          "name": "foo",
+          "type": "Identifier",
+        },
+        "operator": "<",
+        "right": {
+          "raw": "45",
+          "type": "Literal",
+          "value": 45,
+        },
+        "type": "BinaryExpression",
+      },
+      "type": "WhileStatement",
+    },
+    {
+      "block": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [],
+              "callee": {
+                "name": "nonExistentFunction",
+                "type": "Identifier",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "finalizer": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "raw": "\\"Cleanup can go here\\"",
+                  "type": "Literal",
+                  "value": "Cleanup can go here",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "handler": {
+        "body": {
+          "body": [
+            {
+              "expression": {
+                "arguments": [
+                  {
+                    "raw": "\\"An error occurred\\"",
+                    "type": "Literal",
+                    "value": "An error occurred",
+                  },
+                ],
+                "callee": {
+                  "object": {
+                    "name": "console",
+                    "type": "Identifier",
+                  },
+                  "property": {
+                    "name": "error",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "type": "CallExpression",
+              },
+              "type": "ExpressionStatement",
+            },
+          ],
+          "type": "BlockStatement",
+        },
+        "param": {
+          "name": "error",
+          "type": "Identifier",
+        },
+        "type": "CatchClause",
+      },
+      "type": "TryStatement",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "obj",
+            "type": "Identifier",
+          },
+          "init": {
+            "properties": [
+              {
+                "key": {
+                  "name": "key",
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "type": "Property",
+                "value": {
+                  "raw": "\\"value\\"",
+                  "type": "Literal",
+                  "value": "value",
+                },
+              },
+              {
+                "key": {
+                  "name": "method",
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "type": "Property",
+                "value": {
+                  "body": {
+                    "body": [
+                      {
+                        "expression": {
+                          "arguments": [
+                            {
+                              "raw": "\\"method called\\"",
+                              "type": "Literal",
+                              "value": "method called",
+                            },
+                          ],
+                          "callee": {
+                            "object": {
+                              "name": "console",
+                              "type": "Identifier",
+                            },
+                            "property": {
+                              "name": "log",
+                              "type": "Identifier",
+                            },
+                            "type": "MemberExpression",
+                          },
+                          "type": "CallExpression",
+                        },
+                        "type": "ExpressionStatement",
+                      },
+                    ],
+                    "type": "BlockStatement",
+                  },
+                  "expression": false,
+                  "params": [],
+                  "type": "FunctionExpression",
+                },
+              },
+            ],
+            "type": "ObjectExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "date",
+            "type": "Identifier",
+          },
+          "init": {
+            "arguments": [],
+            "callee": {
+              "name": "Date",
+              "type": "Identifier",
+            },
+            "type": "NewExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "expression": {
+        "arguments": [
+          {
+            "arguments": [],
+            "callee": {
+              "object": {
+                "name": "date",
+                "type": "Identifier",
+              },
+              "property": {
+                "name": "getFullYear",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            "type": "CallExpression",
+          },
+        ],
+        "callee": {
+          "object": {
+            "name": "console",
+            "type": "Identifier",
+          },
+          "property": {
+            "name": "log",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "negation",
+            "type": "Identifier",
+          },
+          "init": {
+            "argument": {
+              "name": "foo",
+              "type": "Identifier",
+            },
+            "operator": "-",
+            "prefix": true,
+            "type": "UnaryExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "sum",
+            "type": "Identifier",
+          },
+          "init": {
+            "left": {
+              "name": "foo",
+              "type": "Identifier",
+            },
+            "operator": "+",
+            "right": {
+              "raw": "5",
+              "type": "Literal",
+              "value": 5,
+            },
+            "type": "BinaryExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "logical",
+            "type": "Identifier",
+          },
+          "init": {
+            "left": {
+              "left": {
+                "name": "foo",
+                "type": "Identifier",
+              },
+              "operator": ">",
+              "right": {
+                "raw": "5",
+                "type": "Literal",
+                "value": 5,
+              },
+              "type": "BinaryExpression",
+            },
+            "operator": "&&",
+            "right": {
+              "left": {
+                "name": "foo",
+                "type": "Identifier",
+              },
+              "operator": "<",
+              "right": {
+                "raw": "50",
+                "type": "Literal",
+                "value": 50,
+              },
+              "type": "BinaryExpression",
+            },
+            "type": "LogicalExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "let",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "arrowFunc",
+            "type": "Identifier",
+          },
+          "init": {
+            "body": {
+              "left": {
+                "name": "x",
+                "type": "Identifier",
+              },
+              "operator": "*",
+              "right": {
+                "raw": "2",
+                "type": "Literal",
+                "value": 2,
+              },
+              "type": "BinaryExpression",
+            },
+            "expression": true,
+            "params": [
+              {
+                "name": "x",
+                "type": "Identifier",
+              },
+            ],
+            "type": "ArrowFunctionExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "arr",
+            "type": "Identifier",
+          },
+          "init": {
+            "elements": [
+              {
+                "raw": "1",
+                "type": "Literal",
+                "value": 1,
+              },
+              {
+                "raw": "2",
+                "type": "Literal",
+                "value": 2,
+              },
+              {
+                "raw": "3",
+                "type": "Literal",
+                "value": 3,
+              },
+              {
+                "arguments": [
+                  {
+                    "raw": "4",
+                    "type": "Literal",
+                    "value": 4,
+                  },
+                ],
+                "callee": {
+                  "name": "arrowFunc",
+                  "type": "Identifier",
+                },
+                "type": "CallExpression",
+              },
+            ],
+            "type": "ArrayExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "properties": [
+              {
+                "key": {
+                  "name": "key",
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "type": "Property",
+                "value": {
+                  "name": "keyValue",
+                  "type": "Identifier",
+                },
+              },
+            ],
+            "type": "ObjectPattern",
+          },
+          "init": {
+            "name": "obj",
+            "type": "Identifier",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "elements": [
+              {
+                "name": "firstElement",
+                "type": "Identifier",
+              },
+            ],
+            "type": "ArrayPattern",
+          },
+          "init": {
+            "name": "arr",
+            "type": "Identifier",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "expression": {
+        "left": {
+          "name": "foo",
+          "type": "Identifier",
+        },
+        "operator": "=",
+        "right": {
+          "raw": "100",
+          "type": "Literal",
+          "value": 100,
+        },
+        "type": "AssignmentExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+    {
+      "await": false,
+      "body": {
+        "body": [
+          {
+            "expression": {
+              "arguments": [
+                {
+                  "name": "value",
+                  "type": "Identifier",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "name": "console",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "log",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "left": {
+        "declarations": [
+          {
+            "id": {
+              "name": "value",
+              "type": "Identifier",
+            },
+            "init": null,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "type": "VariableDeclaration",
+      },
+      "right": {
+        "name": "arr",
+        "type": "Identifier",
+      },
+      "type": "ForOfStatement",
+    },
+    {
+      "body": {
+        "body": [
+          {
+            "alternate": null,
+            "consequent": {
+              "body": [
+                {
+                  "declarations": [
+                    {
+                      "id": {
+                        "name": "element",
+                        "type": "Identifier",
+                      },
+                      "init": {
+                        "computed": true,
+                        "object": {
+                          "name": "obj",
+                          "type": "Identifier",
+                        },
+                        "property": {
+                          "name": "key",
+                          "type": "Identifier",
+                        },
+                        "type": "MemberExpression",
+                      },
+                      "type": "VariableDeclarator",
+                    },
+                  ],
+                  "kind": "const",
+                  "type": "VariableDeclaration",
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "name": "element",
+                        "type": "Identifier",
+                      },
+                    ],
+                    "callee": {
+                      "object": {
+                        "name": "console",
+                        "type": "Identifier",
+                      },
+                      "property": {
+                        "name": "log",
+                        "type": "Identifier",
+                      },
+                      "type": "MemberExpression",
+                    },
+                    "type": "CallExpression",
+                  },
+                  "type": "ExpressionStatement",
+                },
+              ],
+              "type": "BlockStatement",
+            },
+            "test": {
+              "arguments": [
+                {
+                  "name": "obj",
+                  "type": "Identifier",
+                },
+                {
+                  "name": "key",
+                  "type": "Identifier",
+                },
+              ],
+              "callee": {
+                "object": {
+                  "object": {
+                    "name": "Object",
+                    "type": "Identifier",
+                  },
+                  "property": {
+                    "name": "hasOwnProperty",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "property": {
+                  "name": "call",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "IfStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "left": {
+        "declarations": [
+          {
+            "id": {
+              "name": "key",
+              "type": "Identifier",
+            },
+            "init": null,
+            "type": "VariableDeclarator",
+          },
+        ],
+        "kind": "const",
+        "type": "VariableDeclaration",
+      },
+      "right": {
+        "name": "obj",
+        "type": "Identifier",
+      },
+      "type": "ForInStatement",
+    },
+    {
+      "cases": [
+        {
+          "consequent": [
+            {
+              "expression": {
+                "arguments": [
+                  {
+                    "raw": "\\"foo is 100\\"",
+                    "type": "Literal",
+                    "value": "foo is 100",
+                  },
+                ],
+                "callee": {
+                  "object": {
+                    "name": "console",
+                    "type": "Identifier",
+                  },
+                  "property": {
+                    "name": "log",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "type": "CallExpression",
+              },
+              "type": "ExpressionStatement",
+            },
+            {
+              "type": "BreakStatement",
+            },
+          ],
+          "test": {
+            "raw": "100",
+            "type": "Literal",
+            "value": 100,
+          },
+          "type": "SwitchCase",
+        },
+        {
+          "consequent": [
+            {
+              "expression": {
+                "arguments": [
+                  {
+                    "raw": "\\"default case\\"",
+                    "type": "Literal",
+                    "value": "default case",
+                  },
+                ],
+                "callee": {
+                  "object": {
+                    "name": "console",
+                    "type": "Identifier",
+                  },
+                  "property": {
+                    "name": "log",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                "type": "CallExpression",
+              },
+              "type": "ExpressionStatement",
+            },
+          ],
+          "test": null,
+          "type": "SwitchCase",
+        },
+      ],
+      "discriminant": {
+        "name": "foo",
+        "type": "Identifier",
+      },
+      "type": "SwitchStatement",
+    },
+    {
+      "async": true,
+      "body": {
+        "body": [
+          {
+            "declarations": [
+              {
+                "id": {
+                  "name": "data",
+                  "type": "Identifier",
+                },
+                "init": {
+                  "argument": {
+                    "arguments": [
+                      {
+                        "raw": "\\"https://example.com\\"",
+                        "type": "Literal",
+                        "value": "https://example.com",
+                      },
+                    ],
+                    "callee": {
+                      "name": "fetch",
+                      "type": "Identifier",
+                    },
+                    "type": "CallExpression",
+                  },
+                  "type": "AwaitExpression",
+                },
+                "type": "VariableDeclarator",
+              },
+            ],
+            "kind": "const",
+            "type": "VariableDeclaration",
+          },
+          {
+            "argument": {
+              "arguments": [],
+              "callee": {
+                "object": {
+                  "name": "data",
+                  "type": "Identifier",
+                },
+                "property": {
+                  "name": "json",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "type": "CallExpression",
+            },
+            "type": "ReturnStatement",
+          },
+        ],
+        "type": "BlockStatement",
+      },
+      "expression": false,
+      "id": {
+        "name": "fetchData",
+        "type": "Identifier",
+      },
+      "params": [],
+      "type": "FunctionDeclaration",
+    },
+    {
+      "expression": {
+        "arguments": [
+          {
+            "arguments": [
+              {
+                "raw": "3",
+                "type": "Literal",
+                "value": 3,
+              },
+              {
+                "raw": "4",
+                "type": "Literal",
+                "value": 4,
+              },
+            ],
+            "callee": {
+              "name": "add",
+              "type": "Identifier",
+            },
+            "type": "CallExpression",
+          },
+        ],
+        "callee": {
+          "object": {
+            "name": "console",
+            "type": "Identifier",
+          },
+          "property": {
+            "name": "log",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+    {
+      "expression": {
+        "arguments": [
+          {
+            "expression": {
+              "arguments": [],
+              "callee": {
+                "object": {
+                  "name": "obj",
+                  "type": "Identifier",
+                },
+                "optional": true,
+                "property": {
+                  "name": "method",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              "optional": true,
+              "type": "CallExpression",
+            },
+            "type": "ChainExpression",
+          },
+        ],
+        "callee": {
+          "object": {
+            "name": "console",
+            "type": "Identifier",
+          },
+          "property": {
+            "name": "log",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+    {
+      "declarations": [
+        {
+          "id": {
+            "name": "isFooLarge",
+            "type": "Identifier",
+          },
+          "init": {
+            "alternate": {
+              "raw": "\\"Small\\"",
+              "type": "Literal",
+              "value": "Small",
+            },
+            "consequent": {
+              "raw": "\\"Large\\"",
+              "type": "Literal",
+              "value": "Large",
+            },
+            "test": {
+              "left": {
+                "name": "foo",
+                "type": "Identifier",
+              },
+              "operator": ">",
+              "right": {
+                "raw": "100",
+                "type": "Literal",
+                "value": 100,
+              },
+              "type": "BinaryExpression",
+            },
+            "type": "ConditionalExpression",
+          },
+          "type": "VariableDeclarator",
+        },
+      ],
+      "kind": "const",
+      "type": "VariableDeclaration",
+    },
+    {
+      "expression": {
+        "arguments": [
+          {
+            "expressions": [
+              {
+                "name": "isFooLarge",
+                "type": "Identifier",
+              },
+            ],
+            "quasis": [
+              {
+                "tail": false,
+                "type": "TemplateElement",
+                "value": {
+                  "cooked": "foo is ",
+                  "raw": "foo is ",
+                },
+              },
+              {
+                "tail": true,
+                "type": "TemplateElement",
+                "value": {
+                  "cooked": "",
+                  "raw": "",
+                },
+              },
+            ],
+            "type": "TemplateLiteral",
+          },
+        ],
+        "callee": {
+          "object": {
+            "name": "console",
+            "type": "Identifier",
+          },
+          "property": {
+            "name": "log",
+            "type": "Identifier",
+          },
+          "type": "MemberExpression",
+        },
+        "type": "CallExpression",
+      },
+      "type": "ExpressionStatement",
+    },
+  ],
+  "sourceType": "script",
+  "type": "Program",
+}
+`;
+
+exports[`Test all expressions > Should Works 3`] = `"let foo = 42; const bar = \\"Hello World\\"; function add(a, b) { return a + b; }; if (foo > 10) { console.log(bar); } else { console.log(\\"foo is less than or equal to 10\\"); }; for (let i = 0; i < 5; i++) { console.log(\`Loop index: \${i}\`); }; while (foo < 45) { { console.log(\\"foo is less than 45\\"); foo++; } }; try { nonExistentFunction(); } catch (error) { console.error(\\"An error occurred\\"); }finally { console.log(\\"Cleanup can go here\\"); }; const obj = { key: \\"value\\", method: function () { console.log(\\"method called\\"); } }; const date = new Date(); console.log(date.getFullYear()); let negation = -foo; let sum = foo + 5; let logical = foo > 5 && foo < 50; const arrowFunc = (x) => (x * 2); const arr = [1, 2, 3, arrowFunc(4)]; const { key: keyValue } = obj; const [firstElement] = arr; foo = 100; for (const value of arr) { console.log(value); }; for (const key in obj) { if (Object.hasOwnProperty.call(obj, key)) { const element = obj[key]; console.log(element); }; }; switch (foo) { case 100: console.log(\\"foo is 100\\"); break;  default: console.log(\\"default case\\"); }; async function fetchData() { const data = await fetch(\\"https://example.com\\"); return data.json(); }; console.log(add(3, 4)); console.log(obj?.method()); const isFooLarge = foo > 100 ? \\"Large\\" : \\"Small\\"; console.log(\`foo is \${isFooLarge}\`)"`;
+
+exports[`Test all expressions > Should Works 4`] = `"b.program([b.variableDeclaration(\\"let\\", [b.variableDeclarator(b.identifier(\\"foo\\"), b.literal(42))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"bar\\"), b.literal(\\"Hello World\\"))]), b.functionDeclaration(b.identifier(\\"add\\"), [b.identifier(\\"a\\"), b.identifier(\\"b\\")], b.blockStatement([b.returnStatement(b.binaryExpression(\\"+\\", b.identifier(\\"a\\"), b.identifier(\\"b\\")))])), b.ifStatement(b.binaryExpression(\\">\\", b.identifier(\\"foo\\"), b.literal(10)), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.identifier(\\"bar\\")]))]), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"foo is less than or equal to 10\\")]))])), b.forStatement(b.variableDeclaration(\\"let\\", [b.variableDeclarator(b.identifier(\\"i\\"), b.literal(0))]), b.binaryExpression(\\"<\\", b.identifier(\\"i\\"), b.literal(5)), b.updateExpression(\\"++\\", b.identifier(\\"i\\"), false), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.templateLiteral([b.templateElement({\\"raw\\":\\"Loop index: \\",\\"cooked\\":\\"Loop index: \\"}), b.templateElement({\\"raw\\":\\"\\",\\"cooked\\":\\"\\"}, true)], [b.identifier(\\"i\\")])]))])), b.whileStatement(b.binaryExpression(\\"<\\", b.identifier(\\"foo\\"), b.literal(45)), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"foo is less than 45\\")])), b.expressionStatement(b.updateExpression(\\"++\\", b.identifier(\\"foo\\"), false))])), b.tryStatement(b.blockStatement([b.expressionStatement(b.callExpression(b.identifier(\\"nonExistentFunction\\"), []))]), b.catchClause(b.identifier(\\"error\\"), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"error\\"), false, false), [b.literal(\\"An error occurred\\")]))])), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"Cleanup can go here\\")]))])), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"obj\\"), b.objectExpression([b.property(b.identifier(\\"key\\"), b.literal(\\"value\\")), b.property(b.identifier(\\"method\\"), b.functionExpression(null, [], b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"method called\\")]))])))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"date\\"), b.newExpression(b.identifier(\\"Date\\"), []))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.callExpression(b.memberExpression(b.identifier(\\"date\\"), b.identifier(\\"getFullYear\\"), false, false), [])])), b.variableDeclaration(\\"let\\", [b.variableDeclarator(b.identifier(\\"negation\\"), b.unaryExpression(\\"-\\", b.identifier(\\"foo\\")))]), b.variableDeclaration(\\"let\\", [b.variableDeclarator(b.identifier(\\"sum\\"), b.binaryExpression(\\"+\\", b.identifier(\\"foo\\"), b.literal(5)))]), b.variableDeclaration(\\"let\\", [b.variableDeclarator(b.identifier(\\"logical\\"), b.logicalExpression(\\"&&\\", b.binaryExpression(\\">\\", b.identifier(\\"foo\\"), b.literal(5)), b.binaryExpression(\\"<\\", b.identifier(\\"foo\\"), b.literal(50))))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"arrowFunc\\"), b.arrowFunctionExpression([b.identifier(\\"x\\")], b.binaryExpression(\\"*\\", b.identifier(\\"x\\"), b.literal(2))))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"arr\\"), b.arrayExpression([b.literal(1), b.literal(2), b.literal(3), b.callExpression(b.identifier(\\"arrowFunc\\"), [b.literal(4)])]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"key\\"), b.identifier(\\"keyValue\\"))]), b.identifier(\\"obj\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"firstElement\\")]), b.identifier(\\"arr\\"))]), b.expressionStatement(b.assignmentExpression(\\"=\\", b.identifier(\\"foo\\"), b.literal(100))), b.forOfStatement(b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"value\\"), null)]), b.identifier(\\"arr\\"), b.blockStatement([b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.identifier(\\"value\\")]))])), b.forInStatement(b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"key\\"), null)]), b.identifier(\\"obj\\"), b.blockStatement([b.ifStatement(b.callExpression(b.memberExpression(b.memberExpression(b.identifier(\\"Object\\"), b.identifier(\\"hasOwnProperty\\"), false, false), b.identifier(\\"call\\"), false, false), [b.identifier(\\"obj\\"), b.identifier(\\"key\\")]), b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"element\\"), b.memberExpression(b.identifier(\\"obj\\"), b.identifier(\\"key\\"), true, false))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.identifier(\\"element\\")]))]), null)])), b.switchStatement(b.identifier(\\"foo\\"), [b.switchCase(b.literal(100), [b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"foo is 100\\")])), b.breakStatement()]), b.switchCase(null, [b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.literal(\\"default case\\")]))])]), b.functionDeclaration(b.identifier(\\"fetchData\\"), [], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"data\\"), b.awaitExpression(b.callExpression(b.identifier(\\"fetch\\"), [b.literal(\\"https://example.com\\")])))]), b.returnStatement(b.callExpression(b.memberExpression(b.identifier(\\"data\\"), b.identifier(\\"json\\"), false, false), []))]), true), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.callExpression(b.identifier(\\"add\\"), [b.literal(3), b.literal(4)])])), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.chainExpression(b.callExpression(b.memberExpression(b.identifier(\\"obj\\"), b.identifier(\\"method\\"), false, true), [], true))])), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"isFooLarge\\"), b.conditionalExpression(b.binaryExpression(\\">\\", b.identifier(\\"foo\\"), b.literal(100)), b.literal(\\"Large\\"), b.literal(\\"Small\\")))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"console\\"), b.identifier(\\"log\\"), false, false), [b.templateLiteral([b.templateElement({\\"raw\\":\\"foo is \\",\\"cooked\\":\\"foo is \\"}), b.templateElement({\\"raw\\":\\"\\",\\"cooked\\":\\"\\"}, true)], [b.identifier(\\"isFooLarge\\")])]))])"`;

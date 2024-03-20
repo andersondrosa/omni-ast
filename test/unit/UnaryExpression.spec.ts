@@ -1,7 +1,14 @@
+import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../dist";
+import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
+import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   blockStatement,
   expressionStatement,
   callExpression,
@@ -14,18 +21,11 @@ import {
   updateExpression,
   jsonExpression,
   functionExpression,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const t = require("@babel/types");
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("UnaryExpression", () => {
   //
-  it("Should Works", () => {
+  it("Should Works", async () => {
     //
     const script = `{
       console.log(!isActive);
@@ -48,7 +48,7 @@ describe("UnaryExpression", () => {
       }();
     }`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0];
+    const AST = cleanAST(acornParse(script)).body[0];
     dir(AST);
 
     const ast = blockStatement([
@@ -162,26 +162,11 @@ describe("UnaryExpression", () => {
       ),
     ]);
 
-    // simpleTraverse(ast, {
-    //   pre: function (node, parent, prop, idx) {
-    //     console.log(
-    //       node.type +
-    //         (parent
-    //           ? " from parent " +
-    //             parent.type +
-    //             " via " +
-    //             prop +
-    //             (idx !== undefined ? "[" + idx + "]" : "")
-    //           : "")
-    //     );
-    //   },
-    // });
-
     const code = serialize(ast);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(await lint(tokenizer(script)));
+    dir(await lint(tokenizer(code)));
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(await lint(tokenizer(code))).toEqual(await lint(tokenizer(script)));
   });
 });

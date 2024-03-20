@@ -1,19 +1,18 @@
-import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
-import { tokenizer } from "../utils/tokenizer";
-import {
-  callExpression,
-  identifier,
-  memberExpression,
-  chainExpression,
-  lit,
-  assignmentExpression,
-} from "../../src/builders";
+import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../dist";
 import { cleanAST, parseOmniAST } from "../../src/utils";
+import { describe, expect, it } from "vitest";
 
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
+  assignmentExpression,
+  chainExpression,
+  identifier,
+  lit,
+  memberExpression,
+} = builder;
 
 describe("ChainExpression", () => {
   //
@@ -21,8 +20,8 @@ describe("ChainExpression", () => {
     //
     const script = 'value = base.foo?.bar?.[optional]["strict"]';
 
-    // const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
-    // dir(parseOmniAST(AST));
+    const AST = cleanAST(acornParse(script)).body[0].expression;
+    dir(parseOmniAST(AST));
 
     const omniAST = assignmentExpression(
       "=",
@@ -48,8 +47,8 @@ describe("ChainExpression", () => {
 
     const code = `${serialize(omniAST)}`;
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     expect(script).toMatchObject(code);
   });

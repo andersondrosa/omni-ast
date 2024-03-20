@@ -14,13 +14,9 @@ export function generate(node: JsonTypes) {
   const recursive = (value) => {
     //
     if (typeof value === "string") return `"${value}"`;
-
     if (typeof value != "object") return String(value);
-
     if (value === null) return "null";
-
     if (Array.isArray(value)) return `[${value.map(recursive).join(",")}]`;
-
     if (value.type == "#AST") return serialize(value.body);
 
     return `{ ${Object.entries(value)

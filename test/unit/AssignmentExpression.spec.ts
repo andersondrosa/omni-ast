@@ -1,26 +1,33 @@
-import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
-import { tokenizer } from "../utils/tokenizer";
-import {
-  callExpression,
-  identifier,
-  memberExpression,
-} from "../../src/builders";
 import { cleanAST, parseOmniAST } from "../../src/utils";
+import { describe, expect, it } from "vitest";
+import { serialize } from "../../dist";
+import { tokenizer } from "../utils/tokenizer";
 
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+import { acornParse } from "../utils/acornParse";
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
 
 describe("AssignmentExpression", () => {
   //
+  it("should handle simple assignment", () => {
+    const input = "a = 2;";
+    const ast = acornParse(input);
+    const assignmentExpression = ast.body[0].expression;
+
+    expect(assignmentExpression.type).toBe("AssignmentExpression");
+    expect(assignmentExpression.operator).toBe("=");
+    expect(assignmentExpression.left.type).toBe("Identifier");
+    expect(assignmentExpression.left.name).toBe("a");
+    expect(assignmentExpression.right.type).toBe("Literal");
+    expect(assignmentExpression.right.value).toBe(2);
+  });
+
   it("Should Works", () => {
     //
     const script = "value = object.method(foo.baz, baz)";
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0].expression;
-
-    // dir(parseOmniAST(AST));
+    const AST = cleanAST(acornParse(script)).body[0].expression;
+    dir(parseOmniAST(AST));
 
     const omniAST = {
       type: "AssignmentExpression",
@@ -51,8 +58,8 @@ describe("AssignmentExpression", () => {
 
     const code = `${serialize(omniAST)}`;
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });

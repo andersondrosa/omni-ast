@@ -17,8 +17,10 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@types/acorn": "^6.0.0",
     "@types/estree": "^1.0.5",
     "@types/node": "^20.11.24",
+    "@types/ramda": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "@vitejs/plugin-react": "^4.2.1",
@@ -28,17 +30,19 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "immer": "^10.0.4",
+    "js-beautify": "^1.15.1",
+    "ramda": "^0.29.1",
     "rollup": "^4.12.0",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
-    "vitest": "^0.30.1",
-    "@types/acorn": "^6.0.0",
-    "@types/ramda": "^0.29.11",
-    "immer": "^10.0.4",
-    "ramda": "^0.29.1"
+    "vitest": "^0.30.1"
   },
   "files": [
     "dist",
     "README.md"
-  ]
+  ],
+  "dependencies": {
+    "@types/eslint": "^8.56.6"
+  }
 }

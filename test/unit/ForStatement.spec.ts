@@ -1,9 +1,14 @@
+import { acornParse } from "../utils/acornParse";
+import { builder, cleanAST, serialize } from "../../dist";
 import { describe, expect, it } from "vitest";
-import { ExpressionStatement, serialize } from "../../src/generators";
+import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   blockStatement,
-  ifStatement,
   expressionStatement,
   callExpression,
   identifier,
@@ -15,50 +20,53 @@ import {
   updateExpression,
   forInStatement,
   memberExpression,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("ForStatement", () => {
   //
-  it("Should Works", () => {
+  it("Should Works", async () => {
     //
-    const script = `for (let i=0; i<10; i++) console.log("iteration:", i)`;
+    const script = `{
+      for (let i = 0; ((i < 10)); i++) { console.log("iteration:", i) }
+    }`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0];
+    const AST = cleanAST(acornParse(script)).body[0];
+    dir(AST);
 
-    // dir(AST);
-
-    const ast = forStatement(
-      variableDeclaration("let", [variableDeclarator(identifier("i"), lit(0))]),
-      binaryExpression("<", identifier("i"), lit(10)),
-      updateExpression("++", identifier("i")),
-      expressionStatement(
-        callExpression(identifier("console.log"), [
-          lit("iteration:"),
-          identifier("i"),
+    const ast = blockStatement([
+      forStatement(
+        variableDeclaration("let", [
+          variableDeclarator(identifier("i"), lit(0)),
+        ]),
+        binaryExpression("<", identifier("i"), lit(10)),
+        updateExpression("++", identifier("i")),
+        blockStatement([
+          expressionStatement(
+            callExpression(identifier("console.log"), [
+              lit("iteration:"),
+              identifier("i"),
+            ])
+          ),
         ])
-      )
-    );
+      ),
+    ]);
 
     const code = serialize(ast);
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(tokenizer(await lint(code))).toMatchObject(
+      tokenizer(await lint(script))
+    );
   });
 
   it("Should works with ForInStatement", () => {
     //
-    const script = ` for (const key in object) console.log(object[key])`;
+    const script = ` for (const key in object) console.log(object[key]);`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0];
-
-    // dir(AST);
+    const AST = cleanAST(acornParse(script)).body[0];
+    dir(AST);
 
     const ast = forInStatement(
       variableDeclaration("const", [variableDeclarator(identifier("key"))]),
@@ -72,9 +80,9 @@ describe("ForStatement", () => {
 
     const code = serialize(ast);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(lint(code)).toMatchObject(lint(script));
   });
 });

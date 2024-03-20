@@ -1,44 +1,53 @@
+import { acornParse } from "../utils/acornParse";
+import { builder, cleanAST, serialize } from "../../dist";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   awaitExpression,
   blockStatement,
-  callExpression,
   functionExpression,
   identifier,
-  memberExpression,
+  objectPattern,
   returnStatement,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+  arrayPattern,
+  assignmentProperty,
+} = builder;
 
 describe("FunctionExpression", () => {
   //
   it("Should Works", () => {
     //
-    const script = `async function main() { 
-      return await value;
+    const script = `async function main(foo, { bar: [ baz ] }) { 
+      return await baz;
     }`;
 
-    // const AST = cleanAST(acorn.parse(script, options)).body[0];
-    // dir(AST);
+    const AST = cleanAST(acornParse(script)).body[0];
+    dir(AST);
 
     const code = serialize(
       functionExpression(
         identifier("main"),
-        [],
-        blockStatement([returnStatement(awaitExpression(identifier("value")))]),
+        [
+          identifier("foo"),
+          objectPattern([
+            assignmentProperty(
+              identifier("bar"),
+              arrayPattern([identifier("baz")])
+            ),
+          ]),
+        ],
+        blockStatement([returnStatement(awaitExpression(identifier("baz")))]),
         true
       )
     );
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
-    expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(tokenizer(code)).toMatchObject(tokenizer(script));
   });
 });

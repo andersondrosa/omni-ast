@@ -1,24 +1,24 @@
+import { acornParse } from "../utils/acornParse";
+import { builder } from "../../dist";
+import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-import { ExpressionStatement, serialize } from "../../src/generators";
+import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   blockStatement,
-  ifStatement,
   expressionStatement,
   callExpression,
   identifier,
   lit,
-  binaryExpression,
   tryStatement,
   memberExpression,
   catchStatement,
   throwStatement,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("TryStatement", () => {
   //
@@ -30,8 +30,7 @@ describe("TryStatement", () => {
       console.dir(e.message);
     }`;
 
-    // const AST = cleanAST(acorn.parse(script, options)).body[0];
-    // dir(AST);
+    dir(cleanAST(acornParse(script)).body[0]);
 
     const AST = tryStatement(
       blockStatement([
@@ -57,8 +56,8 @@ describe("TryStatement", () => {
 
     const code = serialize(AST);
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -71,8 +70,7 @@ describe("TryStatement", () => {
       console.dir(e.message);
     }`;
 
-    // const AST = cleanAST(acorn.parse(script, options)).body[0];
-    // dir(AST);
+    dir(cleanAST(acornParse(script)).body[0]);
 
     const throwError = throwStatement(
       callExpression(identifier("Error"), [lit("Test message")])
@@ -95,8 +93,8 @@ describe("TryStatement", () => {
 
     const code = serialize(AST);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
 

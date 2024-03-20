@@ -18,9 +18,9 @@ export default {
   },
   plugins: [
     terser({
-      format: { comments: false, beautify: true },
-      compress: false, // Desativa a compressão do código
-      mangle: false, // Evita mudança nos nomes das variáveis
+      format: { comments: false, beautify: false },
+      compress: true, // Desativa a compressão do código
+      mangle: true, // Evita mudança nos nomes das variáveis
     }),
     resolve({
       preferBuiltins: false, // Prefere scripts embutidos

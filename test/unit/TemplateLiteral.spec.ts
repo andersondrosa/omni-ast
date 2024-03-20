@@ -1,17 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
-import { tokenizer } from "../utils/tokenizer";
-import {
-  identifier,
-  assignmentExpression,
-  templateLiteral,
-  templateElement,
-} from "../../src/builders";
+import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../dist";
 import { cleanAST, parseAST, parseOmniAST } from "../../src/utils";
+import { describe, expect, it } from "vitest";
 
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const { identifier, assignmentExpression, templateLiteral, templateElement } =
+  builder;
 
 describe("TemplateLiteral", () => {
   //
@@ -19,7 +15,7 @@ describe("TemplateLiteral", () => {
     //
     const script = "text = `start${foo}middle${`${bar}/${baz}`}\\end`";
 
-    const acornAst = cleanAST(acorn.parse(script, options)).body[0];
+    const acornAst = cleanAST(acornParse(script)).body[0];
     const omniAst = parseOmniAST(acornAst);
 
     expect(acornAst).toMatchObject(parseAST(omniAst));
@@ -49,8 +45,8 @@ describe("TemplateLiteral", () => {
 
     const code = `${serialize(omniAST)}`;
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     expect(script).toMatchObject(code);
   });

@@ -1,21 +1,21 @@
+import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../dist";
+import { cleanAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   expressionStatement,
   callExpression,
   identifier,
   lit,
-  binaryExpression,
   switchStatement,
   switchCase,
   assignmentExpression,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("SwitchStatement", () => {
   //
@@ -29,7 +29,7 @@ describe("SwitchStatement", () => {
         bar = "baz";
     }`;
 
-    // dir(cleanAST(acorn.parse(script, options)).body[0]);
+    dir(cleanAST(acornParse(script)).body[0]);
 
     const ast = switchStatement(lit(true), [
       switchCase(lit(true), [
@@ -50,9 +50,9 @@ describe("SwitchStatement", () => {
     // dir(ast);
     const code = serialize(ast);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
-    // expect(tokenizer(script)).toMatchObject(tokenizer(code));
+    expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
 });

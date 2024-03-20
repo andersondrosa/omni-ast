@@ -1,6 +1,7 @@
 import * as Types from "./types";
-import { generate } from "./JsonGenerate";
 import { BaseNode } from "./types";
+import { generate } from "./JsonGenerate";
+import { arrowFunctionExpression, identifier } from "./builders";
 
 const comma = ", ";
 
@@ -11,15 +12,29 @@ export const serialize = (node: BaseNode) => {
   throw Error("Unknown type: " + node.type);
 };
 
+const paren = (str: string) => `(${str})`;
+
 export const ArrayExpression = (node: Types.ArrayExpression) => {
+  return `[${node.elements.map(serialize).join(comma)}]`;
+};
+
+export const ArrayPattern = (node: Types.ArrayPattern) => {
   return `[${node.elements.map(serialize).join(comma)}]`;
 };
 
 export const ArrowFunctionExpression = (
   node: Types.ArrowFunctionExpression
 ) => {
-  const params = node.params.map(Identifier as any).join(comma);
-  return `${node.async ? "async " : ""}(${params}) => ${serialize(node.body)}`;
+  const params = node.params.map(serialize).join(comma);
+  const body =
+    node.body.type == "AssignmentExpression" ||
+    node.body.type == "BinaryExpression" ||
+    node.body.type == "ObjectExpression" ||
+    node.body.type == "JsonExpression" ||
+    false
+      ? paren(serialize(node.body))
+      : serialize(node.body);
+  return `${node.async ? "async " : ""}(${params}) => ${body}`;
 };
 
 export const AssignmentExpression = (node: Types.AssignmentExpression) => {
@@ -39,8 +54,11 @@ export const BinaryExpression = (node: Types.BinaryExpression) => {
 };
 
 export const BlockStatement = (node: Types.BlockStatement) => {
-  const statements = node.body.map(serialize).join("; ");
-  return `{ ${statements}; }`;
+  const statements = node.body
+    .map(serialize)
+    .filter((x) => x != ";")
+    .join("; ");
+  return `{ ${statements ? statements + "; " : ""}}`;
 };
 
 export const BreakStatement = () => {
@@ -70,11 +88,8 @@ export const ContinueStatement = () => {
 export const ExpressionStatement = (node: Types.ExpressionStatement) => {
   return serialize(node.expression);
 };
-
-export const ForExpression = (node: Types.ForStatement) => {
-  return `for (${serialize(node.init)}; ${serialize(node.test)}; ${serialize(
-    node.update
-  )}) ${node.body}`;
+export const EmptyStatement = (node: Types.EmptyStatement) => {
+  return ";";
 };
 
 export const ForInStatement = (node: Types.ForInStatement) => {
@@ -95,8 +110,15 @@ export const ForStatement = (node: Types.ForStatement) => {
   )}) ${serialize(node.body)}`;
 };
 
-export const FunctionExpression = (node: Types.FunctionExpression) => {
+export const FunctionDeclaration = (node: Types.FunctionExpression) => {
   const params = node.params.map(Identifier as any).join(comma);
+  return `${node.async ? "async " : ""}function ${serialize(
+    node.id
+  )}(${params}) ${serialize(node.body)}`;
+};
+
+export const FunctionExpression = (node: Types.FunctionExpression) => {
+  const params = node.params.map(serialize).join(comma);
   return `${node.async ? "async " : ""}function ${serialize(
     node.id
   )}(${params}) ${serialize(node.body)}`;
@@ -107,7 +129,7 @@ export const Identifier = (node: Types.Identifier) => {
 };
 
 export const IfStatement = (node: Types.IfStatement) => {
-  return `if (${serialize(node.test)}) ${serialize(node.consequent)} ${
+  return `if (${serialize(node.test)}) ${serialize(node.consequent)}${
     node.alternate ? ` else ${serialize(node.alternate)}` : ""
   }`;
 };
@@ -141,7 +163,16 @@ export const NewExpression = (node: Types.NewExpression) => {
 
 export const ObjectExpression = (node: Types.ObjectExpression) => {
   const code = node.properties.map(serialize).join(", ");
+  return code.length == 0 ? "{}" : `{ ${code} }`;
+};
+
+export const ObjectPattern = (node: Types.ObjectPattern) => {
+  const code = node.properties.map(serialize).join(", ");
   return code.length == 0 ? "{ }" : `{ ${code} }`;
+};
+
+export const Program = (node: Types.Program) => {
+  return node.body.map(serialize).join("; ");
 };
 
 export const Property = (node: Types.Property) => {
@@ -227,42 +258,227 @@ export const WhileStatement = (node: Types.WhileStatement) => {
 
 const nodes = {
   serialize,
-  JsonExpression,
-  AssignmentExpression,
-  ExpressionStatement,
-  Identifier,
-  Literal,
-  BlockStatement,
-  ArrowFunctionExpression,
-  FunctionExpression,
-  CallExpression,
-  MemberExpression,
   ArrayExpression,
-  VariableDeclaration,
-  VariableDeclarator,
-  ReturnStatement,
-  IfStatement,
-  BreakStatement,
-  ContinueStatement,
-  ThrowStatement,
-  TryStatement,
-  ForStatement,
-  ForInStatement,
-  ForOfStatement,
-  WhileStatement,
-  SwitchStatement,
-  SwitchCase,
+  ArrayPattern,
+  ArrowFunctionExpression,
+  AssignmentExpression,
+  AwaitExpression,
   BinaryExpression,
-  UpdateExpression,
-  ForExpression,
+  BlockStatement,
+  BreakStatement,
+  CallExpression,
   ChainExpression,
   ConditionalExpression,
+  ContinueStatement,
+  EmptyStatement,
+  ExpressionStatement,
+  ForInStatement,
+  ForOfStatement,
+  ForStatement,
+  FunctionDeclaration,
+  FunctionExpression,
+  Identifier,
+  IfStatement,
+  JsonExpression,
+  Literal,
   LogicalExpression,
-  UnaryExpression,
-  ObjectExpression,
-  Property,
-  AwaitExpression,
+  MemberExpression,
   NewExpression,
-  TemplateLiteral,
+  ObjectExpression,
+  ObjectPattern,
+  Program,
+  Property,
+  ReturnStatement,
+  SwitchCase,
+  SwitchStatement,
   TemplateElement,
+  TemplateLiteral,
+  ThrowStatement,
+  TryStatement,
+  UnaryExpression,
+  UpdateExpression,
+  VariableDeclaration,
+  VariableDeclarator,
+  WhileStatement,
+};
+
+export const buildersGenerate = (prefix) => {
+  //
+  function TextWrapper(text) {
+    this.text = text;
+  }
+
+  const build = (node: BaseNode, parent?: BaseNode) => {
+    if (typeof node != "object") {
+      if (typeof node === "string") return `"${node}"`;
+      return String(node);
+    }
+    if (!node) return "null";
+    if (Array.isArray(node))
+      return `[${node.map((n) => build(n, parent)).join(", ")}]`;
+    if (!node.type) {
+      if (node instanceof TextWrapper) return node["text"];
+      return `${prefix}.jsonExpression(${JSON.stringify(node)})`;
+    }
+    if (builders.hasOwnProperty(node.type))
+      return builders[node.type](node, parent);
+    throw Error("Unknown type: " + node.type);
+  };
+
+  const helper = (parent: Types.Node, name: string, ...params) => {
+    const args = [];
+    let has = false;
+    params.reverse().forEach((x) => {
+      if (x === undefined) {
+        if (has) args.push("null");
+      } else {
+        args.push(build(x, parent));
+        has = true;
+      }
+    });
+    return `${prefix}.${name}(${args.reverse().join(", ")})`;
+  };
+
+  const builders = {
+    ArrayExpression: (n: Types.ArrayExpression, parent: Node) =>
+      helper(n, "arrayExpression", n.elements),
+    ArrayPattern: (n: Types.ArrayPattern, parent: Node) =>
+      helper(n, "arrayPattern", n.elements),
+    ArrowFunctionExpression: (n: Types.ArrowFunctionExpression, parent: Node) =>
+      helper(
+        n,
+        "arrowFunctionExpression",
+        n.params,
+        n.body,
+        n.async || undefined
+      ),
+    AssignmentExpression: (n: Types.AssignmentExpression, parent: Node) =>
+      helper(n, "assignmentExpression", n.operator, n.left, n.right),
+    AssignmentProperty: (n: Types.AssignmentProperty, parent: Node) =>
+      helper(n, "assignmentProperty", n.key, n.value, n.shorthand),
+    AwaitExpression: (n: Types.AwaitExpression, parent: Node) =>
+      helper(n, "awaitExpression", n.argument),
+    BinaryExpression: (n: Types.BinaryExpression, parent: Node) =>
+      helper(n, "binaryExpression", n.operator, n.left, n.right),
+    BlockStatement: (n: Types.BlockStatement, parent: Node) =>
+      helper(n, "blockStatement", n.body),
+    BreakStatement: (n: Types.BreakStatement, parent: Node) => {
+      if (n.label) return helper(n, "breakStatement", n.label);
+      return helper(n, "breakStatement");
+    },
+    CallExpression: (n: Types.SimpleCallExpression, parent: Node) =>
+      helper(
+        n,
+        "callExpression",
+        n.callee,
+        n.arguments,
+        n.optional || undefined
+      ),
+    CatchClause: (n: Types.CatchClause, parent: Node) =>
+      helper(n, "catchClause", n.param, n.body),
+    ChainExpression: (n: Types.ChainExpression, parent: Node) =>
+      helper(n, "chainExpression", n.expression),
+    ConditionalExpression: (n: Types.ConditionalExpression, parent: Node) =>
+      helper(n, "conditionalExpression", n.test, n.consequent, n.alternate),
+    ContinueStatement: (n: Types.ContinueStatement, parent: Node) =>
+      helper(n, "continueStatement", n.label),
+    EmptyStatement: (n, parent: Node) => helper(n, "emptyStatement"),
+    ExpressionStatement: (n: Types.ExpressionStatement, parent: Node) =>
+      helper(n, "expressionStatement", n.expression),
+    ForInStatement: (n: Types.ForInStatement, parent: Node) =>
+      helper(n, "forInStatement", n.left, n.right, n.body),
+    ForOfStatement: (n: Types.ForOfStatement, parent: Node) =>
+      helper(n, "forOfStatement", n.left, n.right, n.body),
+    ForStatement: (n: Types.ForStatement, parent: Node) =>
+      helper(n, "forStatement", n.init, n.test, n.update, n.body),
+    FunctionDeclaration: (n: Types.FunctionDeclaration, parent: Node) =>
+      helper(
+        n,
+        "functionDeclaration",
+        n.id,
+        n.params,
+        n.body,
+        n.async || undefined
+      ),
+    FunctionExpression: (n: Types.FunctionExpression, parent: Node) =>
+      helper(
+        n,
+        "functionExpression",
+        n.id || undefined,
+        n.params,
+        n.body,
+        n.async || undefined
+      ),
+    Identifier: (n: Types.Identifier, parent: Node) =>
+      helper(n, "identifier", n.name),
+    IfStatement: (n: Types.IfStatement, parent: Node) =>
+      helper(n, "ifStatement", n.test, n.consequent, n.alternate),
+    JsonExpression: (n: Types.JsonExpression, parent: Node) =>
+      helper(n, "jsonExpression", JSON.stringify(n.body)),
+    Literal: (n, parent: Node) => helper(n, "literal", n.value),
+    LogicalExpression: (n: Types.LogicalExpression, parent: Node) =>
+      helper(n, "logicalExpression", n.operator, n.left, n.right),
+    MemberExpression: (n: Types.MemberExpression, parent: Node) =>
+      helper(
+        n,
+        "memberExpression",
+        n.object,
+        n.property,
+        n.computed || false,
+        n.optional || false
+      ),
+    NewExpression: (n: Types.NewExpression, parent: Node) =>
+      helper(n, "newExpression", n.callee, n.arguments),
+    ObjectExpression: (n: Types.ObjectExpression, parent: Node) =>
+      helper(n, "objectExpression", n.properties),
+    ObjectPattern: (n: Types.ObjectPattern, parent: Node) =>
+      helper(n, "objectPattern", n.properties),
+    Program: (n: Types.Program, parent: Node) => helper(n, "program", n.body),
+    Property: (
+      n: Types.Property,
+      parent: Types.ObjectExpression | Types.ObjectPattern
+    ) => {
+      if (parent.type === "ObjectPattern")
+        return helper(
+          n,
+          "assignmentProperty",
+          n.key,
+          n.value,
+          n.shorthand || undefined
+        );
+      if (parent.type === "ObjectExpression")
+        return helper(n, "property", n.key, n.value);
+    },
+    ReturnStatement: (n: Types.ReturnStatement, parent: Node) =>
+      helper(n, "returnStatement", n.argument),
+    SwitchCase: (n: Types.SwitchCase, parent: Node) =>
+      helper(n, "switchCase", n.test, n.consequent),
+    SwitchStatement: (n: Types.SwitchStatement, parent: Node) =>
+      helper(n, "switchStatement", n.discriminant, n.cases),
+    TemplateElement: (n: Types.TemplateElement, parent: Node) =>
+      helper(
+        n,
+        "templateElement",
+        new TextWrapper(JSON.stringify(n.value)),
+        n.tail || undefined
+      ),
+    TemplateLiteral: (n: Types.TemplateLiteral, parent: Node) =>
+      helper(n, "templateLiteral", n.quasis, n.expressions),
+    ThrowStatement: (n: Types.ThrowStatement, parent: Node) =>
+      helper(n, "throwStatement", n.argument),
+    TryStatement: (n: Types.TryStatement, parent: Node) =>
+      helper(n, "tryStatement", n.block, n.handler, n.finalizer),
+    UnaryExpression: (n: Types.UnaryExpression, parent: Node) =>
+      helper(n, "unaryExpression", n.operator, n.argument),
+    UpdateExpression: (n: Types.UpdateExpression, parent: Node) =>
+      helper(n, "updateExpression", n.operator, n.argument, n.prefix),
+    VariableDeclaration: (n: Types.VariableDeclaration, parent: Node) =>
+      helper(n, "variableDeclaration", n.kind, n.declarations),
+    VariableDeclarator: (n: Types.VariableDeclarator, parent: Node) =>
+      helper(n, "variableDeclarator", n.id, n.init),
+    WhileStatement: (n: Types.WhileStatement, parent: Node) =>
+      helper(n, "whileStatement", n.test, n.body),
+  };
+
+  return { build, builders };
 };

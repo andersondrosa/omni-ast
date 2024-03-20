@@ -1,7 +1,12 @@
+import { acornParse } from "../utils/acornParse";
+import { builder, cleanAST, serialize } from "../../dist";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   blockStatement,
   ifStatement,
   expressionStatement,
@@ -12,12 +17,7 @@ import {
   variableDeclaration,
   variableDeclarator,
   conditionalExpression,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 describe("IfStatement", () => {
   //
@@ -36,8 +36,8 @@ describe("IfStatement", () => {
 
     const code = serialize(ast);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -46,7 +46,7 @@ describe("IfStatement", () => {
     //
     const script = `const fooIsBar = foo == "bar" ? true : false`;
 
-    const AST = cleanAST(acorn.parse(script, options)).body[0];
+    const AST = cleanAST(acornParse(script)).body[0];
     dir(AST);
 
     const ast = variableDeclaration("const", [
@@ -62,8 +62,8 @@ describe("IfStatement", () => {
 
     const code = serialize(ast);
 
-    console.log(script, "\n>>");
-    console.log(code);
+    dir(script);
+    dir(code);
 
     const result = eval(
       `(() => { const foo = "bar"; ${code}; return fooIsBar; })()`

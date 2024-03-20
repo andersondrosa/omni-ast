@@ -71,6 +71,7 @@ export function find(node, match) {
 export function mutate(object, match, modifier) {
   const findAndModify = (object) => {
     if (isObject(object)) {
+      console.log(typeof match);
       if (match(object)) return modifier(object);
       const newObj = {};
       let changed = false;
@@ -92,7 +93,8 @@ export function mutate(object, match, modifier) {
   return findAndModify(object);
 }
 
-const denied = ["start", "end"];
+const denied = ["start", "end", "generator"];
+const hideIfNull = ["async", "id", "label", "computed", "optional"];
 
 export function cleanAST(ast): any {
   if (typeof ast != "object" || ast === null) return ast;
@@ -100,6 +102,10 @@ export function cleanAST(ast): any {
   for (const key in ast) {
     if (denied.includes(key)) continue;
     const value = ast[key];
+    if (hideIfNull.includes(key)) {
+      // console.log(">>", key, value);
+      if (!value) continue;
+    }
     if (typeof value != "object") {
       res[key] = value;
       continue;

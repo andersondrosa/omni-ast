@@ -1,18 +1,17 @@
+import { builder, serialize } from "../../dist";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
-import {
+
+const log = false;
+const dir = (x) => log && console.dir(x, { depth: 12 });
+
+const {
   callExpression,
   identifier,
   memberExpression,
   variableDeclaration,
   variableDeclarator,
-} from "../../src/builders";
-import { cleanAST } from "../../src/utils";
-
-const acorn = require("acorn");
-const options = { ecmaVersion: "latest" };
-const dir = (x) => console.dir(x, { depth: 12 });
+} = builder;
 
 const defaultExpression = variableDeclarator(
   identifier("foo"),
@@ -32,8 +31,8 @@ describe("VariableStatement", () => {
 
     const code = serialize(ast);
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -46,8 +45,8 @@ describe("VariableStatement", () => {
 
     const code = serialize(ast);
 
-    // console.log(script, "\n>>");
-    // console.log(code);
+    dir(script);
+    dir(code);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
