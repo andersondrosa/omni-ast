@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
+import { builders, generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 
@@ -9,7 +9,7 @@ const {
   binaryExpression,
   variableDeclaration,
   variableDeclarator,
-} = builder;
+} = builders;
 
 describe("LogicalExpression", () => {
   //
@@ -33,7 +33,7 @@ describe("LogicalExpression", () => {
       }),
     ]);
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     const result = eval(
       `(() => { const foo = "bar"; ${code}; return fooIsBar; })()`

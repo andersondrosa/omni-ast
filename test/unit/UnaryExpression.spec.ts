@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize, generate } from "../../src";
+import { generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { lint } from "../utils/eslint";
@@ -26,7 +26,7 @@ describe("UnaryExpression", () => {
 
     console.log(generatedBuilders);
 
-    const code = serialize(evaluate(generatedBuilders));
+    const code = generate(evaluate(generatedBuilders));
 
     expect(await lint(tokenizer(code))).toEqual(await lint(tokenizer(script)));
   });

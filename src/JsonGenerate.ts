@@ -1,15 +1,15 @@
-import { parseOmniAST } from "./utils";
-import { serialize } from "./generators";
+import { simplify } from "./utils";
+import { generate } from "./generators";
 import { JsonTypes, ObjectExpression, Property } from "./types";
 
 export const jsonParseValue = (node: any) => {
   if (node.type == "Literal") return node.value;
   if (node.type == "ArrayExpression") return node.elements.map(jsonParseValue);
   if (node.type == "ObjectExpression") return ObjectExpressionToJSON(node);
-  return { type: "#AST", body: parseOmniAST(node) };
+  return { type: "#AST", body: simplify(node) };
 };
 
-export function generate(node: JsonTypes) {
+export function serialize(node: JsonTypes) {
   //
   const recursive = (value) => {
     //
@@ -17,7 +17,7 @@ export function generate(node: JsonTypes) {
     if (typeof value != "object") return String(value);
     if (value === null) return "null";
     if (Array.isArray(value)) return `[${value.map(recursive).join(",")}]`;
-    if (value.type == "#AST") return serialize(value.body);
+    if (value.type == "#AST") return generate(value.body);
 
     return `{ ${Object.entries(value)
       .map(([key, val]) => `${key}: ${recursive(val)}`)
@@ -29,7 +29,7 @@ export function generate(node: JsonTypes) {
 
 export function ObjectExpressionToJSON(expr: ObjectExpression) {
   const entries = expr.properties.map((prop: Property) => {
-    const key = serialize(prop.key)
+    const key = generate(prop.key)
     if (prop.computed) return [`[${key}]`, jsonParseValue(prop.value)];
     return [key, jsonParseValue(prop.value)];
   });

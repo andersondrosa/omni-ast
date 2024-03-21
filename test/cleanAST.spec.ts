@@ -1,5 +1,5 @@
 import { acornParse } from "./utils/acornParse";
-import { cleanAST, serialize } from "../src";
+import { cleanAST, generate } from "../src";
 import { buildersGenerate } from "../src/generators";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "./utils/tokenizer";

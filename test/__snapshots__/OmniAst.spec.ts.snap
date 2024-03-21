@@ -2,7 +2,7 @@
 
 exports[`OmniAST > Hybrid 1`] = `
 Node {
-  "end": 72,
+  "end": 76,
   "properties": [
     Node {
       "computed": false,
@@ -28,10 +28,10 @@ Node {
     },
     Node {
       "computed": false,
-      "end": 65,
+      "end": 69,
       "key": Node {
-        "end": 37,
-        "name": "myFunc",
+        "end": 41,
+        "name": "myFunction",
         "start": 31,
         "type": "Identifier",
       },
@@ -43,44 +43,44 @@ Node {
       "value": Node {
         "arguments": [
           Node {
-            "end": 64,
+            "end": 68,
             "properties": [
               Node {
                 "computed": false,
-                "end": 62,
+                "end": 66,
                 "key": Node {
-                  "end": 53,
+                  "end": 57,
                   "name": "json",
-                  "start": 49,
+                  "start": 53,
                   "type": "Identifier",
                 },
                 "kind": "init",
                 "method": false,
                 "shorthand": false,
-                "start": 49,
+                "start": 53,
                 "type": "Property",
                 "value": Node {
-                  "end": 62,
+                  "end": 66,
                   "raw": "\\"again\\"",
-                  "start": 55,
+                  "start": 59,
                   "type": "Literal",
                   "value": "again",
                 },
               },
             ],
-            "start": 47,
+            "start": 51,
             "type": "ObjectExpression",
           },
         ],
         "callee": Node {
-          "end": 46,
+          "end": 50,
           "name": "jsAgain",
-          "start": 39,
+          "start": 43,
           "type": "Identifier",
         },
-        "end": 65,
+        "end": 69,
         "optional": false,
-        "start": 39,
+        "start": 43,
         "type": "CallExpression",
       },
     },
@@ -108,7 +108,7 @@ exports[`OmniAST > Hybrid 2`] = `
     },
     {
       "key": {
-        "name": "myFunc",
+        "name": "myFunction",
         "type": "Identifier",
       },
       "kind": "init",

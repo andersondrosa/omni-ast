@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
+import { builder, generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
@@ -15,7 +15,7 @@ describe("DoWhileStatement", () => {
 
     const AST = cleanAST(acornParse(script).body[0]);
 
-    const code = serialize(AST);
+    const code = generate(AST);
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
@@ -54,7 +54,7 @@ describe("DoWhileStatement", () => {
 
     expect(evaluatedAST).toMatchObject(AST);
 
-    const evaluatedCode = serialize(evaluatedAST);
+    const evaluatedCode = generate(evaluatedAST);
 
     expect(evaluatedCode).toMatchObject(code);
   });

@@ -1,6 +1,17 @@
-import * as builder from "./builders";
+import * as builders from "./builders";
 import { cleanAST } from "./CleanAST";
-import { generate } from "./JsonGenerate";
-import { serialize } from "./generators";
+import { serialize } from "./JsonGenerate";
+import { generate } from "./generators";
+import { ast, json } from "../src/builders";
+import { parseAST, simplify } from "./utils";
 
-export { generate, serialize, cleanAST, builder };
+export {
+  serialize,
+  generate,
+  cleanAST,
+  simplify,
+  parseAST,
+  builders,
+  ast,
+  json,
+};

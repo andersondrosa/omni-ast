@@ -1,4 +1,4 @@
-import { builder as b, serialize } from "../../src";
+import { builders as b, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
@@ -21,7 +21,7 @@ describe("VariableStatement", () => {
 
     const ast = b.variableDeclaration("const", [defaultExpression]);
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -32,7 +32,7 @@ describe("VariableStatement", () => {
 
     const ast = b.variableDeclaration("let", [defaultExpression]);
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });

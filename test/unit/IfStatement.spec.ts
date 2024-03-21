@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, cleanAST, serialize } from "../../src";
+import { builders, cleanAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
@@ -14,7 +14,7 @@ const {
   variableDeclaration,
   variableDeclarator,
   conditionalExpression,
-} = builder;
+} = builders;
 
 describe("IfStatement", () => {
   //
@@ -31,7 +31,7 @@ describe("IfStatement", () => {
       ])
     );
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -53,7 +53,7 @@ describe("IfStatement", () => {
       ),
     ]);
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     const result = eval(
       `(() => { const foo = "bar"; ${code}; return fooIsBar; })()`

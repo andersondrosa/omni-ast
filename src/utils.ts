@@ -1,7 +1,7 @@
 import { ObjectExpressionToJSON } from "./JsonGenerate";
 import { Node, Property } from "../src/types";
-import { lit, objectExpression } from "./builders";
-import { serialize } from "./generators";
+import { identifier, lit, objectExpression } from "./builders";
+import { generate } from "./generators";
 
 type Options = { pre?; post?; skipProperty? };
 
@@ -93,11 +93,11 @@ export function mutate(object, match, modifier) {
   return findAndModify(object);
 }
 
-export function parseOmniAST(ast: Node) {
+export function simplify(ast: Node) {
   //
   if (typeof ast != "object" || ast === null) return ast;
 
-  if (Array.isArray(ast)) return ast.map(parseOmniAST);
+  if (Array.isArray(ast)) return ast.map(simplify);
 
   if (!ast.hasOwnProperty("type")) return ast;
 
@@ -109,7 +109,7 @@ export function parseOmniAST(ast: Node) {
 
   const omniAst = {};
   for (const key in ast) {
-    omniAst[key] = parseOmniAST(ast[key]);
+    omniAst[key] = simplify(ast[key]);
   }
   return omniAst;
 }
@@ -147,7 +147,7 @@ export function parseAST(value: Node) {
       const row = value[key];
       properties.push({
         type: "Property",
-        key: lit(key),
+        key: identifier(key),
         value:
           typeof row != "object" || row === null ? lit(row) : jsonToAST(row),
         computed: false,
@@ -164,7 +164,7 @@ export function parseAST(value: Node) {
 
 export const tryGenerate = (ast) => {
   try {
-    return serialize(ast);
+    return generate(ast);
   } catch (e) {
     return `[${e.message}]`;
   }

@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
+import { builders, generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 
@@ -9,7 +9,7 @@ const {
   identifier,
   lit,
   memberExpression,
-} = builder;
+} = builders;
 
 describe("ChainExpression", () => {
   //
@@ -41,7 +41,7 @@ describe("ChainExpression", () => {
       )
     );
 
-    const code = `${serialize(omniAST)}`;
+    const code = `${generate(omniAST)}`;
 
     expect(script).toMatchObject(code);
   });

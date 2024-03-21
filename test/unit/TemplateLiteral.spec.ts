@@ -1,10 +1,10 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, cleanAST, serialize } from "../../src";
-import { parseAST, parseOmniAST } from "../../src/utils";
+import { builders, cleanAST, generate } from "../../src";
+import { parseAST, simplify } from "../../src/utils";
 import { describe, expect, it } from "vitest";
 
 const { identifier, assignmentExpression, templateLiteral, templateElement } =
-  builder;
+  builders;
 
 describe("TemplateLiteral", () => {
   //
@@ -13,7 +13,7 @@ describe("TemplateLiteral", () => {
     const script = "text = `start${foo}middle${`${bar}/${baz}`}\\end`";
 
     const acornAst = cleanAST(acornParse(script)).body[0];
-    const omniAst = parseOmniAST(acornAst);
+    const omniAst = simplify(acornAst);
 
     expect(acornAst).toMatchObject(parseAST(omniAst));
 
@@ -40,7 +40,7 @@ describe("TemplateLiteral", () => {
       )
     );
 
-    const code = `${serialize(omniAST)}`;
+    const code = `${generate(omniAST)}`;
 
     expect(script).toMatchObject(code);
   });

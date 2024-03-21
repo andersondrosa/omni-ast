@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
+import { builders, generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
@@ -12,7 +12,7 @@ const {
   switchStatement,
   switchCase,
   assignmentExpression,
-} = builder;
+} = builders;
 
 describe("SwitchStatement", () => {
   //
@@ -42,7 +42,7 @@ describe("SwitchStatement", () => {
       ]),
     ]);
 
-    const code = serialize(ast);
+    const code = generate(ast);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });

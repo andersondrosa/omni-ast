@@ -30,14 +30,21 @@ npm install omni-ast
 Here's a simple example of how to use Omni-AST to represent and manipulate a piece of code logic:
 
 ```js
-const omniAst = require('omni-ast');
+import { generate, builders as b } from "omni-ast";
 
-const myLogic = omniAst.serialize({
-  // Omni-AST hybrid JSON structure here
-});
+const code = "(x, y) => x(y)";
 
-// Manipulate, analyze, or transform `myLogic`
-// Serialize or execute as needed
+const jsonAST = {
+  type: 'ArrowFunctionExpression',
+  params: [b.identifier("x"), b.identifier("y")],
+  body: {
+    type: 'CallExpression',
+    callee: b.identifier("x"),
+    arguments: [ b.identifier("y") ]
+  }
+};
+// This generates a code and compares it with the code above
+generate(jsonAST) == code // true
 ```
 
 ## Contributing

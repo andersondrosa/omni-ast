@@ -2,7 +2,7 @@ import * as b from "../../src/builders";
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
 import { buildersGenerate } from "../../src/generators";
-import { cleanAST, serialize } from "../../src";
+import { cleanAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 
 const dir = (x) => console.dir(x, { depth: 20 });
@@ -21,7 +21,7 @@ describe("Test all expressions", () => {
 
     expect(AST).toMatchSnapshot();
 
-    const generatedCode = serialize(AST);
+    const generatedCode = generate(AST);
 
     expect(generatedCode).toMatchSnapshot();
 
@@ -37,7 +37,7 @@ describe("Test all expressions", () => {
 
     expect(generatedAST).toMatchObject(AST);
 
-    const generatedCode2 = serialize(generatedAST);
+    const generatedCode2 = generate(generatedAST);
 
     expect(generatedCode).toEqual(generatedCode2);
   });

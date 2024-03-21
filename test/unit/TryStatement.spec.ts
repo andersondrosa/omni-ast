@@ -1,8 +1,8 @@
 import { acornParse } from "../utils/acornParse";
-import { builder } from "../../src";
+import { builders } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
-import { serialize } from "../../src/generators";
+import { generate } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
 
 const {
@@ -15,7 +15,7 @@ const {
   memberExpression,
   throwStatement,
   catchClause,
-} = builder;
+} = builders;
 
 describe("TryStatement", () => {
   //
@@ -49,7 +49,7 @@ describe("TryStatement", () => {
       )
     );
 
-    const code = serialize(AST);
+    const code = generate(AST);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -81,10 +81,10 @@ describe("TryStatement", () => {
       )
     );
 
-    const code = serialize(AST);
+    const code = generate(AST);
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
 
-    expect(() => eval(serialize(throwError))).toThrow("Test message");
+    expect(() => eval(generate(throwError))).toThrow("Test message");
   });
 });

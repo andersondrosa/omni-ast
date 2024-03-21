@@ -2,7 +2,7 @@ import { acornParse } from "../utils/acornParse";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { serialize } from "../../src";
+import { generate } from "../../src";
 import { buildersGenerate } from "../../src/generators";
 
 describe("Literal", () => {
@@ -34,14 +34,14 @@ describe("Literal", () => {
       ])`.replace(/\n\s+/g, "")
     );
 
-    const code = serialize(AST) as string;
+    const code = generate(AST) as string;
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
     const evaluatedAST = evaluate(fn);
     expect(evaluatedAST).toMatchObject(AST);
 
-    const evaluatedCode = serialize(evaluatedAST) as string;
+    const evaluatedCode = generate(evaluatedAST) as string;
 
     expect(tokenizer(evaluatedCode)).toMatchObject(tokenizer(script));
   });
@@ -65,11 +65,11 @@ describe("Literal", () => {
       ])`.replace(/\n\s+/g, "")
     );
 
-    const code = serialize(AST) as string;
+    const code = generate(AST) as string;
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const evaluatedCode = serialize(evaluate(fn)) as string;
+    const evaluatedCode = generate(evaluate(fn)) as string;
 
     expect(tokenizer(evaluatedCode)).toMatchObject(tokenizer(script));
   });

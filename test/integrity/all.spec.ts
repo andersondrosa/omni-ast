@@ -1,6 +1,6 @@
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
+import { builder, generate } from "../../src";
 import { buildersGenerate } from "../../src/generators";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
@@ -16,7 +16,7 @@ describe("Test all expressions", () => {
 
     console.dir(AST, { depth: 12 });
 
-    // const code = serialize(AST);
+    // const code = generate(AST);
 
     // console.log(code);
 
@@ -63,7 +63,7 @@ describe("Test all expressions", () => {
 
     // expect(evaluatedAST).toMatchObject(AST);
 
-    // const evaluatedCode = serialize(evaluatedAST);
+    // const evaluatedCode = generate(evaluatedAST);
 
     // expect(evaluatedCode).toMatchObject(code);
   });
