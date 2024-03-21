@@ -1,6 +1,6 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, serialize } from "../../src";
-import { cleanAST, parseAST, parseOmniAST } from "../../src/utils";
+import { builder, cleanAST, serialize } from "../../src";
+import { parseAST, parseOmniAST } from "../../src/utils";
 import { describe, expect, it } from "vitest";
 
 const { identifier, assignmentExpression, templateLiteral, templateElement } =

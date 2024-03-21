@@ -93,39 +93,6 @@ export function mutate(object, match, modifier) {
   return findAndModify(object);
 }
 
-const denied = ["start", "end", "generator"];
-const hideIfNull = [
-  "async",
-  "id",
-  "label",
-  "computed",
-  "optional",
-  "shorthand",
-  "prefix",
-];
-
-export function cleanAST(ast): any {
-  if (typeof ast != "object" || ast === null) return ast;
-  const res = {};
-  for (const key in ast) {
-    if (denied.includes(key)) continue;
-    const value = ast[key];
-    if (hideIfNull.includes(key)) {
-      if (!value) continue;
-    }
-    if (typeof value != "object") {
-      res[key] = value;
-      continue;
-    }
-    if (Array.isArray(value)) {
-      res[key] = value.map((x) => cleanAST(x));
-      continue;
-    }
-    res[key] = cleanAST(value);
-  }
-  return res;
-}
-
 export function parseOmniAST(ast: Node) {
   //
   if (typeof ast != "object" || ast === null) return ast;

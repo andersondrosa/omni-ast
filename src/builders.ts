@@ -73,13 +73,13 @@ export const arrowFunctionExpression = (
   body: Expression | BlockStatement,
   async?: boolean
 ): ArrowFunctionExpression => {
-  const node: ArrowFunctionExpression = {
+  const node = {
     type: "ArrowFunctionExpression",
-    expression: body.type != "BlockStatement",
     params,
     body,
-  };
+  } as ArrowFunctionExpression;
   if (async) node.async = true;
+  if (body.type != "BlockStatement") node.expression = true;
   return node;
 };
 /* -------------------------------------------------------------------------- */
@@ -216,7 +216,6 @@ export const functionDeclaration = (
   const node: FunctionDeclaration = {
     type: "FunctionDeclaration",
     id,
-    expression: false,
     params: args,
     body,
   };
@@ -232,7 +231,6 @@ export const functionExpression = (
 ): FunctionExpression => {
   const node: FunctionExpression = {
     type: "FunctionExpression",
-    expression: false,
     params: args,
     body,
   };
@@ -267,7 +265,19 @@ export const jsonExpression = (body: JsonTypes): JsonExpression => {
   return { type: "JsonExpression", body };
 };
 /* -------------------------------------------------------------------------- */
-export const literal = (value: string | boolean | number | null): Literal => {
+export const literal = (
+  value: string | boolean | number | null | RegExp
+): Literal => {
+  if (value === undefined)
+    return { type: "Literal", value, raw: "undefined" } as Literal;
+  if (value === null) return { type: "Literal", value, raw: "null" } as Literal;
+  if (value instanceof RegExp)
+    return {
+      type: "Literal",
+      value,
+      raw: String(value),
+      regex: { pattern: value.source, flags: value.flags },
+    };
   const node: Literal = { type: "Literal", value };
   switch (typeof value) {
     case "bigint":

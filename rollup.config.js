@@ -27,6 +27,6 @@ export default {
     }),
     json(),
     commonjs(),
-    typescript(),
+    typescript({ tsconfig: "./tsconfig.esm.json" }),
   ],
 };

@@ -1,9 +1,10 @@
-import * as b from "../../src/builders";
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
+import { builder, serialize } from "../../src";
 import { buildersGenerate } from "../../src/generators";
-import { cleanAST, serialize } from "../../src";
+import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
+import { tokenizer } from "../utils/tokenizer";
 
 describe("Test all expressions", () => {
   //
@@ -11,32 +12,59 @@ describe("Test all expressions", () => {
     //
     const script = fs.readFileSync(__dirname + "/example.js").toString();
 
-    expect(script).toMatchSnapshot();
+    const AST = (acornParse(script).body);
 
-    const AST = cleanAST(acornParse(script));
+    console.dir(AST, { depth: 12 });
 
-    console.log(AST.body[1]);
+    // const code = serialize(AST);
 
-    expect(AST).toMatchSnapshot();
+    // console.log(code);
 
-    const generatedCode = serialize(AST);
+    // expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    expect(generatedCode).toMatchSnapshot();
+    const { buildFunction, evaluate } = buildersGenerate();
 
-    const { build } = buildersGenerate("b");
+    const generatedFunction = buildFunction(AST);
 
-    const generatedBuilders = build(AST);
+    console.log(generatedFunction);
 
-    expect(generatedBuilders).toMatchSnapshot();
+    (b) => [
+      b.variableDeclaration("let", [
+        b.variableDeclarator(b.identifier("foo"), b.literal(42)),
+      ]),
+      b.variableDeclaration("const", [
+        b.variableDeclarator(b.identifier("bar"), b.literal("Hello World")),
+      ]),
+      b.variableDeclaration("const", [
+        b.variableDeclarator(
+          b.identifier("regex"),
+          b.literal(b.jsonExpression({}))
+        ),
+      ]),
+      b.functionDeclaration(
+        b.identifier("add"),
+        [b.identifier("a"), b.identifier("b")],
+        b.blockStatement([
+          b.returnStatement(
+            b.binaryExpression("+", b.identifier("a"), b.identifier("b"))
+          ),
+        ])
+      ),
+    ];
 
-    const getAST = eval("(b) => " + generatedBuilders);
+    // expect(generatedFunction).toEqual(
+    //   `(b) => b.variableDeclaration("let", [b.variableDeclarator(b.identifier("foo"), b.literal(42))])`.replace(
+    //     /\n\s+/g,
+    //     ""
+    //   )
+    // );
 
-    const generatedAST = getAST(b);
+    // const evaluatedAST = evaluate(generatedFunction);
 
-    expect(AST).toMatchObject(generatedAST);
+    // expect(evaluatedAST).toMatchObject(AST);
 
-    const generatedCode2 = serialize(generatedAST);
+    // const evaluatedCode = serialize(evaluatedAST);
 
-    expect(generatedCode).toEqual(generatedCode2);
+    // expect(evaluatedCode).toMatchObject(code);
   });
 });

@@ -99,7 +99,6 @@ exports[`OmniAST > Hybrid 2`] = `
         "type": "Identifier",
       },
       "kind": "init",
-      "method": false,
       "type": "Property",
       "value": {
         "raw": "\\"here\\"",
@@ -113,7 +112,6 @@ exports[`OmniAST > Hybrid 2`] = `
         "type": "Identifier",
       },
       "kind": "init",
-      "method": false,
       "type": "Property",
       "value": {
         "arguments": [
@@ -125,7 +123,6 @@ exports[`OmniAST > Hybrid 2`] = `
                   "type": "Identifier",
                 },
                 "kind": "init",
-                "method": false,
                 "type": "Property",
                 "value": {
                   "raw": "\\"again\\"",

@@ -1,37 +1,11 @@
 import { acornParse } from "./utils/acornParse";
-import { builder, generate } from "../src";
-import { cleanAST, find, mutate, parseAST, parseOmniAST } from "../src/utils";
+import { builder, cleanAST } from "../src";
+import { parseAST, parseOmniAST } from "../src/utils";
 import { describe, expect, it } from "vitest";
 import { Node } from "../src/types";
 import { serialize } from "../src/generators";
 import { tokenizer } from "./utils/tokenizer";
-import {
-  arrayPattern,
-  assignmentProperty,
-  expressionStatement,
-  functionExpression,
-  lit,
-  objectExpression,
-  objectPattern,
-  templateElement,
-  templateLiteral,
-  variableDeclaration,
-  variableDeclarator,
-} from "../src/builders";
-
-
-
-
-const {
-  arrowFunctionExpression,
-  ast,
-  json,
-  blockStatement,
-  callExpression,
-  identifier,
-  jsonExpression,
-  returnStatement,
-} = builder;
+import { identifier } from "../src/builders";
 
 describe("OmniAST", () => {
   //
@@ -40,7 +14,6 @@ describe("OmniAST", () => {
     const script = `fn({ aaa: "bar" })`;
 
     const AST = cleanAST(acornParse(script)).body[0].expression;
-   
 
     const omniAST = {
       type: "CallExpression",
@@ -50,9 +23,6 @@ describe("OmniAST", () => {
     };
 
     const code = serialize(omniAST);
-
-   
-   
 
     expect(tokenizer(script)).toMatchObject(tokenizer(code));
   });
@@ -66,15 +36,9 @@ describe("OmniAST", () => {
     const realAST = acornParse(script).body[0].expression;
     const cleanAcornAST = cleanAST(realAST);
 
-   
-
     const omniAst = parseOmniAST(cleanAcornAST as Node);
 
-   
-
     const generated = `(${serialize(omniAst)})`;
-
-   
   });
 
   it("Hybrid", () => {
@@ -99,9 +63,6 @@ describe("OmniAST", () => {
 
     const generated = `(${serialize(omniAst)})`;
 
-   
-   
-
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
@@ -116,5 +77,4 @@ describe("OmniAST", () => {
 
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
-
 });

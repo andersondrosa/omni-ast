@@ -275,13 +275,11 @@ export interface ForStatement extends BaseStatement {
 }
 export interface FunctionDeclaration extends MaybeNamedFunctionDeclaration {
   id: Identifier;
-  expression: false;
 }
 export interface FunctionExpression extends BaseFunction, BaseExpression {
   id?: Identifier | null | undefined;
   type: "FunctionExpression";
   body: BlockStatement;
-  expression: false;
 }
 export interface Identifier extends BaseNode, BaseExpression, BasePattern {
   type: "Identifier";

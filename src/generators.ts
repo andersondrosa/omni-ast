@@ -5,8 +5,9 @@ import * as builder from "./builders";
 
 const comma = ", ";
 
-export const serialize = (node: BaseNode) => {
+export const serialize = (node: BaseNode | BaseNode[]) => {
   if (!node) return "";
+  if (Array.isArray(node)) return node.map(serialize).join(comma);
   if (!node.type) return JSON.stringify(node);
   if (nodes.hasOwnProperty(node.type)) return nodes[node.type](node);
   throw Error("Unknown type: " + node.type);
@@ -15,17 +16,17 @@ export const serialize = (node: BaseNode) => {
 const paren = (str: string) => `(${str})`;
 
 export const ArrayExpression = (node: Types.ArrayExpression) => {
-  return `[${node.elements.map(serialize).join(comma)}]`;
+  return `[${serialize(node.elements)}]`;
 };
 
 export const ArrayPattern = (node: Types.ArrayPattern) => {
-  return `[${node.elements.map(serialize).join(comma)}]`;
+  return `[${serialize(node.elements)}]`;
 };
 
 export const ArrowFunctionExpression = (
   node: Types.ArrowFunctionExpression
 ) => {
-  const params = node.params.map(serialize).join(comma);
+  const params = serialize(node.params);
   const body =
     node.body.type == "AssignmentExpression" ||
     node.body.type == "BinaryExpression" ||
@@ -66,9 +67,7 @@ export const BreakStatement = () => {
 };
 
 export const CallExpression = (node: Types.CallExpression) => {
-  return `${serialize(node.callee)}(${node.arguments
-    .map(serialize)
-    .join(comma)})`;
+  return `${serialize(node.callee)}(${serialize(node.arguments)})`;
 };
 
 export const ChainExpression = (node: Types.ChainExpression) => {
@@ -123,7 +122,7 @@ export const FunctionDeclaration = (node: Types.FunctionExpression) => {
 };
 
 export const FunctionExpression = (node: Types.FunctionExpression) => {
-  const params = node.params.map(serialize).join(comma);
+  const params = serialize(node.params);
   return `${node.async ? "async " : ""}function ${serialize(
     node.id
   )}(${params}) ${serialize(node.body)}`;
@@ -163,9 +162,7 @@ export const MemberExpression = (node: Types.MemberExpression) => {
 };
 
 export const NewExpression = (node: Types.NewExpression) => {
-  return `new ${serialize(node.callee)}(${node.arguments
-    .map(serialize)
-    .join(comma)})`;
+  return `new ${serialize(node.callee)}(${serialize(node.arguments)})`;
 };
 
 export const ObjectExpression = (node: Types.ObjectExpression) => {
@@ -323,14 +320,18 @@ export const buildersGenerate = (prefix = "b") => {
       return String(node);
     }
     if (!node) return "null";
+    if (node instanceof RegExp) return node;
+
     if (Array.isArray(node))
       return `[${node.map((n) => build(n, parent)).join(", ")}]`;
+
     if (!node.type) {
       if (node instanceof TextWrapper) return node["text"];
       return `${prefix}.jsonExpression(${JSON.stringify(node)})`;
     }
     if (builders.hasOwnProperty(node.type))
       return builders[node.type](node, parent);
+
     throw Error("Unknown type: " + node.type);
   };
 
