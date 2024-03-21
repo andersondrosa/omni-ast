@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builders, cleanAST, generate } from "../../src";
+import { builders, clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
@@ -22,7 +22,7 @@ describe("FunctionExpression", () => {
       return await baz;
     }`;
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
 
     const code = generate(
       functionExpression(

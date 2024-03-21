@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { builders as b, generate } from "../../src";
@@ -10,7 +10,7 @@ describe("CallExpression", () => {
     //
     const script = "new foo.member.bar(bar.test(alpha.x.y.z(), beta.test))";
 
-    const AST = cleanAST(acornParse(script)).body[0].expression;
+    const AST = clearAST(acornParse(script)).body[0].expression;
 
     const code = generate(AST) as string;
 

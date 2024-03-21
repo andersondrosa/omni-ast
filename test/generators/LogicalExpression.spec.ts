@@ -1,6 +1,6 @@
 import { acornParse } from "../utils/acornParse";
 import { builders, generate } from "../../src";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 
 const {
@@ -17,7 +17,7 @@ describe("LogicalExpression", () => {
     //
     const script = `const fooIsBar = foo == "bar" && true || "nope"`;
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
 
     const ast = variableDeclaration("const", [
       variableDeclarator(identifier("fooIsBar"), {

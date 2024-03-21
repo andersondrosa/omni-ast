@@ -1,6 +1,6 @@
 import { acornParse } from "../utils/acornParse";
 import { generate } from "../../src";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
@@ -17,7 +17,7 @@ describe("UnaryExpression", () => {
       console.log(suffixIncrement++);
     }`;
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
     // dir(AST);
 
     const { build, buildFunction, evaluate } = buildersGenerate();

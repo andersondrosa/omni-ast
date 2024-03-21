@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builders, cleanAST, generate, parseAST, simplify } from "../../src";
+import { builders, clearAST, generate, parseAST, simplify } from "../../src";
 import { describe, expect, it } from "vitest";
 
 const { identifier, assignmentExpression, templateLiteral, templateElement } =
@@ -11,7 +11,7 @@ describe("TemplateLiteral", () => {
     //
     const script = "text = `start${foo}middle${`${bar}/${baz}`}\\end`";
 
-    const acornAst = cleanAST(acornParse(script)).body[0];
+    const acornAst = clearAST(acornParse(script)).body[0];
     const omniAst = simplify(acornAst);
 
     expect(acornAst).toMatchObject(parseAST(omniAst));

@@ -1,5 +1,5 @@
 import { acornParse } from "./utils/acornParse";
-import { cleanAST } from "../src";
+import { clearAST } from "../src";
 import { describe, expect, it } from "vitest";
 import { buildersGenerate } from "../src/buildersGenerate";
 
@@ -18,7 +18,7 @@ describe("Clean AST", () => {
     const acornGeneratedCleanAST = evaluate(buildFunction(acornAST));
     // console.dir(acornGeneratedCleanAST, { depth: 12 });
 
-    const AST = cleanAST(acornAST);
+    const AST = clearAST(acornAST);
 
     // console.dir(AST, { depth: 12 });
 

@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { generate, cleanAST } from "../../src";
+import { generate, clearAST } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { buildersGenerate } from "../../src/buildersGenerate";
@@ -10,7 +10,7 @@ describe("DoWhileStatement", () => {
     //
     const script = `let i = 0; do { i++; } while (i < 100)`;
 
-    const AST = cleanAST(acornParse(script));
+    const AST = clearAST(acornParse(script));
 
     const code = generate(AST);
 

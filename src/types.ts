@@ -264,7 +264,7 @@ export interface ForInStatement extends BaseForXStatement {
 }
 export interface ForOfStatement extends BaseForXStatement {
   type: "ForOfStatement";
-  await?: true;
+  await: boolean;
 }
 export interface ForStatement extends BaseStatement {
   type: "ForStatement";
@@ -423,7 +423,7 @@ export interface TaggedTemplateExpression extends BaseExpression {
 }
 export interface TemplateElement extends BaseNode {
   type: "TemplateElement";
-  tail?: true;
+  tail: boolean;
   value: { cooked?: string | null | undefined; raw: string };
 }
 export interface TemplateLiteral extends BaseExpression {

@@ -2,7 +2,7 @@ import { acornParse } from "../utils/acornParse";
 import {
   ast,
   builders as b,
-  cleanAST,
+  clearAST,
   generate,
   simplify,
 } from "../../src";
@@ -11,7 +11,7 @@ import { pipe } from "ramda";
 
 const log = (x) => console.dir(x, { depth: 20 });
 
-const simpleParse = pipe(acornParse, (x) => x.body[0], cleanAST, simplify);
+const simpleParse = pipe(acornParse, (x) => x.body[0], clearAST, simplify);
 
 describe("ArrowFunctionExpression", () => {
   //

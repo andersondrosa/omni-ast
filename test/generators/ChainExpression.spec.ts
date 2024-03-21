@@ -1,6 +1,6 @@
 import { acornParse } from "../utils/acornParse";
 import { builders, generate } from "../../src";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 
 const {
@@ -17,7 +17,7 @@ describe("ChainExpression", () => {
     //
     const script = 'value = base.foo?.bar?.[optional]["strict"]';
 
-    const AST = cleanAST(acornParse(script)).body[0].expression;
+    const AST = clearAST(acornParse(script)).body[0].expression;
 
     const omniAST = assignmentExpression(
       "=",

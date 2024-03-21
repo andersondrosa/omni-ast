@@ -55,16 +55,20 @@ import {
   SimpleCallExpression,
   ForOfStatement,
   DoWhileStatement,
+  SpreadElement,
+  RestElement,
 } from "./types";
 
 export const ast = (body: Node) => ({ type: "#AST", body });
 
 // BUILDERS
-export const arrayExpression = (elements: Expression[]): ArrayExpression => {
+export const arrayExpression = (
+  elements: Array<Expression | SpreadElement | null>
+): ArrayExpression => {
   return { type: "ArrayExpression", elements };
 };
 /* -------------------------------------------------------------------------- */
-export const arrayPattern = (elements: Pattern[]): ArrayPattern => {
+export const arrayPattern = (elements: Array<Pattern | null>): ArrayPattern => {
   return { type: "ArrayPattern", elements };
 };
 /* -------------------------------------------------------------------------- */
@@ -127,20 +131,20 @@ export const breakStatement = (label?: Identifier | null): BreakStatement => {
 /* -------------------------------------------------------------------------- */
 export const callExpression = (
   callee,
-  args: Expression[],
+  args: Array<Expression | SpreadElement>,
   optional?: boolean
 ): SimpleCallExpression => {
   const node: SimpleCallExpression = {
     type: "CallExpression",
     callee,
     arguments: args,
+    optional: optional || false,
   };
-  if (optional) node.optional = optional;
   return node;
 };
 /* -------------------------------------------------------------------------- */
 export const catchClause = (
-  param: Pattern,
+  param: Pattern | null,
   body: BlockStatement
 ): CatchClause => {
   return { type: "CatchClause", param, body };
@@ -158,7 +162,9 @@ export const conditionalExpression = (
   return { type: "ConditionalExpression", test, consequent, alternate };
 };
 /* -------------------------------------------------------------------------- */
-export const continueExpression = (label: Identifier): ContinueStatement => {
+export const continueStatement = (
+  label: Identifier | null | undefined
+): ContinueStatement => {
   return { type: "ContinueStatement", label };
 };
 /* -------------------------------------------------------------------------- */
@@ -191,16 +197,21 @@ export const forOfStatement = (
   left: Pattern | VariableDeclaration,
   right: Expression,
   body: Statement,
-  _await?: true
+  _await?: boolean
 ): ForOfStatement => {
-  const node: ForOfStatement = { type: "ForOfStatement", body, left, right };
-  if (_await === true) node["await"] = true;
+  const node: ForOfStatement = {
+    type: "ForOfStatement",
+    body,
+    left,
+    right,
+    await: _await || false,
+  };
   return node;
 };
 /* -------------------------------------------------------------------------- */
 export const forStatement = (
-  init: Expression | VariableDeclaration | null | undefined,
-  test: Expression,
+  init: VariableDeclaration | Expression | null | undefined,
+  test: Expression | null | undefined,
   update: Expression | null | undefined,
   body: Statement
 ): ForStatement => {
@@ -209,14 +220,14 @@ export const forStatement = (
 /* -------------------------------------------------------------------------- */
 export const functionDeclaration = (
   id: Identifier,
-  args: Pattern[],
+  params: Pattern[],
   body: BlockStatement,
-  async?: true
+  async?: boolean
 ): FunctionDeclaration => {
   const node: FunctionDeclaration = {
     type: "FunctionDeclaration",
     id,
-    params: args,
+    params,
     body,
   };
   if (async === true) node.async = async;
@@ -225,15 +236,11 @@ export const functionDeclaration = (
 /* -------------------------------------------------------------------------- */
 export const functionExpression = (
   id: Identifier | null | undefined,
-  args: Pattern[],
+  params: Pattern[],
   body: BlockStatement,
-  async?: true
+  async?: boolean | undefined
 ): FunctionExpression => {
-  const node: FunctionExpression = {
-    type: "FunctionExpression",
-    params: args,
-    body,
-  };
+  const node: FunctionExpression = { type: "FunctionExpression", params, body };
   if (id) node.id = id;
   if (async == true) node.async = async;
   return node;
@@ -246,7 +253,7 @@ export const identifier = (name: string): Identifier => {
 export const ifStatement = (
   test: Expression,
   consequent: Statement,
-  alternate?: Statement
+  alternate?: Statement | null | undefined
 ): IfStatement => {
   const node: IfStatement = { type: "IfStatement", test, consequent };
   if (node) node.alternate = alternate;
@@ -299,22 +306,31 @@ export const memberExpression = (
   computed?: boolean | null,
   optional?: boolean | null
 ): MemberExpression => {
-  const node: MemberExpression = { type: "MemberExpression", object, property };
-  if (computed) node.computed = computed;
-  if (optional) node.optional = optional;
+  const node: MemberExpression = {
+    type: "MemberExpression",
+    object,
+    property,
+    computed: computed || false,
+    optional: optional || false,
+  };
   return node;
 };
 /* -------------------------------------------------------------------------- */
-export const newExpression = (callee, args: Expression[]): NewExpression => {
+export const newExpression = (
+  callee,
+  args: Array<Expression | SpreadElement>
+): NewExpression => {
   return { type: "NewExpression", callee, arguments: args };
 };
 /* -------------------------------------------------------------------------- */
-export const objectExpression = (properties: Property[]): ObjectExpression => {
+export const objectExpression = (
+  properties: Array<Property | SpreadElement>
+): ObjectExpression => {
   return { type: "ObjectExpression", properties };
 };
 /* -------------------------------------------------------------------------- */
 export const objectPattern = (
-  properties: AssignmentProperty[]
+  properties: Array<AssignmentProperty | RestElement>
 ): ObjectPattern => {
   return { type: "ObjectPattern", properties };
 };
@@ -325,7 +341,7 @@ export const program = (body: Statement[]): Program => {
 /* -------------------------------------------------------------------------- */
 export const property = (
   key: Expression,
-  value: Expression | Pattern,
+  value: Expression | Pattern | AssignmentProperty,
   shorthand?: boolean
 ): Property => {
   const node: Property = { type: "Property", key, kind: "init", value };
@@ -354,12 +370,10 @@ export const switchStatement = (
 };
 /* -------------------------------------------------------------------------- */
 export const templateElement = (
-  value: { raw: string; cooked?: string },
-  tail = false
+  value: { cooked?: string | null | undefined; raw: string },
+  tail?: boolean
 ): TemplateElement => {
-  const node: TemplateElement = { type: "TemplateElement", value };
-  if (tail === true) node.tail = true;
-  return node;
+  return { type: "TemplateElement", value, tail: tail || false };
 };
 /* -------------------------------------------------------------------------- */
 export const templateLiteral = (
@@ -375,8 +389,8 @@ export const throwStatement = (argument: Expression): ThrowStatement => {
 /* -------------------------------------------------------------------------- */
 export const tryStatement = (
   block: BlockStatement,
-  handler: CatchClause,
-  finalizer?: BlockStatement
+  handler: CatchClause | null | undefined,
+  finalizer?: BlockStatement | null | undefined
 ): TryStatement => {
   const node: TryStatement = { type: "TryStatement", block, handler };
   if (finalizer) node.finalizer = finalizer;

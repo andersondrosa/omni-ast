@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { tokenizer } from "./utils/tokenizer";
 import { acornParse } from "./utils/acornParse";
 import {
-  cleanAST,
+  clearAST,
   simplify,
   parseAST,
   builders,
@@ -10,6 +10,7 @@ import {
   json,
   generate,
 } from "../src";
+import { ArrowFunctionExpression, Pattern } from "../src/types";
 
 const { identifier, lit } = builders;
 const b = builders;
@@ -27,7 +28,7 @@ describe("Parsers test", () => {
 
     const acornAST = acornParse(script).body[0].expression;
 
-    const cleanAcornAST = cleanAST(acornAST);
+    const cleanAcornAST = clearAST(acornAST);
 
     const simpleAST = simplify(cleanAcornAST);
 
@@ -100,7 +101,7 @@ describe("Parsers test", () => {
 
     expect(realAST).toMatchSnapshot();
 
-    const cleanAcornAST = cleanAST(realAST);
+    const cleanAcornAST = clearAST(realAST);
 
     expect(cleanAcornAST).toMatchSnapshot();
 
@@ -115,7 +116,7 @@ describe("Parsers test", () => {
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
-  it("Test", () => {
+  it("AssignmentExpression", () => {
     //
     const AST = b.assignmentExpression(
       "=",
@@ -123,10 +124,71 @@ describe("Parsers test", () => {
       b.arrowFunctionExpression([], b.lit("ok"))
     );
 
-    log(parseAST(AST));
+    const simpleAST = simplify(AST);
 
-    const acornAST = acornParse('script = () => "ok"').body[0].expression;
+    expect(simpleAST).toEqual({
+      left: { name: "script", type: "Identifier" },
+      operator: "=",
+      right: {
+        body: { raw: '"ok"', type: "Literal", value: "ok" },
+        expression: true,
+        params: [],
+        type: "ArrowFunctionExpression",
+      },
+      type: "AssignmentExpression",
+    });
 
-    log(acornAST);
+    expect(parseAST(simpleAST)).toMatchObject(AST);
+  });
+
+  it.skip("FunctionExpression", () => {
+    //
+    const AST = b.functionExpression(
+      b.identifier("name"),
+      [],
+      b.blockStatement([b.expressionStatement(b.identifier("script"))]),
+      true
+    );
+
+    const simpleAST = simplify(AST);
+    log(simpleAST);
+
+    expect(simpleAST).toEqual({
+      type: "FunctionExpression",
+      params: [],
+      body: {
+        type: "BlockStatement",
+        body: [
+          {
+            type: "ExpressionStatement",
+            expression: { type: "Identifier", name: "script" },
+          },
+        ],
+      },
+      id: { type: "Identifier", name: "name" },
+      async: true,
+    });
+
+    expect(parseAST(simpleAST)).toMatchObject(AST);
+  });
+
+  it("MemberExpression", () => {
+    //
+    const AST = b.memberExpression(b.identifier("name"), b.literal("value"));
+
+    log(AST);
+
+    const simpleAST = simplify(AST);
+
+    expect(simpleAST).toEqual({
+      type: "MemberExpression",
+      object: { type: "Identifier", name: "name" },
+      property: { type: "Literal", value: "value", raw: '"value"' },
+    });
+
+    const restored = parseAST(simpleAST);
+    log(restored);
+
+    expect(restored).toMatchObject(AST);
   });
 });

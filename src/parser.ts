@@ -1,6 +1,16 @@
 import { ObjectExpressionToJSON } from "./JsonGenerate";
+import { parsers } from "./astGenerate";
 import { Node, Property } from "../src/types";
 import { identifier, lit, objectExpression } from "./builders";
+
+const removeFalseValues = (n) => {
+  const r = {};
+  for (const i in n) {
+    if (n[i] == false) continue;
+    r[i] = n[i];
+  }
+  return r;
+};
 
 export function simplify(ast: Node) {
   //
@@ -13,8 +23,15 @@ export function simplify(ast: Node) {
   if (typeof ast["type"] != "string")
     throw Error("Invalid AST. Type is invalid");
 
-  if (ast.type == "ObjectExpression")
-    return { type: "JsonExpression", body: ObjectExpressionToJSON(ast) };
+  switch (ast.type) {
+    case "ObjectExpression":
+      return { type: "JsonExpression", body: ObjectExpressionToJSON(ast) };
+    case "Literal":
+    case "Identifier":
+      return { ...ast };
+    case "MemberExpression":
+      return removeFalseValues(ast);
+  }
 
   const omniAst = {};
   for (const key in ast) omniAst[key] = simplify(ast[key]);
@@ -22,22 +39,17 @@ export function simplify(ast: Node) {
   return omniAst;
 }
 
-export function parseAST(value: Node) {
+export function parseAST(jsonAst: Record<string, any>) {
   //
-  const restore = (ast: Node) => {
+  const restore = (simpleAst: Record<string, any>) => {
     //
-    if (Array.isArray(ast)) return ast.map(restore);
+    if (typeof simpleAst != "object") throw Error("AST must be object");
 
-    if (ast.type == "JsonExpression") return fromJson(ast.body);
+    if (Array.isArray(simpleAst)) return simpleAst.map(restore);
 
-    const _ast: Node = {} as Node;
-    for (const key in ast) {
-      _ast[key] =
-        typeof ast[key] === "object" && ast[key] != null
-          ? restore(ast[key])
-          : ast[key];
-    }
-    return _ast;
+    if (simpleAst.type == "JsonExpression") return fromJson(simpleAst.body);
+
+    return parsers[simpleAst.type](simpleAst);
   };
 
   const fromJson = (value) => {
@@ -67,5 +79,5 @@ export function parseAST(value: Node) {
     return objectExpression(properties);
   };
 
-  return restore(value);
+  return restore(jsonAst);
 }

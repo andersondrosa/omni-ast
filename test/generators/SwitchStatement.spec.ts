@@ -1,6 +1,6 @@
 import { acornParse } from "../utils/acornParse";
 import { builders, generate } from "../../src";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 

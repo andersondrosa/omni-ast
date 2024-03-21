@@ -12,7 +12,7 @@ const hideIfNil = [
   "method",
 ];
 
-export function cleanAST(ast): any {
+export function clearAST(ast): any {
   //
   if (typeof ast != "object") throw Error("Invalid AST");
 
@@ -20,7 +20,7 @@ export function cleanAST(ast): any {
 
   const res = {};
 
-  if (Array.isArray(ast)) return ast.map(cleanAST);
+  if (Array.isArray(ast)) return ast.map(clearAST);
 
   Object.entries(ast).forEach(([key, value]) => {
     //
@@ -31,7 +31,7 @@ export function cleanAST(ast): any {
     if (typeof value != "object" || value instanceof RegExp || value === null)
       return (res[key] = value);
 
-    res[key] = cleanAST(value);
+    res[key] = clearAST(value);
   });
 
   return res;

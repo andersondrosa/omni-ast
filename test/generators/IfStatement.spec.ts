@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builders as b, cleanAST, generate } from "../../src";
+import { builders as b, clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
@@ -27,7 +27,7 @@ describe("IfStatement", () => {
     //
     const script = `const fooIsBar = foo == "bar" ? true : false`;
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
 
     const ast = b.variableDeclaration("const", [
       b.variableDeclarator(

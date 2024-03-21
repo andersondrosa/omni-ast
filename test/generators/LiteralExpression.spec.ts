@@ -1,5 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { cleanAST } from "../../src/CleanAST";
+import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { generate } from "../../src";
@@ -11,7 +11,7 @@ describe("Literal", () => {
     //
     const script = 'const phrase = "Text and number:" + "123" + 456';
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
 
     const { buildFunction, evaluate } = buildersGenerate();
 
@@ -50,7 +50,7 @@ describe("Literal", () => {
     //
     const script = "const num = 9007199254740991n";
 
-    const AST = cleanAST(acornParse(script)).body[0];
+    const AST = clearAST(acornParse(script)).body[0];
 
     const { buildFunction, evaluate } = buildersGenerate();
 

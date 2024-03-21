@@ -3,7 +3,7 @@ import fs from "fs";
 import { acornParse } from "../utils/acornParse";
 import { buildersGenerate } from "../../src/buildersGenerate";
 
-import { cleanAST, generate } from "../../src";
+import { clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 
 const dir = (x) => console.dir(x, { depth: 20 });
@@ -18,7 +18,7 @@ describe("Test all expressions", () => {
 
     const acornAST = acornParse(script).body[0];
 
-    const AST = cleanAST(acornAST);
+    const AST = clearAST(acornAST);
 
     expect(AST).toMatchSnapshot();
 
