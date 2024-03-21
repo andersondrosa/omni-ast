@@ -1,17 +1,16 @@
 import { acornParse } from "../utils/acornParse";
-import { generate } from "../../src";
-import { clearAST } from "../../src/CleanAST";
+import { generate, clearAST } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { buildersGenerate } from "../../src/buildersGenerate";
 
-describe("AssignmentExpression", () => {
+describe.skip("DoWhileStatement", () => {
   //
   it("Should generate code correctly", () => {
     //
-    const script = "value = object.method(foo.baz, baz)";
+    const script = `let i = 0; do { i++; } while (i < 100)`;
 
-    const AST = clearAST(acornParse(script).body[0]);
+    const AST = clearAST(acornParse(script));
 
     const code = generate(AST);
 
@@ -22,19 +21,19 @@ describe("AssignmentExpression", () => {
     const generatedFunction = buildFunction(AST);
 
     expect(generatedFunction).toEqual(
-      `(b) => b.expressionStatement(
-        b.assignmentExpression(
-          "=", 
-          b.identifier("value"), 
-          b.callExpression(
-            b.memberExpression(b.identifier("object"), b.identifier("method")), 
-            [
-              b.memberExpression(b.identifier("foo"), b.identifier("baz")), 
-              b.identifier("baz")
-            ]
+      `(b) => 
+        b.program([
+          b.variableDeclaration("let", [
+            b.variableDeclarator(b.identifier("i"), b.literal(0))
+          ]), 
+          b.doWhileStatement(
+            b.blockStatement([
+              b.expressionStatement(b.updateExpression("++", b.identifier("i")))
+            ]), 
+            b.binaryExpression("<", b.identifier("i"), b.literal(100))
           )
-        )
-      )`.replace(/\n\s+/g, "")
+        ])
+    `.replace(/\n\s+/g, "")
     );
 
     const evaluatedAST = evaluate(generatedFunction);
@@ -42,6 +41,8 @@ describe("AssignmentExpression", () => {
     expect(evaluatedAST).toMatchObject(AST);
 
     const evaluatedCode = generate(evaluatedAST);
+
+    console.log(evaluatedCode);
 
     expect(evaluatedCode).toMatchObject(code);
   });

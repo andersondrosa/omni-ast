@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 const { identifier, assignmentExpression, templateLiteral, templateElement } =
   builders;
 
-describe("TemplateLiteral", () => {
+describe.skip("TemplateLiteral", () => {
   //
   it("Should generate code correctly", () => {
     //

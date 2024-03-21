@@ -1,8 +1,7 @@
 import { acornParse } from "../utils/acornParse";
-import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { generate } from "../../src";
+import { clearAST, generate } from "../../src";
 import { buildersGenerate } from "../../src/buildersGenerate";
 
 describe("Literal", () => {

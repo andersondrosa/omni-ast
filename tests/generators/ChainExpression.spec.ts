@@ -1,6 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builders, generate } from "../../src";
-import { clearAST } from "../../src/CleanAST";
+import { builders, clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 
 const {

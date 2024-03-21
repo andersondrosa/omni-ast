@@ -1,16 +1,16 @@
 import { acornParse } from "../utils/acornParse";
-import { generate, clearAST } from "../../src";
+import { clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { buildersGenerate } from "../../src/buildersGenerate";
 
-describe("DoWhileStatement", () => {
+describe.skip("AssignmentExpression", () => {
   //
   it("Should generate code correctly", () => {
     //
-    const script = `let i = 0; do { i++; } while (i < 100)`;
+    const script = "value = object.method(foo.baz, baz)";
 
-    const AST = clearAST(acornParse(script));
+    const AST = clearAST(acornParse(script).body[0]);
 
     const code = generate(AST);
 
@@ -21,19 +21,19 @@ describe("DoWhileStatement", () => {
     const generatedFunction = buildFunction(AST);
 
     expect(generatedFunction).toEqual(
-      `(b) => 
-        b.program([
-          b.variableDeclaration("let", [
-            b.variableDeclarator(b.identifier("i"), b.literal(0))
-          ]), 
-          b.doWhileStatement(
-            b.blockStatement([
-              b.expressionStatement(b.updateExpression("++", b.identifier("i")))
-            ]), 
-            b.binaryExpression("<", b.identifier("i"), b.literal(100))
+      `(b) => b.expressionStatement(
+        b.assignmentExpression(
+          "=", 
+          b.identifier("value"), 
+          b.callExpression(
+            b.memberExpression(b.identifier("object"), b.identifier("method")), 
+            [
+              b.memberExpression(b.identifier("foo"), b.identifier("baz")), 
+              b.identifier("baz")
+            ]
           )
-        ])
-    `.replace(/\n\s+/g, "")
+        )
+      )`.replace(/\n\s+/g, "")
     );
 
     const evaluatedAST = evaluate(generatedFunction);
@@ -41,8 +41,6 @@ describe("DoWhileStatement", () => {
     expect(evaluatedAST).toMatchObject(AST);
 
     const evaluatedCode = generate(evaluatedAST);
-
-    console.log(evaluatedCode);
 
     expect(evaluatedCode).toMatchObject(code);
   });

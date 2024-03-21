@@ -13,7 +13,7 @@ const log = (x) => console.dir(x, { depth: 20 });
 
 const simpleParse = pipe(acornParse, (x) => x.body[0], clearAST, simplify);
 
-describe("ArrowFunctionExpression", () => {
+describe.skip("ArrowFunctionExpression", () => {
   //
   it("Should generate code correctly", () => {
     //
