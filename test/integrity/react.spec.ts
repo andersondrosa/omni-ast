@@ -1,7 +1,8 @@
 import * as b from "../../src/builders";
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
-import { buildersGenerate } from "../../src/generators";
+import { buildersGenerate } from "../../src/buildersGenerate";
+
 import { cleanAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 
@@ -9,7 +10,7 @@ const dir = (x) => console.dir(x, { depth: 20 });
 
 describe("Test all expressions", () => {
   //
-  it("Should works", async () => {
+  it("Should generate code correctly", async () => {
     //
     const script = fs.readFileSync(__dirname + "/react.js").toString();
 

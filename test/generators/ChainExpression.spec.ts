@@ -13,7 +13,7 @@ const {
 
 describe("ChainExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = 'value = base.foo?.bar?.[optional]["strict"]';
 

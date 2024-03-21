@@ -1,8 +1,7 @@
 import { acornParse } from "./utils/acornParse";
-import { cleanAST, generate } from "../src";
-import { buildersGenerate } from "../src/generators";
+import { cleanAST } from "../src";
 import { describe, expect, it } from "vitest";
-import { tokenizer } from "./utils/tokenizer";
+import { buildersGenerate } from "../src/buildersGenerate";
 
 const { buildFunction, evaluate } = buildersGenerate();
 

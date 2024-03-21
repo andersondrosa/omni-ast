@@ -13,7 +13,7 @@ const {
 
 describe("LogicalExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `const fooIsBar = foo == "bar" && true || "nope"`;
 

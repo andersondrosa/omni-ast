@@ -16,7 +16,7 @@ const {
 
 describe("FunctionExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `async function main(foo, { bar: [ baz ] }) { 
       return await baz;

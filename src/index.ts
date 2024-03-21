@@ -1,9 +1,9 @@
 import * as builders from "./builders";
 import { cleanAST } from "./CleanAST";
 import { serialize } from "./JsonGenerate";
-import { generate } from "./generators";
+import { generate } from "./codeGenerate";
 import { ast, json } from "../src/builders";
-import { parseAST, simplify } from "./utils";
+import { parseAST, simplify } from "./parser";
 
 export {
   serialize,

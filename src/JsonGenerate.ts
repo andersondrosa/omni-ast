@@ -1,5 +1,5 @@
-import { simplify } from "./utils";
-import { generate } from "./generators";
+import { generate } from "./codeGenerate";
+import { simplify } from "./parser";
 import { JsonTypes, ObjectExpression, Property } from "./types";
 
 export const jsonParseValue = (node: any) => {

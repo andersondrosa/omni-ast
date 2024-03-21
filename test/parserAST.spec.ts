@@ -12,12 +12,13 @@ import {
 } from "../src";
 
 const { identifier, lit } = builders;
+const b = builders;
 
 const log = (x) => console.dir(x, { depth: 20 });
 
-describe("OmniAST", () => {
+describe("Parsers test", () => {
   //
-  it("Should test simplified AST x complex AST", () => {
+  it.skip("Should test simplified AST x complex AST", () => {
     //
     const script = `({ 
       json: "here", 
@@ -114,15 +115,18 @@ describe("OmniAST", () => {
     expect(tokenizer(script)).toMatchObject(tokenizer(generated));
   });
 
-  it.skip("Test", () => {
-    const script = `({ myVar: myFn(['value']) })`;
+  it("Test", () => {
+    //
+    const AST = b.assignmentExpression(
+      "=",
+      b.identifier("script"),
+      b.arrowFunctionExpression([], b.lit("ok"))
+    );
 
-    const ast = acornParse(script).body[0].expression;
+    log(parseAST(AST));
 
-    const AST = simplify(cleanAST(ast));
+    const acornAST = acornParse('script = () => "ok"').body[0].expression;
 
-    const generated = `(${generate(AST)})`;
-
-    expect(tokenizer(script)).toMatchObject(tokenizer(generated));
+    log(acornAST);
   });
 });

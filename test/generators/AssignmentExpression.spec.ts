@@ -3,11 +3,11 @@ import { generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/generators";
+import { buildersGenerate } from "../../src/buildersGenerate";
 
 describe("AssignmentExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = "value = object.method(foo.baz, baz)";
 

@@ -1,6 +1,5 @@
 import { acornParse } from "../utils/acornParse";
-import { builders, cleanAST, generate } from "../../src";
-import { parseAST, simplify } from "../../src/utils";
+import { builders, cleanAST, generate, parseAST, simplify } from "../../src";
 import { describe, expect, it } from "vitest";
 
 const { identifier, assignmentExpression, templateLiteral, templateElement } =
@@ -8,7 +7,7 @@ const { identifier, assignmentExpression, templateLiteral, templateElement } =
 
 describe("TemplateLiteral", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = "text = `start${foo}middle${`${bar}/${baz}`}\\end`";
 

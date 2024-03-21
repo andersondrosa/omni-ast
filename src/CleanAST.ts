@@ -1,5 +1,5 @@
 //
-const remove = ["start", "end", "generator"];
+const remove = ["start", "end", "generator", "expression"];
 
 const hideIfNil = [
   "async",
@@ -10,7 +10,6 @@ const hideIfNil = [
   "shorthand",
   "prefix",
   "method",
-  "expression",
 ];
 
 export function cleanAST(ast): any {

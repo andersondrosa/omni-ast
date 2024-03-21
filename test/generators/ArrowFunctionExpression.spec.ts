@@ -4,7 +4,6 @@ import {
   builders as b,
   cleanAST,
   generate,
-  parseAST,
   simplify,
 } from "../../src";
 import { describe, expect, it } from "vitest";
@@ -16,7 +15,7 @@ const simpleParse = pipe(acornParse, (x) => x.body[0], cleanAST, simplify);
 
 describe("ArrowFunctionExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `(x, y) => x({ value: y })`;
 

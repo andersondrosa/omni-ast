@@ -1,15 +1,15 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, generate } from "../../src";
+import { generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/generators";
+import { buildersGenerate } from "../../src/buildersGenerate";
 
-describe("DoWhileStatement", () => {
+describe("WhileStatement", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
-    const script = `let i = 0; do { i++; } while (i < 100)`;
+    const script = `let i = 0; while (i < 100) { i++; }`;
 
     const AST = cleanAST(acornParse(script));
 
@@ -27,11 +27,11 @@ describe("DoWhileStatement", () => {
           b.variableDeclaration("let", [
             b.variableDeclarator(b.identifier("i"), b.literal(0))
           ]), 
-          b.doWhileStatement(
+          b.whileStatement(
+            b.binaryExpression("<", b.identifier("i"), b.literal(100)), 
             b.blockStatement([
               b.expressionStatement(b.updateExpression("++", b.identifier("i")))
-            ]), 
-            b.binaryExpression("<", b.identifier("i"), b.literal(100))
+            ])
           )
         ])
     `.replace(/\n\s+/g, "")
@@ -42,8 +42,6 @@ describe("DoWhileStatement", () => {
     expect(evaluatedAST).toMatchObject(AST);
 
     const evaluatedCode = generate(evaluatedAST);
-
-    console.log(evaluatedCode);
 
     expect(evaluatedCode).toMatchObject(code);
   });

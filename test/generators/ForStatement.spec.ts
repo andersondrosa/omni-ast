@@ -1,13 +1,13 @@
 import { acornParse } from "../utils/acornParse";
-import { builder, generate } from "../../src";
+import { generate } from "../../src";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/generators";
+import { buildersGenerate } from "../../src/buildersGenerate";
 
 describe("DoWhileStatement", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `for(let i = 0; i < 10; i++) { 
       console.log("iteration:", i); 

@@ -16,7 +16,7 @@ const {
 
 describe("SwitchStatement", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `switch(true) { 
       case true: 

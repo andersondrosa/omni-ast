@@ -1,14 +1,13 @@
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
-import { builder, generate } from "../../src";
-import { buildersGenerate } from "../../src/generators";
 import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
+import { buildersGenerate } from "../../src/buildersGenerate";
 
 describe("Test all expressions", () => {
   //
-  it("Should works", async () => {
+  it("Should generate code correctly", async () => {
     //
     const script = fs.readFileSync(__dirname + "/example.js").toString();
 

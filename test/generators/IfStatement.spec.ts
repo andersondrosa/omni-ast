@@ -1,32 +1,19 @@
 import { acornParse } from "../utils/acornParse";
-import { builders, cleanAST, generate } from "../../src";
+import { builders as b, cleanAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 
-const {
-  blockStatement,
-  ifStatement,
-  expressionStatement,
-  callExpression,
-  identifier,
-  lit,
-  binaryExpression,
-  variableDeclaration,
-  variableDeclarator,
-  conditionalExpression,
-} = builders;
-
 describe("IfStatement", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `if (x < 11) { console.log("ok"); }`;
 
-    const ast = ifStatement(
-      binaryExpression("<", identifier("x"), lit(11)),
-      blockStatement([
-        expressionStatement(
-          callExpression(identifier("console.log"), [lit("ok")])
+    const ast = b.ifStatement(
+      b.binaryExpression("<", b.identifier("x"), b.lit(11)),
+      b.blockStatement([
+        b.expressionStatement(
+          b.callExpression(b.identifier("console.log"), [b.lit("ok")])
         ),
       ])
     );
@@ -42,13 +29,13 @@ describe("IfStatement", () => {
 
     const AST = cleanAST(acornParse(script)).body[0];
 
-    const ast = variableDeclaration("const", [
-      variableDeclarator(
-        identifier("fooIsBar"),
-        conditionalExpression(
-          binaryExpression("==", identifier("foo"), lit("bar")),
-          lit(true),
-          lit(false)
+    const ast = b.variableDeclaration("const", [
+      b.variableDeclarator(
+        b.identifier("fooIsBar"),
+        b.conditionalExpression(
+          b.binaryExpression("==", b.identifier("foo"), b.lit("bar")),
+          b.lit(true),
+          b.lit(false)
         )
       ),
     ]);

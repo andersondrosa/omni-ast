@@ -5,7 +5,7 @@ import { tokenizer } from "../utils/tokenizer";
 
 describe("MemberExpression", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `foo.bar`;
 

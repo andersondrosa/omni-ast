@@ -4,13 +4,13 @@ import { cleanAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/generators";
+import { buildersGenerate } from "../../src/buildersGenerate";
 
 const log = true;
 
 describe("UnaryExpression", () => {
   //
-  it("Should works", async () => {
+  it("Should generate code correctly", async () => {
     //
     const script = `{
       console.log(++prefixIncrement);

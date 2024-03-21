@@ -1,8 +1,5 @@
-import { acornParse } from "../utils/acornParse";
-import { builders } from "../../src";
-import { cleanAST } from "../../src/CleanAST";
+import { builders, generate } from "../../src";
 import { describe, expect, it } from "vitest";
-import { generate } from "../../src/generators";
 import { tokenizer } from "../utils/tokenizer";
 
 const {
@@ -19,7 +16,7 @@ const {
 
 describe("TryStatement", () => {
   //
-  it("Should works", () => {
+  it("Should generate code correctly", () => {
     //
     const script = `try {
       foo.bar();
