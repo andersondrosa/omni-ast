@@ -75,16 +75,17 @@ export const arrayPattern = (elements: Array<Pattern | null>): ArrayPattern => {
 export const arrowFunctionExpression = (
   params: Pattern[],
   body: Expression | BlockStatement,
-  async?: boolean
+  async: boolean = false,
+  generator: boolean = false
 ): ArrowFunctionExpression => {
-  const node = {
+  return {
     type: "ArrowFunctionExpression",
+    expression: body.type != "BlockStatement",
+    generator,
+    async,
     params,
     body,
-  } as ArrowFunctionExpression;
-  if (async) node.async = true;
-  if (body.type != "BlockStatement") node.expression = true;
-  return node;
+  };
 };
 /* -------------------------------------------------------------------------- */
 export const assignmentExpression = (
@@ -98,12 +99,18 @@ export const assignmentExpression = (
 export const assignmentProperty = (
   key: Expression,
   value?: Pattern,
-  shorthand?: Boolean
+  shorthand: boolean = false,
+  computed: boolean = false
 ): AssignmentProperty => {
-  const node = { type: "Property", key, kind: "init" } as AssignmentProperty;
-  if (value) node.value = value;
-  if (shorthand) node.shorthand = Boolean(shorthand);
-  return node;
+  return {
+    type: "Property",
+    key,
+    kind: "init",
+    value,
+    shorthand,
+    computed,
+    method: false,
+  };
 };
 /* -------------------------------------------------------------------------- */
 export const awaitExpression = (
@@ -124,23 +131,23 @@ export const blockStatement = (body: Statement[]): BlockStatement => {
   return { type: "BlockStatement", body };
 };
 /* -------------------------------------------------------------------------- */
-export const breakStatement = (label?: Identifier | null): BreakStatement => {
-  if (label) return { type: "BreakStatement", label };
-  return { type: "BreakStatement" };
+export const breakStatement = (
+  label: Identifier | null = null
+): BreakStatement => {
+  return { type: "BreakStatement", label };
 };
 /* -------------------------------------------------------------------------- */
 export const callExpression = (
   callee,
   args: Array<Expression | SpreadElement>,
-  optional?: boolean
+  optional: boolean = false
 ): SimpleCallExpression => {
-  const node: SimpleCallExpression = {
+  return {
     type: "CallExpression",
     callee,
     arguments: args,
-    optional: optional || false,
+    optional,
   };
-  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const catchClause = (
@@ -197,16 +204,15 @@ export const forOfStatement = (
   left: Pattern | VariableDeclaration,
   right: Expression,
   body: Statement,
-  _await?: boolean
+  _await: boolean = false
 ): ForOfStatement => {
-  const node: ForOfStatement = {
+  return {
     type: "ForOfStatement",
     body,
     left,
     right,
-    await: _await || false,
+    await: _await,
   };
-  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const forStatement = (
@@ -222,28 +228,35 @@ export const functionDeclaration = (
   id: Identifier,
   params: Pattern[],
   body: BlockStatement,
-  async?: boolean
+  generator: boolean = false,
+  async: boolean = false
 ): FunctionDeclaration => {
-  const node: FunctionDeclaration = {
+  return {
     type: "FunctionDeclaration",
     id,
     params,
     body,
+    generator,
+    async,
   };
-  if (async === true) node.async = async;
-  return node;
 };
 /* -------------------------------------------------------------------------- */
 export const functionExpression = (
-  id: Identifier | null | undefined,
+  id: Identifier | null | undefined = null,
   params: Pattern[],
   body: BlockStatement,
-  async?: boolean | undefined
+  async: boolean = false,
+  generator: boolean = false
 ): FunctionExpression => {
-  const node: FunctionExpression = { type: "FunctionExpression", params, body };
-  if (id) node.id = id;
-  if (async == true) node.async = async;
-  return node;
+  return {
+    type: "FunctionExpression",
+    id,
+    params,
+    body,
+    async,
+    generator,
+    // expression: false,
+  };
 };
 /* -------------------------------------------------------------------------- */
 export const identifier = (name: string): Identifier => {
@@ -253,11 +266,9 @@ export const identifier = (name: string): Identifier => {
 export const ifStatement = (
   test: Expression,
   consequent: Statement,
-  alternate?: Statement | null | undefined
+  alternate: Statement | null | undefined = null
 ): IfStatement => {
-  const node: IfStatement = { type: "IfStatement", test, consequent };
-  if (node) node.alternate = alternate;
-  return node;
+  return { type: "IfStatement", test, consequent, alternate };
 };
 /* -------------------------------------------------------------------------- */
 export const logicalExpression = (
@@ -303,17 +314,10 @@ export const literal = (
 export const memberExpression = (
   object,
   property,
-  computed?: boolean | null,
-  optional?: boolean | null
+  computed: boolean = false,
+  optional: boolean = false
 ): MemberExpression => {
-  const node: MemberExpression = {
-    type: "MemberExpression",
-    object,
-    property,
-    computed: computed || false,
-    optional: optional || false,
-  };
-  return node;
+  return { type: "MemberExpression", object, property, computed, optional };
 };
 /* -------------------------------------------------------------------------- */
 export const newExpression = (
@@ -342,11 +346,17 @@ export const program = (body: Statement[]): Program => {
 export const property = (
   key: Expression,
   value: Expression | Pattern | AssignmentProperty,
-  shorthand?: boolean
+  shorthand: boolean = false,
+  computed: boolean = false
 ): Property => {
-  const node: Property = { type: "Property", key, kind: "init", value };
-  if (shorthand) node.shorthand = shorthand;
-  return node;
+  return {
+    type: "Property",
+    shorthand,
+    computed,
+    key,
+    value,
+    kind: "init",
+  };
 };
 /* -------------------------------------------------------------------------- */
 export const returnStatement = (
@@ -371,9 +381,9 @@ export const switchStatement = (
 /* -------------------------------------------------------------------------- */
 export const templateElement = (
   value: { cooked?: string | null | undefined; raw: string },
-  tail?: boolean
+  tail: boolean = false
 ): TemplateElement => {
-  return { type: "TemplateElement", value, tail: tail || false };
+  return { type: "TemplateElement", value, tail };
 };
 /* -------------------------------------------------------------------------- */
 export const templateLiteral = (
@@ -390,11 +400,9 @@ export const throwStatement = (argument: Expression): ThrowStatement => {
 export const tryStatement = (
   block: BlockStatement,
   handler: CatchClause | null | undefined,
-  finalizer?: BlockStatement | null | undefined
+  finalizer: BlockStatement | null | undefined = null
 ): TryStatement => {
-  const node: TryStatement = { type: "TryStatement", block, handler };
-  if (finalizer) node.finalizer = finalizer;
-  return node;
+  return { type: "TryStatement", block, handler, finalizer };
 };
 /* -------------------------------------------------------------------------- */
 export const unaryExpression = (
@@ -407,15 +415,9 @@ export const unaryExpression = (
 export const updateExpression = (
   operator: UpdateOperator,
   argument: Expression,
-  prefix?: boolean
+  prefix: boolean = false
 ): UpdateExpression => {
-  const node = {
-    type: "UpdateExpression",
-    operator,
-    argument,
-  } as UpdateExpression;
-  if (prefix) node.prefix = Boolean(prefix);
-  return node;
+  return { type: "UpdateExpression", operator, argument, prefix };
 };
 /* -------------------------------------------------------------------------- */
 export const variableDeclaration = (
@@ -427,11 +429,9 @@ export const variableDeclaration = (
 /* -------------------------------------------------------------------------- */
 export const variableDeclarator = (
   id: Pattern,
-  init?: Expression | null
+  init: Expression = null
 ): VariableDeclarator => {
-  const node: VariableDeclarator = { type: "VariableDeclarator", id };
-  if (init) node.init = init;
-  return node;
+  return { type: "VariableDeclarator", id, init };
 };
 /* -------------------------------------------------------------------------- */
 export const whileStatement = (
@@ -442,9 +442,5 @@ export const whileStatement = (
 };
 
 /** ALIASES ================================================================= */
-export const lit = literal;
+
 export const json = jsonExpression;
-export const constantDeclaration = (id): VariableDeclaration =>
-  variableDeclaration("const", [variableDeclarator(identifier(id))]);
-export const letDeclaration = (id): VariableDeclaration =>
-  variableDeclaration("let", [variableDeclarator(identifier(id))]);

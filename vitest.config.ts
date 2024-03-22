@@ -1,8 +1,9 @@
 import { defineConfig } from "vitest/config";
 
 const exclude = [
-  // "./test/generators/**", //
+  "./tests/generators/**", //
   "./tests/integrity/**", //
+  // "./tests/defaults/**", //
 ];
 
 export default defineConfig({

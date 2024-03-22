@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { acornParse } from "./utils/acornParse";
+import { acornParse } from "../utils/acornParse";
 
 describe("", () => {
   //

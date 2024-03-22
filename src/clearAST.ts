@@ -1,38 +1,42 @@
 //
-const remove = ["start", "end", "generator", "expression"];
+const removeKeys = ["start", "end", "method"];
 
-const hideIfNil = [
-  "async",
-  "id",
-  "label",
-  "computed",
-  "optional",
-  "shorthand",
-  "prefix",
-  "method",
-];
+const exceptions = {
+  FunctionDeclaration: (key) => key == "expression",
+  FunctionExpression: (key) => key == "expression",
+  ArrowFunctionExpression: (key) => key == "id",
+};
 
 export function clearAST(ast): any {
   //
-  if (typeof ast != "object") throw Error("Invalid AST");
 
-  if (ast === null) return null;
-
-  const res = {};
-
-  if (Array.isArray(ast)) return ast.map(clearAST);
-
-  Object.entries(ast).forEach(([key, value]) => {
+  function clear(ast, visited = new WeakMap<object, boolean>()): any {
     //
-    if (remove.includes(key)) return;
+    if (ast === null) return null;
 
-    if (hideIfNil.includes(key) && !value) return;
+    if (typeof ast != "object") throw Error("Invalid AST");
 
-    if (typeof value != "object" || value instanceof RegExp || value === null)
-      return (res[key] = value);
+    if (visited.has(ast)) throw new Error("Detected a circular AST reference");
+    visited.set(ast, true);
 
-    res[key] = clearAST(value);
-  });
+    const res = {};
 
-  return res;
+    if (Array.isArray(ast)) return ast.map((x) => clear(x, visited));
+
+    Object.entries(ast).forEach(([key, value]) => {
+      //
+      if (removeKeys.includes(key)) return;
+      if (exceptions[ast.type]?.(key, value)) return;
+
+      if (typeof value != "object" || value instanceof RegExp || value === null)
+        return (res[key] = value);
+
+      res[key] = clear(value);
+    });
+
+    visited.delete(ast);
+
+    return res;
+  }
+  return clear(ast);
 }

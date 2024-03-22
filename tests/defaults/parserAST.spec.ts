@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { tokenizer } from "./utils/tokenizer";
-import { acornParse } from "./utils/acornParse";
+import { tokenizer } from "../utils/tokenizer";
+import { acornParse } from "../utils/acornParse";
 import {
   clearAST,
   simplify,
@@ -9,8 +9,7 @@ import {
   ast,
   json,
   generate,
-} from "../src";
-import { ArrowFunctionExpression, Pattern } from "../src/types";
+} from "../../src";
 
 const { identifier, lit } = builders;
 const b = builders;

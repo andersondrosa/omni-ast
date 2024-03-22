@@ -1,5 +1,5 @@
 import { generate } from "./codeGenerate";
-import { simplify } from "./parser";
+import { simplify } from "./parserAST";
 import { JsonTypes, ObjectExpression, Property } from "./types";
 
 export const jsonParseValue = (node: any) => {

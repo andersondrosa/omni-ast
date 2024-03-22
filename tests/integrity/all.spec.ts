@@ -1,6 +1,5 @@
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
-import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { buildersGenerate } from "../../src/buildersGenerate";

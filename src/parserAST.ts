@@ -1,8 +1,54 @@
+import { Node, Property } from "./types";
+import { identifier, objectExpression } from "./builders";
 import * as types from "./types";
 import * as b from "./builders";
 
+export function parseAST(jsonAst: Record<string, any>) {
+  //
+  const restore = (simpleAst: Record<string, any>) => {
+    //
+    if (typeof simpleAst != "object") throw Error("AST must be object");
+
+    if (Array.isArray(simpleAst)) return simpleAst.map(restore);
+
+    if (simpleAst.type == "JsonExpression") return fromJson(simpleAst.body);
+
+    return parsers[simpleAst.type](simpleAst);
+  };
+
+  const fromJson = (value) => {
+    //
+    if (typeof value != "object") return b.literal(value);
+
+    if (Array.isArray(value))
+      return { type: "ArrayExpression", elements: value.map(fromJson) };
+
+    if (value.type == "#AST") return restore(value.body);
+
+    const properties: Property[] = Object.entries(value).map(
+      ([key, value]: any) => ({
+        type: "Property",
+        key: identifier(key),
+        value:
+          typeof value != "object" || value === null
+            ? b.literal(value)
+            : fromJson(value),
+        computed: false,
+        kind: "init",
+        method: false,
+        shorthand: false,
+      })
+    );
+
+    return objectExpression(properties);
+  };
+
+  return restore(jsonAst);
+}
+
 export const parse = (n: types.Node | types.Node[]) => {
-  if (typeof n != "object") return;
+  if (typeof n != "object") return n;
+  if (n == null || n instanceof RegExp) return n;
   if (Array.isArray(n)) return n.map(parse);
   return parsers[n.type](n);
 };
@@ -13,11 +59,16 @@ export const parsers = {
   ArrayPattern: (n: types.ArrayPattern) =>
     b.arrayPattern(parse(n.elements || [])),
   ArrowFunctionExpression: (n: types.ArrowFunctionExpression) =>
-    b.arrowFunctionExpression(parse(n.params || []), parse(n.body), n.async),
+    b.arrowFunctionExpression(
+      parse(n.params || []),
+      parse(n.body),
+      n.async || false,
+      n.generator || false
+    ),
   AssignmentExpression: (n: types.AssignmentExpression) =>
     b.assignmentExpression(n.operator, parse(n.left), parse(n.right)),
   AssignmentProperty: (n: types.AssignmentProperty) =>
-    b.assignmentProperty(parse(n.key), parse(n.value), n.shorthand),
+    b.assignmentProperty(parse(n.key), parse(n.value), n.shorthand || false),
   AwaitExpression: (n: types.AwaitExpression) =>
     b.awaitExpression(parse(n.argument)),
   BinaryExpression: (n: types.BinaryExpression) =>
@@ -26,7 +77,11 @@ export const parsers = {
     b.blockStatement(parse(n.body || [])),
   BreakStatement: (n: types.BreakStatement) => b.breakStatement(parse(n.label)),
   CallExpression: (n: types.SimpleCallExpression) =>
-    b.callExpression(parse(n.callee), parse(n.arguments || []), n.optional),
+    b.callExpression(
+      parse(n.callee),
+      parse(n.arguments || []),
+      n.optional || false
+    ),
   CatchClause: (n: types.CatchClause) =>
     b.catchClause(parse(n.param || []), parse(n.body)),
   ChainExpression: (n: types.ChainExpression) =>
@@ -47,7 +102,12 @@ export const parsers = {
   ForInStatement: (n: types.ForInStatement) =>
     b.forInStatement(parse(n.left), parse(n.right), parse(n.body)),
   ForOfStatement: (n: types.ForOfStatement) =>
-    b.forOfStatement(parse(n.left), parse(n.right), parse(n.body), n.await),
+    b.forOfStatement(
+      parse(n.left),
+      parse(n.right),
+      parse(n.body),
+      n.await || false
+    ),
   ForStatement: (n: types.ForStatement) =>
     b.forStatement(
       parse(n.init),
@@ -60,14 +120,15 @@ export const parsers = {
       parse(n.id),
       parse(n.params || []),
       parse(n.body),
-      n.async
+      n.generator || undefined,
+      n.async || undefined
     ),
   FunctionExpression: (n: types.FunctionExpression) =>
     b.functionExpression(
       parse(n.id),
       parse(n.params || []),
       parse(n.body),
-      n.async
+      n.async || undefined
     ),
   Identifier: (n: types.Identifier) => b.identifier(n.name),
   IfStatement: (n: types.IfStatement) =>
@@ -91,7 +152,12 @@ export const parsers = {
     b.objectPattern(parse(n.properties || [])),
   Program: (n: types.Program) => b.program(parse(n.body)),
   Property: (n: types.Property) =>
-    b.property(parse(n.key), parse(n.value), n.shorthand),
+    b.property(
+      parse(n.key),
+      parse(n.value),
+      n.shorthand || false,
+      n.computed || false
+    ),
   ReturnStatement: (n: types.ReturnStatement) =>
     b.returnStatement(parse(n.argument)),
   SwitchCase: (n: types.SwitchCase) =>
@@ -99,7 +165,7 @@ export const parsers = {
   SwitchStatement: (n: types.SwitchStatement) =>
     b.switchStatement(parse(n.discriminant), parse(n.cases)),
   TemplateElement: (n: types.TemplateElement) =>
-    b.templateElement(n.value, n.tail),
+    b.templateElement(n.value, n.tail || false),
   TemplateLiteral: (n: types.TemplateLiteral) =>
     b.templateLiteral(parse(n.quasis), parse(n.expressions)),
   ThrowStatement: (n: types.ThrowStatement) =>

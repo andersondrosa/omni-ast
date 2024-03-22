@@ -40,7 +40,7 @@ export const buildersGenerate = (prefix = "b") => {
     let has = false;
     params.reverse().forEach((x) => {
       if (x === undefined) {
-        if (has) args.push("null");
+        if (has) args.push("false");
       } else {
         args.push(build(x, parent));
         has = true;
@@ -65,7 +65,13 @@ export const buildersGenerate = (prefix = "b") => {
     AssignmentExpression: (n: Types.AssignmentExpression, parent: Node) =>
       helper(n, "assignmentExpression", n.operator, n.left, n.right),
     AssignmentProperty: (n: Types.AssignmentProperty, parent: Node) =>
-      helper(n, "assignmentProperty", n.key, n.value, n.shorthand),
+      helper(
+        n,
+        "assignmentProperty",
+        n.key,
+        n.value || undefined,
+        n.shorthand || undefined
+      ),
     AwaitExpression: (n: Types.AwaitExpression, parent: Node) =>
       helper(n, "awaitExpression", n.argument),
     BinaryExpression: (n: Types.BinaryExpression, parent: Node) =>
@@ -110,6 +116,7 @@ export const buildersGenerate = (prefix = "b") => {
         n.id,
         n.params,
         n.body,
+        n.generator || undefined,
         n.async || undefined
       ),
     FunctionExpression: (n: Types.FunctionExpression, parent: Node) =>
@@ -119,6 +126,7 @@ export const buildersGenerate = (prefix = "b") => {
         n.id || undefined,
         n.params,
         n.body,
+        n.generator || undefined,
         n.async || undefined
       ),
     Identifier: (n: Types.Identifier, parent: Node) =>
@@ -155,10 +163,23 @@ export const buildersGenerate = (prefix = "b") => {
       parent: Types.ObjectExpression | Types.ObjectPattern
     ) => {
       if (parent.type === "ObjectPattern") {
-        return helper(n, "assignmentProperty", n.key, n.value, n.shorthand);
+        return helper(
+          n,
+          "assignmentProperty",
+          n.key,
+          n.value,
+          n.shorthand || undefined
+        );
       }
       if (parent.type === "ObjectExpression")
-        return helper(n, "property", n.key, n.value, n.shorthand);
+        return helper(
+          n,
+          "property",
+          n.key,
+          n.value,
+          n.shorthand || undefined,
+          n.computed || undefined
+        );
     },
     ReturnStatement: (n: Types.ReturnStatement, parent: Node) =>
       helper(n, "returnStatement", n.argument),
@@ -195,7 +216,7 @@ export const buildersGenerate = (prefix = "b") => {
     VariableDeclaration: (n: Types.VariableDeclaration, parent: Node) =>
       helper(n, "variableDeclaration", n.kind, n.declarations),
     VariableDeclarator: (n: Types.VariableDeclarator, parent: Node) =>
-      helper(n, "variableDeclarator", n.id, n.init),
+      helper(n, "variableDeclarator", n.id, n.init || undefined),
     WhileStatement: (n: Types.WhileStatement, parent: Node) =>
       helper(n, "whileStatement", n.test, n.body),
   };
