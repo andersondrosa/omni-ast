@@ -5,25 +5,51 @@ import * as b from "./builders";
 
 export function parseAST(jsonAst: Record<string, any>) {
   //
-  const restore = (simpleAst: Record<string, any>) => {
-    //
+  const restore = (
+    simpleAst: Record<string, any>,
+    visited = new WeakMap<object, boolean>()
+  ) => {
     if (typeof simpleAst != "object") throw Error("AST must be object");
 
-    if (Array.isArray(simpleAst)) return simpleAst.map(restore);
+    if (visited.has(simpleAst))
+      throw new Error("Detected a circular AST reference");
 
-    if (simpleAst.type == "JsonExpression") return fromJson(simpleAst.body);
+    visited.set(simpleAst, true);
 
+    if (Array.isArray(simpleAst)) {
+      visited.delete(simpleAst);
+      return simpleAst.map((x) => restore(x, visited));
+    }
+
+    if (simpleAst.type == "JsonExpression") {
+      visited.delete(simpleAst);
+      return fromJson(simpleAst.body);
+    }
+
+    visited.delete(simpleAst);
     return parsers[simpleAst.type](simpleAst);
   };
 
-  const fromJson = (value) => {
+  const fromJson = (value, visited = new WeakMap<object, boolean>()) => {
     //
+    if (visited.has(value))
+      throw new Error("Detected a circular AST reference");
+
     if (typeof value != "object") return b.literal(value);
 
-    if (Array.isArray(value))
-      return { type: "ArrayExpression", elements: value.map(fromJson) };
+    if (Array.isArray(value)) {
+      const response = {
+        type: "ArrayExpression",
+        elements: value.map((x) => fromJson(x, visited)),
+      };
+      visited.delete(value);
+      return response;
+    }
 
-    if (value.type == "#AST") return restore(value.body);
+    if (value.type == "#AST") {
+      visited.delete(value);
+      return restore(value.body);
+    }
 
     const properties: Property[] = Object.entries(value).map(
       ([key, value]: any) => ({
@@ -40,6 +66,7 @@ export function parseAST(jsonAst: Record<string, any>) {
       })
     );
 
+    visited.delete(value);
     return objectExpression(properties);
   };
 

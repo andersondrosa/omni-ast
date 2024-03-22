@@ -164,6 +164,7 @@ export const parsers = {
   Literal: (n: t.Literal): t.SimpleLiteral => ({
     type: "Literal",
     value: n.value as any,
+    raw: n.raw,
   }),
   LogicalExpression: (n: t.LogicalExpression): t.SimpleLogicalExpression => ({
     type: "LogicalExpression",

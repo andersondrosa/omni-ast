@@ -7,7 +7,7 @@ const script = fs.readFileSync("./tests/example.js").toString();
 
 describe("Simplify AST", () => {
   //
-  it.skip("Test 1", () => {
+  it("Test 1", () => {
     const script = `(x, y) => x?.({ ["a"]:y })`;
 
     const AST = clearAST(acornParse(script).body[0]);

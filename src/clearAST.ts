@@ -9,7 +9,6 @@ const exceptions = {
 
 export function clearAST(ast): any {
   //
-
   function clear(ast, visited = new WeakMap<object, boolean>()): any {
     //
     if (ast === null) return null;

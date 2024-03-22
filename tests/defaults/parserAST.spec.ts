@@ -11,14 +11,14 @@ import {
   generate,
 } from "../../src";
 
-const { identifier, lit } = builders;
+const { identifier } = builders;
 const b = builders;
 
 const log = (x) => console.dir(x, { depth: 20 });
 
 describe("Parsers test", () => {
   //
-  it.skip("Should test simplified AST x complex AST", () => {
+  it("Should test simplified AST x complex AST", () => {
     //
     const script = `({ 
       json: "here", 
@@ -71,7 +71,7 @@ describe("Parsers test", () => {
                   {
                     type: "Property",
                     key: identifier("json"),
-                    value: lit("again"),
+                    value: b.literal("again"),
                     computed: false,
                     kind: "init",
                     method: false,
@@ -90,7 +90,7 @@ describe("Parsers test", () => {
     });
   });
 
-  it.skip("Hybrid", () => {
+  it("Hybrid", () => {
     const script = `({ 
       json: "here", 
       jsonFunction: jsAgain({ json: "again" }) 
@@ -120,7 +120,7 @@ describe("Parsers test", () => {
     const AST = b.assignmentExpression(
       "=",
       b.identifier("script"),
-      b.arrowFunctionExpression([], b.lit("ok"))
+      b.arrowFunctionExpression([], b.literal("ok"))
     );
 
     const simpleAST = simplify(AST);
@@ -140,7 +140,7 @@ describe("Parsers test", () => {
     expect(parseAST(simpleAST)).toMatchObject(AST);
   });
 
-  it.skip("FunctionExpression", () => {
+  it("FunctionExpression", () => {
     //
     const AST = b.functionExpression(
       b.identifier("name"),
@@ -179,6 +179,7 @@ describe("Parsers test", () => {
 
     const simpleAST = simplify(AST);
 
+    log(simpleAST);
     expect(simpleAST).toEqual({
       type: "MemberExpression",
       object: { type: "Identifier", name: "name" },
