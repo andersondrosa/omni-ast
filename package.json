@@ -1,6 +1,6 @@
 {
   "name": "omni-ast",
-  "version": "0.0.0",
+  "version": "0.0.0-dev",
   "type": "module",
   "main": "dist/index.js",
   "author": "Anderson D. Rosa <andersondrosa@outlook.com>",
