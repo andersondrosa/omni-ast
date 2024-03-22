@@ -1,7 +1,7 @@
 import * as b from "../../src/builders";
 import fs from "fs";
 import { acornParse } from "../utils/acornParse";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 
 import { clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
@@ -26,7 +26,7 @@ describe("Test all expressions", () => {
 
     expect(generatedCode).toMatchSnapshot();
 
-    const { build } = buildersGenerate("b");
+    const { build } = generateBuilders("b");
 
     const generatedBuilders = build(AST);
 

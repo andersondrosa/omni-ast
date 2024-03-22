@@ -2,7 +2,7 @@ import fs from "fs";
 import { acornParse } from "../utils/acornParse";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 import { builders, clearAST, generate } from "../../src";
 
 describe("Test all expressions", () => {
@@ -18,7 +18,7 @@ describe("Test all expressions", () => {
     const code = generate(AST);
     // console.log(code);
 
-    // const { buildFunction, evaluate } = buildersGenerate();
+    // const { buildFunction, evaluate } = generateBuilders();
     // const generatedFunction = buildFunction(AST);
     // console.log(generatedFunction);
 

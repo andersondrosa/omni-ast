@@ -2,7 +2,7 @@ import * as Types from "./types";
 import { BaseNode } from "./types";
 import * as builder from "./builders";
 
-export const buildersGenerate = (prefix = "b") => {
+export const generateBuilders = (prefix = "b") => {
   //
   function TextWrapper(text) {
     this.text = text;

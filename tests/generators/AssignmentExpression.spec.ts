@@ -2,7 +2,7 @@ import { acornParse } from "../utils/acornParse";
 import { clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 
 describe("AssignmentExpression", () => {
   //
@@ -16,7 +16,7 @@ describe("AssignmentExpression", () => {
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const { buildFunction, evaluate } = buildersGenerate();
+    const { buildFunction, evaluate } = generateBuilders();
 
     const generatedFunction = buildFunction(AST);
 

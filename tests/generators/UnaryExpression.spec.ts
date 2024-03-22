@@ -3,7 +3,7 @@ import { clearAST, generate } from "../../src";
 import { describe, expect, it } from "vitest";
 import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 
 const log = true;
 
@@ -19,7 +19,7 @@ describe("UnaryExpression", () => {
     const AST = clearAST(acornParse(script)).body[0];
     // dir(AST);
 
-    const { build, buildFunction, evaluate } = buildersGenerate();
+    const { build, buildFunction, evaluate } = generateBuilders();
 
     const generatedBuilders = buildFunction(AST);
 

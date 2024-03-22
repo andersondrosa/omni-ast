@@ -2,7 +2,7 @@ import { acornParse } from "../utils/acornParse";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { clearAST, generate } from "../../src";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 
 describe("Literal", () => {
   //
@@ -12,7 +12,7 @@ describe("Literal", () => {
 
     const AST = clearAST(acornParse(script)).body[0];
 
-    const { buildFunction, evaluate } = buildersGenerate();
+    const { buildFunction, evaluate } = generateBuilders();
 
     const fn = buildFunction(AST);
 
@@ -51,7 +51,7 @@ describe("Literal", () => {
 
     const AST = clearAST(acornParse(script)).body[0];
 
-    const { buildFunction, evaluate } = buildersGenerate();
+    const { buildFunction, evaluate } = generateBuilders();
 
     const fn = buildFunction(AST);
 

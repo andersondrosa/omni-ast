@@ -1,9 +1,9 @@
 import { acornParse } from "../utils/acornParse";
 import { clearAST } from "../../src";
 import { describe, expect, it } from "vitest";
-import { buildersGenerate } from "../../src/buildersGenerate";
+import { generateBuilders } from "../../src/generateBuilders";
 
-const { buildFunction, evaluate } = buildersGenerate();
+const { buildFunction, evaluate } = generateBuilders();
 
 describe("Clean AST", () => {
   //
