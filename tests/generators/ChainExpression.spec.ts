@@ -6,7 +6,7 @@ const {
   assignmentExpression,
   chainExpression,
   identifier,
-  lit,
+  literal,
   memberExpression,
 } = builders;
 
@@ -34,7 +34,7 @@ describe("ChainExpression", () => {
             true,
             true
           ),
-          lit("strict"),
+          literal("strict"),
           true
         )
       )

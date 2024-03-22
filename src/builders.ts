@@ -59,7 +59,10 @@ import {
   RestElement,
 } from "./types";
 
-export const ast = (body: Node) => ({ type: "#AST", body });
+export const ast = (body: Node, name = null) => ({
+  "#ast": String(name || "current"),
+  body,
+});
 
 // BUILDERS
 export const arrayExpression = (
@@ -340,7 +343,7 @@ export const objectPattern = (
 };
 /* -------------------------------------------------------------------------- */
 export const program = (body: Statement[]): Program => {
-  return { type: "Program", body, sourceType: "script" };
+  return { type: "Program", body, sourceType: "module" };
 };
 /* -------------------------------------------------------------------------- */
 export const property = (

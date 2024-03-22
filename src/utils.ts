@@ -66,7 +66,6 @@ export function find(node, match) {
 export function mutate(object, match, modifier) {
   const findAndModify = (object) => {
     if (isObject(object)) {
-      console.log(typeof match);
       if (match(object)) return modifier(object);
       const newObj = {};
       let changed = false;

@@ -10,10 +10,10 @@ describe("IfStatement", () => {
     const script = `if (x < 11) { console.log("ok"); }`;
 
     const ast = b.ifStatement(
-      b.binaryExpression("<", b.identifier("x"), b.lit(11)),
+      b.binaryExpression("<", b.identifier("x"), b.literal(11)),
       b.blockStatement([
         b.expressionStatement(
-          b.callExpression(b.identifier("console.log"), [b.lit("ok")])
+          b.callExpression(b.identifier("console.log"), [b.literal("ok")])
         ),
       ])
     );
@@ -33,9 +33,9 @@ describe("IfStatement", () => {
       b.variableDeclarator(
         b.identifier("fooIsBar"),
         b.conditionalExpression(
-          b.binaryExpression("==", b.identifier("foo"), b.lit("bar")),
-          b.lit(true),
-          b.lit(false)
+          b.binaryExpression("==", b.identifier("foo"), b.literal("bar")),
+          b.literal(true),
+          b.literal(false)
         )
       ),
     ]);

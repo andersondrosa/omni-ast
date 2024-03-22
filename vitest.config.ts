@@ -1,8 +1,8 @@
 import { defineConfig } from "vitest/config";
 
 const exclude = [
-  "./tests/generators/**", //
-  "./tests/integrity/**", //
+  // "./tests/generators/**", //
+  // "./tests/integrity/**", //
   // "./tests/defaults/**", //
 ];
 

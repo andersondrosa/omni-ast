@@ -7,7 +7,7 @@ const {
   expressionStatement,
   callExpression,
   identifier,
-  lit,
+  literal,
   tryStatement,
   memberExpression,
   throwStatement,
@@ -60,7 +60,7 @@ describe("TryStatement", () => {
     }`;
 
     const throwError = throwStatement(
-      callExpression(identifier("Error"), [lit("Test message")])
+      callExpression(identifier("Error"), [literal("Test message")])
     );
 
     const AST = tryStatement(

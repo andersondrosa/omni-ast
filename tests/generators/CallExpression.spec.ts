@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { builders as b, clearAST, generate } from "../../src";
 
-describe.skip("CallExpression", () => {
+describe("CallExpression", () => {
   //
   it("Should generate code correctly", () => {
     //

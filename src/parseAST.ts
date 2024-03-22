@@ -2,6 +2,7 @@ import { Node, Property } from "./types";
 import { identifier, objectExpression } from "./builders";
 import * as types from "./types";
 import * as b from "./builders";
+import { jsonParseValue } from "./JsonGenerate";
 
 export function parseAST(jsonAst: Record<string, any>) {
   //
@@ -47,7 +48,7 @@ export function parseAST(jsonAst: Record<string, any>) {
       return response;
     }
 
-    if (value.type == "#AST") {
+    if (value.hasOwnProperty("#ast")) {
       visited.delete(value);
       return restore(value.body);
     }
@@ -161,7 +162,8 @@ export const parsers = {
   Identifier: (n: types.Identifier) => b.identifier(n.name),
   IfStatement: (n: types.IfStatement) =>
     b.ifStatement(parse(n.test), parse(n.consequent), parse(n.alternate)),
-  JsonExpression: (n: types.JsonExpression) => b.jsonExpression(n.body),
+  JsonExpression: (n: types.JsonExpression) =>
+    b.objectExpression(jsonParseValue(n.body)),
   Literal: (n: types.Literal) => b.literal(n.value as any),
   LogicalExpression: (n: types.LogicalExpression) =>
     b.logicalExpression(n.operator, parse(n.left), parse(n.right)),

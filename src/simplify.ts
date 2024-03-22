@@ -5,7 +5,7 @@ import { pick } from "./utils";
 const has = (n) => {
   const r = {};
   for (const i in n) {
-    if (n[i] == false) continue;
+    if (n[i] == false || n[i] == undefined) continue;
     r[i] = n[i];
   }
   return r;

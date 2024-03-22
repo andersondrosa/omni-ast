@@ -1,14 +1,13 @@
 import { acornParse } from "../utils/acornParse";
 import { builders, generate } from "../../src";
-import { clearAST } from "../../src/CleanAST";
 import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
+import { literal } from "../../src/builders";
 
 const {
   expressionStatement,
   callExpression,
   identifier,
-  lit,
   switchStatement,
   switchCase,
   assignmentExpression,
@@ -26,18 +25,18 @@ describe("SwitchStatement", () => {
         bar = "baz";
     }`;
 
-    const ast = switchStatement(lit(true), [
-      switchCase(lit(true), [
+    const ast = switchStatement(literal(true), [
+      switchCase(literal(true), [
         expressionStatement(
-          callExpression(identifier("console.log"), [lit("ok")])
+          callExpression(identifier("console.log"), [literal("ok")])
         ),
       ]),
-      switchCase(lit(false), [
+      switchCase(literal(false), [
         expressionStatement(
-          assignmentExpression("=", identifier("foo"), lit("bar"))
+          assignmentExpression("=", identifier("foo"), literal("bar"))
         ),
         expressionStatement(
-          assignmentExpression("=", identifier("bar"), lit("baz"))
+          assignmentExpression("=", identifier("bar"), literal("baz"))
         ),
       ]),
     ]);

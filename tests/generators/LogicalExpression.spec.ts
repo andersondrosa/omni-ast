@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const {
   identifier,
-  lit,
+  literal,
   binaryExpression,
   variableDeclaration,
   variableDeclarator,
@@ -23,7 +23,7 @@ describe("LogicalExpression", () => {
         type: "LogicalExpression",
         left: {
           type: "LogicalExpression",
-          left: binaryExpression("==", identifier("foo"), lit("bar")),
+          left: binaryExpression("==", identifier("foo"), literal("bar")),
           operator: "&&",
           right: { type: "Literal", value: true, raw: "true" },
         },

@@ -7,7 +7,7 @@ import { buildersGenerate } from "../../src/buildersGenerate";
 
 const log = true;
 
-describe.skip("UnaryExpression", () => {
+describe("UnaryExpression", () => {
   //
   it("Should generate code correctly", async () => {
     //

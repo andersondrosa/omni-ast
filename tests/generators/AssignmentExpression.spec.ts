@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { tokenizer } from "../utils/tokenizer";
 import { buildersGenerate } from "../../src/buildersGenerate";
 
-describe.skip("AssignmentExpression", () => {
+describe("AssignmentExpression", () => {
   //
   it("Should generate code correctly", () => {
     //

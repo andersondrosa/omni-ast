@@ -1,37 +1,60 @@
 import { acornParse } from "../utils/acornParse";
-import { ast, builders as b, clearAST, generate, simplify } from "../../src";
+import { ast, builders as b, generate, simplify } from "../../src";
 import { describe, expect, it } from "vitest";
-import { pipe } from "ramda";
+import { propEq } from "ramda";
+import { mutate } from "../../src/utils";
+import { produce } from "immer";
 
 const log = (x) => console.dir(x, { depth: 20 });
-
-const simpleParse = pipe(acornParse, (x) => x.body[0]);
 
 describe("ArrowFunctionExpression", () => {
   //
   it("Should generate code correctly", () => {
     //
-    const script = `(x, y) => x({ value: y })`;
+    const script = `(x, y) => x({ "#json": true, value: y })`;
 
-    const AST = clearAST(simpleParse(script));
+    const AST = simplify(acornParse(script).body[0].expression);
 
-    log(AST);
+    const jsonAST = simplify({
+      type: "ArrowFunctionExpression",
+      params: [b.identifier("x"), b.identifier("y")],
+      body: b.callExpression(b.identifier("x"), [
+        b.json({ "#json": true, value: ast(b.identifier("y")) }),
+      ]),
+    });
 
-    // const jsonAST = {
-    //   type: "ArrowFunctionExpression",
-    //   params: [b.identifier("x"), b.identifier("y")],
-    //   body: {
-    //     type: "CallExpression",
-    //     callee: b.identifier("x"),
-    //     arguments: [b.json({ value: ast(b.identifier("y")) })],
-    //   },
-    // };
+    expect(jsonAST).toMatchObject(AST);
 
-    // log(jsonAST);
+    expect(generate(jsonAST)).toBe(script); // true
+  });
 
-    // expect(jsonAST).toMatchObject(AST.expression);
+  it("Should update functionality", () => {
+    //
+    const script = `({ deps, value }) => ({ "#json": "main", value })`;
 
-    // This generates a code and compares it with the code above
-    // expect(generate(jsonAST)).toBe(script); // true
+    const AST = simplify(acornParse(script));
+
+    const fn1 = eval(generate(AST));
+
+    const value1 = fn1({ deps: null, value: "foo" });
+
+    expect(value1).toEqual({ "#json": "main", value: "foo" });
+
+    let mutatedAST = mutate(AST, propEq("main", "#json"), (x) =>
+      produce(x, (draft) => {
+        draft.value = b.ast(
+          b.callExpression(b.identifier("deps.getName"), [x.value.body])
+        );
+      })
+    );
+
+    const fn2 = eval(generate(mutatedAST));
+
+    const value2 = fn2({
+      deps: { getName: (x) => x.toUpperCase() },
+      value: "bar",
+    });
+
+    expect(value2).toEqual({ "#json": "main", value: "BAR" });
   });
 });
