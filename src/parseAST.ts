@@ -26,8 +26,9 @@ export function parseAST(jsonAst: Record<string, any>) {
       return fromJson(simpleAst.body);
     }
 
+    const response = parsers[simpleAst.type](simpleAst);
     visited.delete(simpleAst);
-    return parsers[simpleAst.type](simpleAst);
+    return response;
   };
 
   const fromJson = (value, visited = new WeakMap<object, boolean>()) => {

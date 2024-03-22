@@ -1,0 +1,154 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Parsers test > Hybrid 1`] = `
+Node {
+  "end": 78,
+  "properties": [
+    Node {
+      "computed": false,
+      "end": 22,
+      "key": Node {
+        "end": 14,
+        "name": "json",
+        "start": 10,
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "start": 10,
+      "type": "Property",
+      "value": Node {
+        "end": 22,
+        "raw": "\\"here\\"",
+        "start": 16,
+        "type": "Literal",
+        "value": "here",
+      },
+    },
+    Node {
+      "computed": false,
+      "end": 71,
+      "key": Node {
+        "end": 43,
+        "name": "jsonFunction",
+        "start": 31,
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "method": false,
+      "shorthand": false,
+      "start": 31,
+      "type": "Property",
+      "value": Node {
+        "arguments": [
+          Node {
+            "end": 70,
+            "properties": [
+              Node {
+                "computed": false,
+                "end": 68,
+                "key": Node {
+                  "end": 59,
+                  "name": "json",
+                  "start": 55,
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "method": false,
+                "shorthand": false,
+                "start": 55,
+                "type": "Property",
+                "value": Node {
+                  "end": 68,
+                  "raw": "\\"again\\"",
+                  "start": 61,
+                  "type": "Literal",
+                  "value": "again",
+                },
+              },
+            ],
+            "start": 53,
+            "type": "ObjectExpression",
+          },
+        ],
+        "callee": Node {
+          "end": 52,
+          "name": "jsAgain",
+          "start": 45,
+          "type": "Identifier",
+        },
+        "end": 71,
+        "optional": false,
+        "start": 45,
+        "type": "CallExpression",
+      },
+    },
+  ],
+  "start": 1,
+  "type": "ObjectExpression",
+}
+`;
+
+exports[`Parsers test > Hybrid 2`] = `
+{
+  "properties": [
+    {
+      "computed": false,
+      "key": {
+        "name": "json",
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "shorthand": false,
+      "type": "Property",
+      "value": {
+        "raw": "\\"here\\"",
+        "type": "Literal",
+        "value": "here",
+      },
+    },
+    {
+      "computed": false,
+      "key": {
+        "name": "jsonFunction",
+        "type": "Identifier",
+      },
+      "kind": "init",
+      "shorthand": false,
+      "type": "Property",
+      "value": {
+        "arguments": [
+          {
+            "properties": [
+              {
+                "computed": false,
+                "key": {
+                  "name": "json",
+                  "type": "Identifier",
+                },
+                "kind": "init",
+                "shorthand": false,
+                "type": "Property",
+                "value": {
+                  "raw": "\\"again\\"",
+                  "type": "Literal",
+                  "value": "again",
+                },
+              },
+            ],
+            "type": "ObjectExpression",
+          },
+        ],
+        "callee": {
+          "name": "jsAgain",
+          "type": "Identifier",
+        },
+        "optional": false,
+        "type": "CallExpression",
+      },
+    },
+  ],
+  "type": "ObjectExpression",
+}
+`;

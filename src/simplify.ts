@@ -1,3 +1,4 @@
+import { ObjectExpressionToJSON, jsonParseValue } from "./JsonGenerate";
 import * as t from "./types";
 import { pick } from "./utils";
 
@@ -183,9 +184,9 @@ export const parsers = {
     callee: simplify(n.callee),
     arguments: simplify(n.arguments || []),
   }),
-  ObjectExpression: (n: t.ObjectExpression): t.SimpleObjectExpression => ({
-    type: "ObjectExpression",
-    properties: simplify(n.properties || []),
+  ObjectExpression: (n: t.ObjectExpression): t.JsonExpression => ({
+    type: "JsonExpression",
+    body: ObjectExpressionToJSON(n),
   }),
   ObjectPattern: (n: t.ObjectPattern): t.SimpleObjectPattern => ({
     type: "ObjectPattern",

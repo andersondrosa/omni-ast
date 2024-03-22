@@ -100,115 +100,8 @@ exports[`Test all expressions > Should generate code correctly 1`] = `
 
 exports[`Test all expressions > Should generate code correctly 2`] = `
 {
-  "type": "ExpressionStatement",
-}
-`;
-
-exports[`Test all expressions > Should generate code correctly 3`] = `""`;
-
-exports[`Test all expressions > Should generate code correctly 4`] = `"b.expressionStatement()"`;
-
-exports[`Test all expressions > Should works 1`] = `
-"(React, moment, toast, reactIcons, services) => {
-  const { useState, createElement } = React;
-  const {
-    bi: { BiChevronLeft },
-  } = reactIcons;
-  const UpdateItemService = services(\\"UpdateRoleService\\");
-
-  return function EditTableScreen({ item, model, goBackUrl }) {
-    const [name, setName] = useState(item.props.name);
-    const [text, setText] = useState(item.props.text);
-    const [saving, setSaving] = useState(false);
-
-    const handleClick = () => {
-      setSaving(true);
-
-      const promise = UpdateItemService(model.name, item.id, {
-        model: model.name,
-        props: { name, text },
-        tags: [],
-      }).finally(() => setSaving(false));
-
-      toast.promise(promise, {
-        pending: \\"Salvando dados...\\",
-        success: \\"Os dados foram salvos!\\",
-        error: \\"Não foi possível salvar a atualização\\",
-      });
-    };
-
-    return createElement(
-      \\"div\\",
-      { className: \\"h-screen px-4 py-8 max-w-xl m-auto\\" },
-      createElement(
-        \\"div\\",
-        { className: \\"bg-white border rounded py-6\\" },
-        createElement(
-          \\"div\\",
-          { className: \\"px-6 text-lg\\" },
-          \\"Editar \\",
-          model.label
-        ),
-        createElement(
-          \\"div\\",
-          { className: \\"p-4 flex flex-col gap-4\\" },
-          createElement(
-            \\"div\\",
-            null,
-            createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Nome\\"),
-            createElement(\\"input\\", {
-              type: \\"text\\",
-              className: \\"form-input\\",
-              value: name,
-              onChange: (e) => setName(e.target.value),
-            })
-          ),
-          createElement(
-            \\"div\\",
-            null,
-            createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Descrição\\"),
-            createElement(\\"textarea\\", {
-              className: \\"form-input\\",
-              value: text,
-              onChange: (e) => setText(e.target.value),
-              rows: 10,
-            })
-          )
-        ),
-        createElement(
-          \\"div\\",
-          { className: \\"px-6 flex items-center gap-3\\" },
-          createElement(
-            \\"div\\",
-            { className: \\"grow text-sm text-slate-500\\" },
-            moment(item.created_at).fromNow()
-          ),
-          createElement(
-            \\"a\\",
-            { className: \\"btn btn-default pl-1\\", href: goBackUrl },
-            createElement(BiChevronLeft, { size: 24 }),
-            \\" Voltar\\"
-          ),
-          createElement(
-            \\"button\\",
-            {
-              className: \\"btn btn-primary\\",
-              onClick: handleClick,
-              disabled: saving,
-            },
-            \\"Salvar alterações\\"
-          )
-        )
-      )
-    );
-  };
-};
-"
-`;
-
-exports[`Test all expressions > Should works 2`] = `
-{
   "expression": {
+    "async": false,
     "body": {
       "body": [
         {
@@ -217,6 +110,7 @@ exports[`Test all expressions > Should works 2`] = `
               "id": {
                 "properties": [
                   {
+                    "computed": false,
                     "key": {
                       "name": "useState",
                       "type": "Identifier",
@@ -230,6 +124,7 @@ exports[`Test all expressions > Should works 2`] = `
                     },
                   },
                   {
+                    "computed": false,
                     "key": {
                       "name": "createElement",
                       "type": "Identifier",
@@ -261,15 +156,18 @@ exports[`Test all expressions > Should works 2`] = `
               "id": {
                 "properties": [
                   {
+                    "computed": false,
                     "key": {
                       "name": "bi",
                       "type": "Identifier",
                     },
                     "kind": "init",
+                    "shorthand": false,
                     "type": "Property",
                     "value": {
                       "properties": [
                         {
+                          "computed": false,
                           "key": {
                             "name": "BiChevronLeft",
                             "type": "Identifier",
@@ -318,6 +216,7 @@ exports[`Test all expressions > Should works 2`] = `
                   "name": "services",
                   "type": "Identifier",
                 },
+                "optional": false,
                 "type": "CallExpression",
               },
               "type": "VariableDeclarator",
@@ -328,6 +227,7 @@ exports[`Test all expressions > Should works 2`] = `
         },
         {
           "argument": {
+            "async": false,
             "body": {
               "body": [
                 {
@@ -349,17 +249,21 @@ exports[`Test all expressions > Should works 2`] = `
                       "init": {
                         "arguments": [
                           {
+                            "computed": false,
                             "object": {
+                              "computed": false,
                               "object": {
                                 "name": "item",
                                 "type": "Identifier",
                               },
+                              "optional": false,
                               "property": {
                                 "name": "props",
                                 "type": "Identifier",
                               },
                               "type": "MemberExpression",
                             },
+                            "optional": false,
                             "property": {
                               "name": "name",
                               "type": "Identifier",
@@ -371,6 +275,7 @@ exports[`Test all expressions > Should works 2`] = `
                           "name": "useState",
                           "type": "Identifier",
                         },
+                        "optional": false,
                         "type": "CallExpression",
                       },
                       "type": "VariableDeclarator",
@@ -398,17 +303,21 @@ exports[`Test all expressions > Should works 2`] = `
                       "init": {
                         "arguments": [
                           {
+                            "computed": false,
                             "object": {
+                              "computed": false,
                               "object": {
                                 "name": "item",
                                 "type": "Identifier",
                               },
+                              "optional": false,
                               "property": {
                                 "name": "props",
                                 "type": "Identifier",
                               },
                               "type": "MemberExpression",
                             },
+                            "optional": false,
                             "property": {
                               "name": "text",
                               "type": "Identifier",
@@ -420,6 +329,7 @@ exports[`Test all expressions > Should works 2`] = `
                           "name": "useState",
                           "type": "Identifier",
                         },
+                        "optional": false,
                         "type": "CallExpression",
                       },
                       "type": "VariableDeclarator",
@@ -456,6 +366,7 @@ exports[`Test all expressions > Should works 2`] = `
                           "name": "useState",
                           "type": "Identifier",
                         },
+                        "optional": false,
                         "type": "CallExpression",
                       },
                       "type": "VariableDeclarator",
@@ -472,6 +383,7 @@ exports[`Test all expressions > Should works 2`] = `
                         "type": "Identifier",
                       },
                       "init": {
+                        "async": false,
                         "body": {
                           "body": [
                             {
@@ -487,6 +399,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "setSaving",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                               "type": "ExpressionStatement",
@@ -501,6 +414,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "init": {
                                     "arguments": [
                                       {
+                                        "async": false,
                                         "body": {
                                           "arguments": [
                                             {
@@ -513,21 +427,26 @@ exports[`Test all expressions > Should works 2`] = `
                                             "name": "setSaving",
                                             "type": "Identifier",
                                           },
+                                          "optional": false,
                                           "type": "CallExpression",
                                         },
                                         "expression": true,
+                                        "generator": false,
                                         "params": [],
                                         "type": "ArrowFunctionExpression",
                                       },
                                     ],
                                     "callee": {
+                                      "computed": false,
                                       "object": {
                                         "arguments": [
                                           {
+                                            "computed": false,
                                             "object": {
                                               "name": "model",
                                               "type": "Identifier",
                                             },
+                                            "optional": false,
                                             "property": {
                                               "name": "name",
                                               "type": "Identifier",
@@ -535,10 +454,12 @@ exports[`Test all expressions > Should works 2`] = `
                                             "type": "MemberExpression",
                                           },
                                           {
+                                            "computed": false,
                                             "object": {
                                               "name": "item",
                                               "type": "Identifier",
                                             },
+                                            "optional": false,
                                             "property": {
                                               "name": "id",
                                               "type": "Identifier",
@@ -548,17 +469,21 @@ exports[`Test all expressions > Should works 2`] = `
                                           {
                                             "properties": [
                                               {
+                                                "computed": false,
                                                 "key": {
                                                   "name": "model",
                                                   "type": "Identifier",
                                                 },
                                                 "kind": "init",
+                                                "shorthand": false,
                                                 "type": "Property",
                                                 "value": {
+                                                  "computed": false,
                                                   "object": {
                                                     "name": "model",
                                                     "type": "Identifier",
                                                   },
+                                                  "optional": false,
                                                   "property": {
                                                     "name": "name",
                                                     "type": "Identifier",
@@ -567,15 +492,18 @@ exports[`Test all expressions > Should works 2`] = `
                                                 },
                                               },
                                               {
+                                                "computed": false,
                                                 "key": {
                                                   "name": "props",
                                                   "type": "Identifier",
                                                 },
                                                 "kind": "init",
+                                                "shorthand": false,
                                                 "type": "Property",
                                                 "value": {
                                                   "properties": [
                                                     {
+                                                      "computed": false,
                                                       "key": {
                                                         "name": "name",
                                                         "type": "Identifier",
@@ -589,6 +517,7 @@ exports[`Test all expressions > Should works 2`] = `
                                                       },
                                                     },
                                                     {
+                                                      "computed": false,
                                                       "key": {
                                                         "name": "text",
                                                         "type": "Identifier",
@@ -606,11 +535,13 @@ exports[`Test all expressions > Should works 2`] = `
                                                 },
                                               },
                                               {
+                                                "computed": false,
                                                 "key": {
                                                   "name": "tags",
                                                   "type": "Identifier",
                                                 },
                                                 "kind": "init",
+                                                "shorthand": false,
                                                 "type": "Property",
                                                 "value": {
                                                   "elements": [],
@@ -625,14 +556,17 @@ exports[`Test all expressions > Should works 2`] = `
                                           "name": "UpdateItemService",
                                           "type": "Identifier",
                                         },
+                                        "optional": false,
                                         "type": "CallExpression",
                                       },
+                                      "optional": false,
                                       "property": {
                                         "name": "finally",
                                         "type": "Identifier",
                                       },
                                       "type": "MemberExpression",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                   "type": "VariableDeclarator",
@@ -651,11 +585,13 @@ exports[`Test all expressions > Should works 2`] = `
                                   {
                                     "properties": [
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "pending",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"Salvando dados...\\"",
@@ -664,11 +600,13 @@ exports[`Test all expressions > Should works 2`] = `
                                         },
                                       },
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "success",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"Os dados foram salvos!\\"",
@@ -677,11 +615,13 @@ exports[`Test all expressions > Should works 2`] = `
                                         },
                                       },
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "error",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"Não foi possível salvar a atualização\\"",
@@ -694,16 +634,19 @@ exports[`Test all expressions > Should works 2`] = `
                                   },
                                 ],
                                 "callee": {
+                                  "computed": false,
                                   "object": {
                                     "name": "toast",
                                     "type": "Identifier",
                                   },
+                                  "optional": false,
                                   "property": {
                                     "name": "promise",
                                     "type": "Identifier",
                                   },
                                   "type": "MemberExpression",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                               "type": "ExpressionStatement",
@@ -711,6 +654,8 @@ exports[`Test all expressions > Should works 2`] = `
                           ],
                           "type": "BlockStatement",
                         },
+                        "expression": false,
+                        "generator": false,
                         "params": [],
                         "type": "ArrowFunctionExpression",
                       },
@@ -731,11 +676,13 @@ exports[`Test all expressions > Should works 2`] = `
                       {
                         "properties": [
                           {
+                            "computed": false,
                             "key": {
                               "name": "className",
                               "type": "Identifier",
                             },
                             "kind": "init",
+                            "shorthand": false,
                             "type": "Property",
                             "value": {
                               "raw": "\\"h-screen px-4 py-8 max-w-xl m-auto\\"",
@@ -756,11 +703,13 @@ exports[`Test all expressions > Should works 2`] = `
                           {
                             "properties": [
                               {
+                                "computed": false,
                                 "key": {
                                   "name": "className",
                                   "type": "Identifier",
                                 },
                                 "kind": "init",
+                                "shorthand": false,
                                 "type": "Property",
                                 "value": {
                                   "raw": "\\"bg-white border rounded py-6\\"",
@@ -781,11 +730,13 @@ exports[`Test all expressions > Should works 2`] = `
                               {
                                 "properties": [
                                   {
+                                    "computed": false,
                                     "key": {
                                       "name": "className",
                                       "type": "Identifier",
                                     },
                                     "kind": "init",
+                                    "shorthand": false,
                                     "type": "Property",
                                     "value": {
                                       "raw": "\\"px-6 text-lg\\"",
@@ -802,10 +753,12 @@ exports[`Test all expressions > Should works 2`] = `
                                 "value": "Editar ",
                               },
                               {
+                                "computed": false,
                                 "object": {
                                   "name": "model",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "property": {
                                   "name": "label",
                                   "type": "Identifier",
@@ -817,6 +770,7 @@ exports[`Test all expressions > Should works 2`] = `
                               "name": "createElement",
                               "type": "Identifier",
                             },
+                            "optional": false,
                             "type": "CallExpression",
                           },
                           {
@@ -829,11 +783,13 @@ exports[`Test all expressions > Should works 2`] = `
                               {
                                 "properties": [
                                   {
+                                    "computed": false,
                                     "key": {
                                       "name": "className",
                                       "type": "Identifier",
                                     },
                                     "kind": "init",
+                                    "shorthand": false,
                                     "type": "Property",
                                     "value": {
                                       "raw": "\\"p-4 flex flex-col gap-4\\"",
@@ -866,11 +822,13 @@ exports[`Test all expressions > Should works 2`] = `
                                       {
                                         "properties": [
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "htmlFor",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "\\"\\"",
@@ -891,6 +849,7 @@ exports[`Test all expressions > Should works 2`] = `
                                       "name": "createElement",
                                       "type": "Identifier",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                   {
@@ -903,11 +862,13 @@ exports[`Test all expressions > Should works 2`] = `
                                       {
                                         "properties": [
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "type",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "\\"text\\"",
@@ -916,11 +877,13 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "className",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "\\"form-input\\"",
@@ -929,11 +892,13 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "value",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "name": "name",
@@ -941,27 +906,34 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "onChange",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
+                                              "async": false,
                                               "body": {
                                                 "arguments": [
                                                   {
+                                                    "computed": false,
                                                     "object": {
+                                                      "computed": false,
                                                       "object": {
                                                         "name": "e",
                                                         "type": "Identifier",
                                                       },
+                                                      "optional": false,
                                                       "property": {
                                                         "name": "target",
                                                         "type": "Identifier",
                                                       },
                                                       "type": "MemberExpression",
                                                     },
+                                                    "optional": false,
                                                     "property": {
                                                       "name": "value",
                                                       "type": "Identifier",
@@ -973,9 +945,11 @@ exports[`Test all expressions > Should works 2`] = `
                                                   "name": "setName",
                                                   "type": "Identifier",
                                                 },
+                                                "optional": false,
                                                 "type": "CallExpression",
                                               },
                                               "expression": true,
+                                              "generator": false,
                                               "params": [
                                                 {
                                                   "name": "e",
@@ -993,6 +967,7 @@ exports[`Test all expressions > Should works 2`] = `
                                       "name": "createElement",
                                       "type": "Identifier",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                 ],
@@ -1000,6 +975,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "createElement",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                               {
@@ -1024,11 +1000,13 @@ exports[`Test all expressions > Should works 2`] = `
                                       {
                                         "properties": [
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "htmlFor",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "\\"\\"",
@@ -1049,6 +1027,7 @@ exports[`Test all expressions > Should works 2`] = `
                                       "name": "createElement",
                                       "type": "Identifier",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                   {
@@ -1061,11 +1040,13 @@ exports[`Test all expressions > Should works 2`] = `
                                       {
                                         "properties": [
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "className",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "\\"form-input\\"",
@@ -1074,11 +1055,13 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "value",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "name": "text",
@@ -1086,27 +1069,34 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "onChange",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
+                                              "async": false,
                                               "body": {
                                                 "arguments": [
                                                   {
+                                                    "computed": false,
                                                     "object": {
+                                                      "computed": false,
                                                       "object": {
                                                         "name": "e",
                                                         "type": "Identifier",
                                                       },
+                                                      "optional": false,
                                                       "property": {
                                                         "name": "target",
                                                         "type": "Identifier",
                                                       },
                                                       "type": "MemberExpression",
                                                     },
+                                                    "optional": false,
                                                     "property": {
                                                       "name": "value",
                                                       "type": "Identifier",
@@ -1118,9 +1108,11 @@ exports[`Test all expressions > Should works 2`] = `
                                                   "name": "setText",
                                                   "type": "Identifier",
                                                 },
+                                                "optional": false,
                                                 "type": "CallExpression",
                                               },
                                               "expression": true,
+                                              "generator": false,
                                               "params": [
                                                 {
                                                   "name": "e",
@@ -1131,11 +1123,13 @@ exports[`Test all expressions > Should works 2`] = `
                                             },
                                           },
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "rows",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "10",
@@ -1151,6 +1145,7 @@ exports[`Test all expressions > Should works 2`] = `
                                       "name": "createElement",
                                       "type": "Identifier",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                 ],
@@ -1158,6 +1153,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "createElement",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                             ],
@@ -1165,6 +1161,7 @@ exports[`Test all expressions > Should works 2`] = `
                               "name": "createElement",
                               "type": "Identifier",
                             },
+                            "optional": false,
                             "type": "CallExpression",
                           },
                           {
@@ -1177,11 +1174,13 @@ exports[`Test all expressions > Should works 2`] = `
                               {
                                 "properties": [
                                   {
+                                    "computed": false,
                                     "key": {
                                       "name": "className",
                                       "type": "Identifier",
                                     },
                                     "kind": "init",
+                                    "shorthand": false,
                                     "type": "Property",
                                     "value": {
                                       "raw": "\\"px-6 flex items-center gap-3\\"",
@@ -1202,11 +1201,13 @@ exports[`Test all expressions > Should works 2`] = `
                                   {
                                     "properties": [
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "className",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"grow text-sm text-slate-500\\"",
@@ -1220,13 +1221,16 @@ exports[`Test all expressions > Should works 2`] = `
                                   {
                                     "arguments": [],
                                     "callee": {
+                                      "computed": false,
                                       "object": {
                                         "arguments": [
                                           {
+                                            "computed": false,
                                             "object": {
                                               "name": "item",
                                               "type": "Identifier",
                                             },
+                                            "optional": false,
                                             "property": {
                                               "name": "created_at",
                                               "type": "Identifier",
@@ -1238,14 +1242,17 @@ exports[`Test all expressions > Should works 2`] = `
                                           "name": "moment",
                                           "type": "Identifier",
                                         },
+                                        "optional": false,
                                         "type": "CallExpression",
                                       },
+                                      "optional": false,
                                       "property": {
                                         "name": "fromNow",
                                         "type": "Identifier",
                                       },
                                       "type": "MemberExpression",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                 ],
@@ -1253,6 +1260,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "createElement",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                               {
@@ -1265,11 +1273,13 @@ exports[`Test all expressions > Should works 2`] = `
                                   {
                                     "properties": [
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "className",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"btn btn-default pl-1\\"",
@@ -1278,11 +1288,13 @@ exports[`Test all expressions > Should works 2`] = `
                                         },
                                       },
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "href",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "name": "goBackUrl",
@@ -1301,11 +1313,13 @@ exports[`Test all expressions > Should works 2`] = `
                                       {
                                         "properties": [
                                           {
+                                            "computed": false,
                                             "key": {
                                               "name": "size",
                                               "type": "Identifier",
                                             },
                                             "kind": "init",
+                                            "shorthand": false,
                                             "type": "Property",
                                             "value": {
                                               "raw": "24",
@@ -1321,6 +1335,7 @@ exports[`Test all expressions > Should works 2`] = `
                                       "name": "createElement",
                                       "type": "Identifier",
                                     },
+                                    "optional": false,
                                     "type": "CallExpression",
                                   },
                                   {
@@ -1333,6 +1348,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "createElement",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                               {
@@ -1345,11 +1361,13 @@ exports[`Test all expressions > Should works 2`] = `
                                   {
                                     "properties": [
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "className",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "raw": "\\"btn btn-primary\\"",
@@ -1358,11 +1376,13 @@ exports[`Test all expressions > Should works 2`] = `
                                         },
                                       },
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "onClick",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "name": "handleClick",
@@ -1370,11 +1390,13 @@ exports[`Test all expressions > Should works 2`] = `
                                         },
                                       },
                                       {
+                                        "computed": false,
                                         "key": {
                                           "name": "disabled",
                                           "type": "Identifier",
                                         },
                                         "kind": "init",
+                                        "shorthand": false,
                                         "type": "Property",
                                         "value": {
                                           "name": "saving",
@@ -1394,6 +1416,7 @@ exports[`Test all expressions > Should works 2`] = `
                                   "name": "createElement",
                                   "type": "Identifier",
                                 },
+                                "optional": false,
                                 "type": "CallExpression",
                               },
                             ],
@@ -1401,6 +1424,7 @@ exports[`Test all expressions > Should works 2`] = `
                               "name": "createElement",
                               "type": "Identifier",
                             },
+                            "optional": false,
                             "type": "CallExpression",
                           },
                         ],
@@ -1408,6 +1432,7 @@ exports[`Test all expressions > Should works 2`] = `
                           "name": "createElement",
                           "type": "Identifier",
                         },
+                        "optional": false,
                         "type": "CallExpression",
                       },
                     ],
@@ -1415,6 +1440,7 @@ exports[`Test all expressions > Should works 2`] = `
                       "name": "createElement",
                       "type": "Identifier",
                     },
+                    "optional": false,
                     "type": "CallExpression",
                   },
                   "type": "ReturnStatement",
@@ -1422,6 +1448,7 @@ exports[`Test all expressions > Should works 2`] = `
               ],
               "type": "BlockStatement",
             },
+            "generator": false,
             "id": {
               "name": "EditTableScreen",
               "type": "Identifier",
@@ -1430,6 +1457,7 @@ exports[`Test all expressions > Should works 2`] = `
               {
                 "properties": [
                   {
+                    "computed": false,
                     "key": {
                       "name": "item",
                       "type": "Identifier",
@@ -1443,6 +1471,7 @@ exports[`Test all expressions > Should works 2`] = `
                     },
                   },
                   {
+                    "computed": false,
                     "key": {
                       "name": "model",
                       "type": "Identifier",
@@ -1456,6 +1485,7 @@ exports[`Test all expressions > Should works 2`] = `
                     },
                   },
                   {
+                    "computed": false,
                     "key": {
                       "name": "goBackUrl",
                       "type": "Identifier",
@@ -1479,6 +1509,8 @@ exports[`Test all expressions > Should works 2`] = `
       ],
       "type": "BlockStatement",
     },
+    "expression": false,
+    "generator": false,
     "params": [
       {
         "name": "React",
@@ -1507,6 +1539,6 @@ exports[`Test all expressions > Should works 2`] = `
 }
 `;
 
-exports[`Test all expressions > Should works 3`] = `"(React, moment, toast, reactIcons, services) => { const { useState: useState, createElement: createElement } = React; const { bi: { BiChevronLeft: BiChevronLeft } } = reactIcons; const UpdateItemService = services(\\"UpdateRoleService\\"); return function EditTableScreen({ item: item, model: model, goBackUrl: goBackUrl }) { const [name, setName] = useState(item.props.name); const [text, setText] = useState(item.props.text); const [saving, setSaving] = useState(false); const handleClick = () => { setSaving(true); const promise = UpdateItemService(model.name, item.id, { model: model.name, props: { name: name, text: text }, tags: [] }).finally(() => setSaving(false)); toast.promise(promise, { pending: \\"Salvando dados...\\", success: \\"Os dados foram salvos!\\", error: \\"Não foi possível salvar a atualização\\" }); }; return createElement(\\"div\\", { className: \\"h-screen px-4 py-8 max-w-xl m-auto\\" }, createElement(\\"div\\", { className: \\"bg-white border rounded py-6\\" }, createElement(\\"div\\", { className: \\"px-6 text-lg\\" }, \\"Editar \\", model.label), createElement(\\"div\\", { className: \\"p-4 flex flex-col gap-4\\" }, createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Nome\\"), createElement(\\"input\\", { type: \\"text\\", className: \\"form-input\\", value: name, onChange: (e) => setName(e.target.value) })), createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Descrição\\"), createElement(\\"textarea\\", { className: \\"form-input\\", value: text, onChange: (e) => setText(e.target.value), rows: 10 }))), createElement(\\"div\\", { className: \\"px-6 flex items-center gap-3\\" }, createElement(\\"div\\", { className: \\"grow text-sm text-slate-500\\" }, moment(item.created_at).fromNow()), createElement(\\"a\\", { className: \\"btn btn-default pl-1\\", href: goBackUrl }, createElement(BiChevronLeft, { size: 24 }), \\" Voltar\\"), createElement(\\"button\\", { className: \\"btn btn-primary\\", onClick: handleClick, disabled: saving }, \\"Salvar alterações\\")))); }; }"`;
+exports[`Test all expressions > Should generate code correctly 3`] = `"(React, moment, toast, reactIcons, services) => { const { useState: useState, createElement: createElement } = React; const { bi: { BiChevronLeft: BiChevronLeft } } = reactIcons; const UpdateItemService = services(\\"UpdateRoleService\\"); return function EditTableScreen({ item: item, model: model, goBackUrl: goBackUrl }) { const [name, setName] = useState(item.props.name); const [text, setText] = useState(item.props.text); const [saving, setSaving] = useState(false); const handleClick = () => { setSaving(true); const promise = UpdateItemService(model.name, item.id, { model: model.name, props: { name: name, text: text }, tags: [] }).finally(() => setSaving(false)); toast.promise(promise, { pending: \\"Salvando dados...\\", success: \\"Os dados foram salvos!\\", error: \\"Não foi possível salvar a atualização\\" }); }; return createElement(\\"div\\", { className: \\"h-screen px-4 py-8 max-w-xl m-auto\\" }, createElement(\\"div\\", { className: \\"bg-white border rounded py-6\\" }, createElement(\\"div\\", { className: \\"px-6 text-lg\\" }, \\"Editar \\", model.label), createElement(\\"div\\", { className: \\"p-4 flex flex-col gap-4\\" }, createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Nome\\"), createElement(\\"input\\", { type: \\"text\\", className: \\"form-input\\", value: name, onChange: (e) => setName(e.target.value) })), createElement(\\"div\\", null, createElement(\\"label\\", { htmlFor: \\"\\" }, \\"Descrição\\"), createElement(\\"textarea\\", { className: \\"form-input\\", value: text, onChange: (e) => setText(e.target.value), rows: 10 }))), createElement(\\"div\\", { className: \\"px-6 flex items-center gap-3\\" }, createElement(\\"div\\", { className: \\"grow text-sm text-slate-500\\" }, moment(item.created_at).fromNow()), createElement(\\"a\\", { className: \\"btn btn-default pl-1\\", href: goBackUrl }, createElement(BiChevronLeft, { size: 24 }), \\" Voltar\\"), createElement(\\"button\\", { className: \\"btn btn-primary\\", onClick: handleClick, disabled: saving }, \\"Salvar alterações\\")))); }; }"`;
 
-exports[`Test all expressions > Should works 4`] = `"b.expressionStatement(b.arrowFunctionExpression([b.identifier(\\"React\\"), b.identifier(\\"moment\\"), b.identifier(\\"toast\\"), b.identifier(\\"reactIcons\\"), b.identifier(\\"services\\")], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"useState\\"), b.identifier(\\"useState\\"), true), b.assignmentProperty(b.identifier(\\"createElement\\"), b.identifier(\\"createElement\\"), true)]), b.identifier(\\"React\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"bi\\"), b.objectPattern([b.assignmentProperty(b.identifier(\\"BiChevronLeft\\"), b.identifier(\\"BiChevronLeft\\"), true)]))]), b.identifier(\\"reactIcons\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"UpdateItemService\\"), b.callExpression(b.identifier(\\"services\\"), [b.literal(\\"UpdateRoleService\\")]))]), b.returnStatement(b.functionExpression(b.identifier(\\"EditTableScreen\\"), [b.objectPattern([b.assignmentProperty(b.identifier(\\"item\\"), b.identifier(\\"item\\"), true), b.assignmentProperty(b.identifier(\\"model\\"), b.identifier(\\"model\\"), true), b.assignmentProperty(b.identifier(\\"goBackUrl\\"), b.identifier(\\"goBackUrl\\"), true)])], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"name\\"), b.identifier(\\"setName\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"name\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"text\\"), b.identifier(\\"setText\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"text\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"saving\\"), b.identifier(\\"setSaving\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.literal(false)]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"handleClick\\"), b.arrowFunctionExpression([], b.blockStatement([b.expressionStatement(b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(true)])), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"promise\\"), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"UpdateItemService\\"), [b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\")), b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"id\\")), b.objectExpression([b.property(b.identifier(\\"model\\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\"))), b.property(b.identifier(\\"props\\"), b.objectExpression([b.property(b.identifier(\\"name\\"), b.identifier(\\"name\\"), true), b.property(b.identifier(\\"text\\"), b.identifier(\\"text\\"), true)])), b.property(b.identifier(\\"tags\\"), b.arrayExpression([]))])]), b.identifier(\\"finally\\")), [b.arrowFunctionExpression([], b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(false)]))]))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"toast\\"), b.identifier(\\"promise\\")), [b.identifier(\\"promise\\"), b.objectExpression([b.property(b.identifier(\\"pending\\"), b.literal(\\"Salvando dados...\\")), b.property(b.identifier(\\"success\\"), b.literal(\\"Os dados foram salvos!\\")), b.property(b.identifier(\\"error\\"), b.literal(\\"Não foi possível salvar a atualização\\"))])]))])))]), b.returnStatement(b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"h-screen px-4 py-8 max-w-xl m-auto\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"bg-white border rounded py-6\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 text-lg\\"))]), b.literal(\\"Editar \\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"label\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"p-4 flex flex-col gap-4\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Nome\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"input\\"), b.objectExpression([b.property(b.identifier(\\"type\\"), b.literal(\\"text\\")), b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"name\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setName\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))])))])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Descrição\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"textarea\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"text\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setText\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))]))), b.property(b.identifier(\\"rows\\"), b.literal(10))])])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 flex items-center gap-3\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"grow text-sm text-slate-500\\"))]), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"moment\\"), [b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"created_at\\"))]), b.identifier(\\"fromNow\\")), [])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"a\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-default pl-1\\")), b.property(b.identifier(\\"href\\"), b.identifier(\\"goBackUrl\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.identifier(\\"BiChevronLeft\\"), b.objectExpression([b.property(b.identifier(\\"size\\"), b.literal(24))])]), b.literal(\\" Voltar\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"button\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-primary\\")), b.property(b.identifier(\\"onClick\\"), b.identifier(\\"handleClick\\")), b.property(b.identifier(\\"disabled\\"), b.identifier(\\"saving\\"))]), b.literal(\\"Salvar alterações\\")])])])]))])))])))"`;
+exports[`Test all expressions > Should generate code correctly 4`] = `"b.expressionStatement(b.arrowFunctionExpression([b.identifier(\\"React\\"), b.identifier(\\"moment\\"), b.identifier(\\"toast\\"), b.identifier(\\"reactIcons\\"), b.identifier(\\"services\\")], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"useState\\"), b.identifier(\\"useState\\"), true), b.assignmentProperty(b.identifier(\\"createElement\\"), b.identifier(\\"createElement\\"), true)]), b.identifier(\\"React\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.objectPattern([b.assignmentProperty(b.identifier(\\"bi\\"), b.objectPattern([b.assignmentProperty(b.identifier(\\"BiChevronLeft\\"), b.identifier(\\"BiChevronLeft\\"), true)]))]), b.identifier(\\"reactIcons\\"))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"UpdateItemService\\"), b.callExpression(b.identifier(\\"services\\"), [b.literal(\\"UpdateRoleService\\")]))]), b.returnStatement(b.functionExpression(b.identifier(\\"EditTableScreen\\"), [b.objectPattern([b.assignmentProperty(b.identifier(\\"item\\"), b.identifier(\\"item\\"), true), b.assignmentProperty(b.identifier(\\"model\\"), b.identifier(\\"model\\"), true), b.assignmentProperty(b.identifier(\\"goBackUrl\\"), b.identifier(\\"goBackUrl\\"), true)])], b.blockStatement([b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"name\\"), b.identifier(\\"setName\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"name\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"text\\"), b.identifier(\\"setText\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"props\\")), b.identifier(\\"text\\"))]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.arrayPattern([b.identifier(\\"saving\\"), b.identifier(\\"setSaving\\")]), b.callExpression(b.identifier(\\"useState\\"), [b.literal(false)]))]), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"handleClick\\"), b.arrowFunctionExpression([], b.blockStatement([b.expressionStatement(b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(true)])), b.variableDeclaration(\\"const\\", [b.variableDeclarator(b.identifier(\\"promise\\"), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"UpdateItemService\\"), [b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\")), b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"id\\")), b.objectExpression([b.property(b.identifier(\\"model\\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"name\\"))), b.property(b.identifier(\\"props\\"), b.objectExpression([b.property(b.identifier(\\"name\\"), b.identifier(\\"name\\"), true), b.property(b.identifier(\\"text\\"), b.identifier(\\"text\\"), true)])), b.property(b.identifier(\\"tags\\"), b.arrayExpression([]))])]), b.identifier(\\"finally\\")), [b.arrowFunctionExpression([], b.callExpression(b.identifier(\\"setSaving\\"), [b.literal(false)]))]))]), b.expressionStatement(b.callExpression(b.memberExpression(b.identifier(\\"toast\\"), b.identifier(\\"promise\\")), [b.identifier(\\"promise\\"), b.objectExpression([b.property(b.identifier(\\"pending\\"), b.literal(\\"Salvando dados...\\")), b.property(b.identifier(\\"success\\"), b.literal(\\"Os dados foram salvos!\\")), b.property(b.identifier(\\"error\\"), b.literal(\\"Não foi possível salvar a atualização\\"))])]))])))]), b.returnStatement(b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"h-screen px-4 py-8 max-w-xl m-auto\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"bg-white border rounded py-6\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 text-lg\\"))]), b.literal(\\"Editar \\"), b.memberExpression(b.identifier(\\"model\\"), b.identifier(\\"label\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"p-4 flex flex-col gap-4\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Nome\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"input\\"), b.objectExpression([b.property(b.identifier(\\"type\\"), b.literal(\\"text\\")), b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"name\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setName\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))])))])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.literal(null), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"label\\"), b.objectExpression([b.property(b.identifier(\\"htmlFor\\"), b.literal(\\"\\"))]), b.literal(\\"Descrição\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"textarea\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"form-input\\")), b.property(b.identifier(\\"value\\"), b.identifier(\\"text\\")), b.property(b.identifier(\\"onChange\\"), b.arrowFunctionExpression([b.identifier(\\"e\\")], b.callExpression(b.identifier(\\"setText\\"), [b.memberExpression(b.memberExpression(b.identifier(\\"e\\"), b.identifier(\\"target\\")), b.identifier(\\"value\\"))]))), b.property(b.identifier(\\"rows\\"), b.literal(10))])])])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"px-6 flex items-center gap-3\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"div\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"grow text-sm text-slate-500\\"))]), b.callExpression(b.memberExpression(b.callExpression(b.identifier(\\"moment\\"), [b.memberExpression(b.identifier(\\"item\\"), b.identifier(\\"created_at\\"))]), b.identifier(\\"fromNow\\")), [])]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"a\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-default pl-1\\")), b.property(b.identifier(\\"href\\"), b.identifier(\\"goBackUrl\\"))]), b.callExpression(b.identifier(\\"createElement\\"), [b.identifier(\\"BiChevronLeft\\"), b.objectExpression([b.property(b.identifier(\\"size\\"), b.literal(24))])]), b.literal(\\" Voltar\\")]), b.callExpression(b.identifier(\\"createElement\\"), [b.literal(\\"button\\"), b.objectExpression([b.property(b.identifier(\\"className\\"), b.literal(\\"btn btn-primary\\")), b.property(b.identifier(\\"onClick\\"), b.identifier(\\"handleClick\\")), b.property(b.identifier(\\"disabled\\"), b.identifier(\\"saving\\"))]), b.literal(\\"Salvar alterações\\")])])])]))])))])))"`;

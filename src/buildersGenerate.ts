@@ -123,7 +123,7 @@ export const buildersGenerate = (prefix = "b") => {
       helper(
         n,
         "functionExpression",
-        n.id || undefined,
+        n.id || null,
         n.params,
         n.body,
         n.generator || undefined,
