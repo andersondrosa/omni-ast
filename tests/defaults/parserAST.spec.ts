@@ -30,7 +30,7 @@ describe("Parsers test", () => {
     const cleanAcornAST = clearAST(acornAST);
 
     const simpleAST = simplify(cleanAcornAST);
-    log(simpleAST);
+    // log(simpleAST);
 
     expect(simpleAST).toMatchObject(
       json({
@@ -44,7 +44,7 @@ describe("Parsers test", () => {
     );
     
     const AST = parseAST(simpleAST);
-    log(AST);
+    // log(AST);
     
     // expect(AST).toMatchObject(cleanAcornAST);
     return;

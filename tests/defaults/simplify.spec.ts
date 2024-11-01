@@ -42,17 +42,17 @@ describe("Simplify AST", () => {
     const params = clearAST(
       acornParse(`(({ ramda }) => null)`).body[0].expression.params
     );
-    console.dir(params, { depth: 12 });
+    // console.dir(params, { depth: 12 });
 
     // const AST = omniParse(script);
     const acornAST = acornParse(`(${script})`);
     let AST = clearAST(acornAST.body[0]);
     AST = simplify(AST.expression);
 
-    console.dir(AST, { depth: 12 });
+    // console.dir(AST, { depth: 12 });
 
     let scoped = b.arrowFunctionExpression(params, AST);
-    console.dir(scoped, { depth: 12 });
+    // console.dir(scoped, { depth: 12 });
 
     const id = (key, value) => (x) => x[key] == value;
     const modify = ramda.flip(ramda.curryN(2, produce));
@@ -67,11 +67,11 @@ describe("Simplify AST", () => {
 
     const code = generate(scoped);
 
-    console.dir(code, { depth: 12 });
+    // console.dir(code, { depth: 12 });
 
     const fn = eval(code)({ ramda });
 
-    console.log(fn());
+    // console.log(fn());
     // const restored = parseAST(simpleAST);
     // console.dir(restored, { depth: 12 });
 

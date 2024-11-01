@@ -42,8 +42,6 @@ describe("DoWhileStatement", () => {
 
     const evaluatedCode = generate(evaluatedAST);
 
-    console.log(evaluatedCode);
-
     expect(evaluatedCode).toMatchObject(code);
   });
 });

@@ -13,7 +13,7 @@ describe("Test all expressions", () => {
 
     const AST = clearAST(acornParse(script));
 
-    console.dir(AST, { depth: 12 });
+    // console.dir(AST, { depth: 12 });
 
     const code = generate(AST);
     // console.log(code);

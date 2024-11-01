@@ -57,6 +57,12 @@ import {
   DoWhileStatement,
   SpreadElement,
   RestElement,
+  ImportDeclaration,
+  ImportSpecifier,
+  ImportDefaultSpecifier,
+  ImportNamespaceSpecifier,
+  ModuleDeclaration,
+  Directive,
 } from "./types";
 
 export const ast = (body: Node, name = null) => ({
@@ -244,6 +250,38 @@ export const functionDeclaration = (
   };
 };
 /* -------------------------------------------------------------------------- */
+export const importDeclaration = (
+  specifiers: Array<
+    ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier
+  >,
+  source: Literal
+): ImportDeclaration => {
+  return {
+    type: "ImportDeclaration",
+    specifiers,
+    source,
+  };
+};
+/* -------------------------------------------------------------------------- */
+export const importSpecifier = (
+  imported: Identifier,
+  local: Identifier
+): ImportSpecifier => {
+  return { type: "ImportSpecifier", imported, local };
+};
+/* -------------------------------------------------------------------------- */
+export const importDefaultSpecifier = (
+  local: Identifier
+): ImportDefaultSpecifier => {
+  return { type: "ImportDefaultSpecifier", local };
+};
+/* -------------------------------------------------------------------------- */
+export const importNamespaceSpecifier = (
+  local: Identifier
+): ImportNamespaceSpecifier => {
+  return { type: "ImportNamespaceSpecifier", local };
+};
+/* -------------------------------------------------------------------------- */
 export const functionExpression = (
   id: Identifier | null | undefined = null,
   params: Pattern[],
@@ -342,7 +380,9 @@ export const objectPattern = (
   return { type: "ObjectPattern", properties };
 };
 /* -------------------------------------------------------------------------- */
-export const program = (body: Statement[]): Program => {
+export const program = (
+  body: Array<Directive | Statement | ModuleDeclaration>
+): Program => {
   return { type: "Program", body, sourceType: "module" };
 };
 /* -------------------------------------------------------------------------- */

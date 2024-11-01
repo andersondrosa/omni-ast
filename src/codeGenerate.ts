@@ -1,6 +1,7 @@
 import * as Types from "./types";
 import { BaseNode } from "./types";
 import { serialize } from "./JsonGenerate";
+import { importDeclaration, importSpecifier } from "./builders";
 
 const comma = ", ";
 
@@ -254,9 +255,36 @@ export const VariableDeclarator = (node: Types.VariableDeclarator) => {
   if (!node.init) return generate(node.id);
   return `${generate(node.id)} = ${generate(node.init)}`;
 };
-
 export const WhileStatement = (node: Types.WhileStatement) => {
   return `while (${generate(node.test)}) ${generate(node.body)}`;
+};
+
+export const ImportDeclaration = (node: Types.ImportDeclaration) => {
+  const source = generate(node.source);
+  if (node.specifiers.length == 0) return `import ${source}`;
+
+  if (node.specifiers[0].type == "ImportNamespaceSpecifier")
+    return `import ${generate(node.specifiers[0])} from ${source}`;
+
+  if (node.specifiers[0].type == "ImportDefaultSpecifier")
+    return `import ${generate(node.specifiers[0])} from ${source}`;
+
+  const specifiers = node.specifiers.map(ImportSpecifier).join(comma);
+  return `import { ${specifiers} } from ${source}`;
+};
+
+export const ImportDefaultSpecifier = (node: Types.ImportDefaultSpecifier) => {
+  return generate(node.local);
+};
+
+export const ImportNamespaceSpecifier = (node: Types.ImportSpecifier) => {
+  return `* as ${generate(node.local)}`;
+};
+
+export const ImportSpecifier = (node: Types.ImportSpecifier) => {
+  if (node.imported.name === node.local.name)
+    return `${generate(node.local)}`;
+  return `${generate(node.imported)} as ${generate(node.local)}`;
 };
 
 const nodes = {
@@ -273,6 +301,7 @@ const nodes = {
   ChainExpression,
   ConditionalExpression,
   ContinueStatement,
+  DoWhileStatement,
   EmptyStatement,
   ExpressionStatement,
   ForInStatement,
@@ -282,6 +311,10 @@ const nodes = {
   FunctionExpression,
   Identifier,
   IfStatement,
+  ImportDeclaration,
+  ImportDefaultSpecifier,
+  ImportNamespaceSpecifier,
+  ImportSpecifier,
   JsonExpression,
   Literal,
   LogicalExpression,
@@ -303,5 +336,4 @@ const nodes = {
   VariableDeclaration,
   VariableDeclarator,
   WhileStatement,
-  DoWhileStatement,
 };

@@ -12,6 +12,7 @@ interface ExpressionMap {
   FunctionExpression: FunctionExpression;
   Identifier: Identifier;
   JsonExpression: JsonExpression;
+  ImportExpression: ImportExpression;
   Literal: Literal;
   LogicalExpression: LogicalExpression;
   MemberExpression: MemberExpression;
@@ -42,14 +43,20 @@ export interface NodeMap {
   SwitchCase: SwitchCase;
   TemplateElement: TemplateElement;
   VariableDeclarator: VariableDeclarator;
+  ImportDeclaration: ImportDeclaration;
+  ImportSpecifier: ImportSpecifier;
+  ImportDefaultSpecifier: ImportDefaultSpecifier;
+  ImportNamespaceSpecifier: ImportNamespaceSpecifier;
 }
 
 export type Expression = ExpressionMap[keyof ExpressionMap];
 export type Statement =
   | ExpressionStatement
   | BlockStatement
+  // | StaticBlock
   | EmptyStatement
   | DebuggerStatement
+  // | WithStatement
   | ReturnStatement
   | LabeledStatement
   | BreakStatement
@@ -325,6 +332,21 @@ export interface MetaProperty extends BaseExpression {
   meta: Identifier;
   property: Identifier;
 }
+export type ModuleDeclaration = ImportDeclaration;
+// | ExportNamedDeclaration
+// | ExportDefaultDeclaration
+// | ExportAllDeclaration;
+export interface BaseModuleDeclaration extends BaseNode {}
+
+export type ModuleSpecifier =
+  | ImportSpecifier
+  | ImportDefaultSpecifier
+  | ImportNamespaceSpecifier;
+// | ExportSpecifier;
+export interface BaseModuleSpecifier extends BaseNode {
+  local: Identifier;
+}
+
 export interface MethodDefinition extends BaseNode {
   type: "MethodDefinition";
   key: Expression;
@@ -351,7 +373,7 @@ export interface Position {
 export interface Program extends BaseNode {
   type: "Program";
   sourceType: "script" | "module";
-  body: Array<Directive | Statement>;
+  body: Array<Directive | Statement | ModuleDeclaration>;
   comments?: Comment[] | undefined;
 }
 export interface Property extends BaseNode {
@@ -470,6 +492,32 @@ export interface WhileStatement extends BaseStatement {
   type: "WhileStatement";
   test: Expression;
   body: Statement;
+}
+
+export interface ImportDeclaration extends BaseModuleDeclaration {
+  type: "ImportDeclaration";
+  specifiers: Array<
+    ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier
+  >;
+  source: Literal;
+}
+
+export interface ImportSpecifier extends BaseModuleSpecifier {
+  type: "ImportSpecifier";
+  imported: Identifier;
+}
+
+export interface ImportExpression extends BaseExpression {
+  type: "ImportExpression";
+  source: Expression;
+}
+
+export interface ImportDefaultSpecifier extends BaseModuleSpecifier {
+  type: "ImportDefaultSpecifier";
+}
+
+export interface ImportNamespaceSpecifier extends BaseModuleSpecifier {
+  type: "ImportNamespaceSpecifier";
 }
 
 export type SimpleArrayExpression = Partial<ArrayExpression>;

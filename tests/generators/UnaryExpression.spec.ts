@@ -5,8 +5,6 @@ import { lint } from "../utils/eslint";
 import { tokenizer } from "../utils/tokenizer";
 import { generateBuilders } from "../../src/generateBuilders";
 
-const log = true;
-
 describe("UnaryExpression", () => {
   //
   it("Should generate code correctly", async () => {
@@ -23,7 +21,7 @@ describe("UnaryExpression", () => {
 
     const generatedBuilders = buildFunction(AST);
 
-    console.log(generatedBuilders);
+    // console.log(generatedBuilders);
 
     const code = generate(evaluate(generatedBuilders));
 

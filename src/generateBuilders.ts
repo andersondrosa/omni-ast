@@ -133,6 +133,16 @@ export const generateBuilders = (prefix = "b") => {
       helper(n, "identifier", n.name),
     IfStatement: (n: Types.IfStatement, parent: Node) =>
       helper(n, "ifStatement", n.test, n.consequent, n.alternate),
+    ImportDeclaration: (n: Types.ImportDeclaration, parent: Node) =>
+      helper(n, "importDeclaration", n.specifiers, n.source),
+    ImportDefaultSpecifier: (n: Types.ImportDefaultSpecifier, parent: Node) =>
+      helper(n, "importDefaultSpecifier", n.local),
+    ImportNamespaceSpecifier: (
+      n: Types.ImportNamespaceSpecifier,
+      parent: Node
+    ) => helper(n, "importNamespaceSpecifier", n.local),
+    ImportSpecifier: (n: Types.ImportSpecifier, parent: Node) =>
+      helper(n, "importSpecifier", n.imported, n.local),
     JsonExpression: (n: Types.JsonExpression, parent: Node) =>
       helper(n, "jsonExpression", JSON.stringify(n.body)),
     Literal: (n: Types.Literal, parent: Node) => {
