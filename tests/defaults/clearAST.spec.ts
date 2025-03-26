@@ -13,15 +13,10 @@ describe("Clean AST", () => {
 
     const acornAST = acornParse(script).body[0];
 
-    // console.dir(acornAST, { depth: 12 });
-
     const acornGeneratedCleanAST = evaluate(buildFunction(acornAST));
-    // console.dir(acornGeneratedCleanAST, { depth: 12 });
 
     const AST = clearAST(acornAST);
-
-    // console.dir(AST, { depth: 12 });
-
+    
     expect(AST).toMatchObject(acornGeneratedCleanAST);
   });
 });
