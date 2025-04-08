@@ -26,15 +26,13 @@ describe("Test all expressions", () => {
 
     expect(generatedCode).toMatchSnapshot();
 
-    const { build } = generateBuilders("b");
+    const { safeEval, build } = generateBuilders();
 
     const generatedBuilders = build(AST);
 
     expect(generatedBuilders).toMatchSnapshot();
 
-    const getAST = eval("(b) => " + generatedBuilders);
-
-    const generatedAST = getAST(b);
+    const generatedAST = safeEval(generatedBuilders);
 
     expect(generatedAST).toMatchObject(AST);
 

@@ -69,7 +69,7 @@ describe("Simplify AST", () => {
 
     // console.dir(code, { depth: 12 });
 
-    const fn = eval(code)({ ramda });
+    // const fn = eval(code)({ ramda });
 
     // console.log(fn());
     // const restored = parseAST(simpleAST);

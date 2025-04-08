@@ -17,13 +17,13 @@ describe("UnaryExpression", () => {
     const AST = clearAST(acornParse(script)).body[0];
     // dir(AST);
 
-    const { build, buildFunction, evaluate } = generateBuilders();
+    const { build, buildFunction, safeEval } = generateBuilders();
 
-    const generatedBuilders = buildFunction(AST);
+    const generatedBuilders = build(AST);
 
     // console.log(generatedBuilders);
 
-    const code = generate(evaluate(generatedBuilders));
+    const code = generate(safeEval(generatedBuilders));
 
     expect(await lint(tokenizer(code))).toEqual(await lint(tokenizer(script)));
   });

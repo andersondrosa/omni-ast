@@ -12,12 +12,12 @@ describe("Literal", () => {
 
     const AST = clearAST(acornParse(script)).body[0];
 
-    const { buildFunction, evaluate } = generateBuilders();
+    const { build, safeEval } = generateBuilders();
 
-    const fn = buildFunction(AST);
+    const fn = build(AST);
 
     expect(fn).toEqual(
-      `(b) => b.variableDeclaration("const", [
+      `b.variableDeclaration("const", [
         b.variableDeclarator(
           b.identifier("phrase"), 
           b.binaryExpression(
@@ -37,7 +37,7 @@ describe("Literal", () => {
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const evaluatedAST = evaluate(fn);
+    const evaluatedAST = safeEval(fn);
     expect(evaluatedAST).toMatchObject(AST);
 
     const evaluatedCode = generate(evaluatedAST) as string;
@@ -51,12 +51,12 @@ describe("Literal", () => {
 
     const AST = clearAST(acornParse(script)).body[0];
 
-    const { buildFunction, evaluate } = generateBuilders();
+    const { build, safeEval } = generateBuilders();
 
-    const fn = buildFunction(AST);
+    const fn = build(AST);
 
     expect(fn).toEqual(
-      `(b) => b.variableDeclaration("const", [
+      `b.variableDeclaration("const", [
         b.variableDeclarator(
           b.identifier("num"), 
           b.literal(9007199254740991n)
@@ -68,7 +68,7 @@ describe("Literal", () => {
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const evaluatedCode = generate(evaluate(fn)) as string;
+    const evaluatedCode = generate(safeEval(fn)) as string;
 
     expect(tokenizer(evaluatedCode)).toMatchObject(tokenizer(script));
   });

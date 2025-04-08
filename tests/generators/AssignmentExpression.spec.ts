@@ -16,12 +16,12 @@ describe("AssignmentExpression", () => {
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const { buildFunction, evaluate } = generateBuilders();
+    const { safeEval, build } = generateBuilders();
 
-    const generatedFunction = buildFunction(AST);
+    const generatedFunction = build(AST);
 
     expect(generatedFunction).toEqual(
-      `(b) => b.expressionStatement(
+      `b.expressionStatement(
         b.assignmentExpression(
           "=", 
           b.identifier("value"), 
@@ -36,7 +36,10 @@ describe("AssignmentExpression", () => {
       )`.replace(/\n\s+/g, "")
     );
 
-    const evaluatedAST = evaluate(generatedFunction);
+    // console.log(generatedFunction);
+
+    const evaluatedAST = safeEval(generatedFunction);
+    // console.log(evaluatedAST);
 
     expect(evaluatedAST).toMatchObject(AST);
 

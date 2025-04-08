@@ -16,27 +16,26 @@ describe("DoWhileStatement", () => {
 
     expect(tokenizer(code)).toMatchObject(tokenizer(script));
 
-    const { buildFunction, evaluate } = generateBuilders();
+    const { safeEval, build } = generateBuilders();
 
-    const generatedFunction = buildFunction(AST);
+    const generatedFunction = build(AST);
 
     expect(generatedFunction).toEqual(
-      `(b) => 
-        b.program([
-          b.variableDeclaration("let", [
-            b.variableDeclarator(b.identifier("i"), b.literal(0))
+      `b.program([
+        b.variableDeclaration("let", [
+          b.variableDeclarator(b.identifier("i"), b.literal(0))
+        ]), 
+        b.doWhileStatement(
+          b.blockStatement([
+            b.expressionStatement(b.updateExpression("++", b.identifier("i")))
           ]), 
-          b.doWhileStatement(
-            b.blockStatement([
-              b.expressionStatement(b.updateExpression("++", b.identifier("i")))
-            ]), 
-            b.binaryExpression("<", b.identifier("i"), b.literal(100))
-          )
-        ])
+          b.binaryExpression("<", b.identifier("i"), b.literal(100))
+        )
+      ])
     `.replace(/\n\s+/g, "")
     );
 
-    const evaluatedAST = evaluate(generatedFunction);
+    const evaluatedAST = safeEval(generatedFunction);
 
     expect(evaluatedAST).toMatchObject(AST);
 

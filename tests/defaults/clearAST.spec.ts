@@ -3,7 +3,7 @@ import { clearAST } from "../../src";
 import { describe, expect, it } from "vitest";
 import { generateBuilders } from "../../src/generateBuilders";
 
-const { buildFunction, evaluate } = generateBuilders();
+const { safeEval, build } = generateBuilders();
 
 describe("Clean AST", () => {
   //
@@ -13,10 +13,10 @@ describe("Clean AST", () => {
 
     const acornAST = acornParse(script).body[0];
 
-    const acornGeneratedCleanAST = evaluate(buildFunction(acornAST));
+    const acornGeneratedCleanAST = safeEval(build(acornAST));
 
     const AST = clearAST(acornAST);
-    
+
     expect(AST).toMatchObject(acornGeneratedCleanAST);
   });
 });

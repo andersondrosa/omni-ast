@@ -32,8 +32,8 @@ export const generateBuilders = (prefix = "b") => {
 
   const buildFunction = (node: BaseNode) => `(${prefix}) => ${build(node)}`;
 
-  const evaluate = (generatedFunction: string) =>
-    eval(generatedFunction)(builder);
+  const safeEval = (codeJs: string) =>
+    new Function("b", `return ${codeJs}`)(builder);
 
   const helper = (parent: Types.Node, name: string, ...params) => {
     const args: any[] = [];
@@ -231,5 +231,5 @@ export const generateBuilders = (prefix = "b") => {
       helper(n, "whileStatement", n.test, n.body),
   };
 
-  return { build, buildFunction, evaluate, builders };
+  return { build, buildFunction, safeEval, builders };
 };
