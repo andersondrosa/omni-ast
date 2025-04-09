@@ -1,21 +1,20 @@
 {
-  "include": ["src/index.ts"],
   "compilerOptions": {
-    "module": "esNext",
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "outDir": "dist",
+    // "declarationDir": "dist",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": false,
-    "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "incremental": true,
-    "declaration": true,
-    "outDir": "dist"
-  }
+    "skipLibCheck": true
+  },
+  "include": ["src/index.ts"],
+  "exclude": ["dist", "tests", "**/*.spec.ts"]
 }

@@ -4,12 +4,23 @@ import commonjs from "@rollup/plugin-commonjs";
 import packageJson from "./package.json" assert { type: "json" };
 import json from "@rollup/plugin-json";
 import terser from "@rollup/plugin-terser";
+import { dts } from "rollup-plugin-dts";
+
 const external = Object.keys(packageJson.peerDependencies || {});
 
-export default {
+const buildJS = {
   input: "src/index.ts",
   output: [
-    { name: packageJson.name, dir: "dist", format: "esm" }, //
+    {
+      file: "dist/index.js", // CommonJS
+      format: "cjs",
+      sourcemap: true,
+    },
+    {
+      file: "dist/index.mjs", // ESM
+      format: "esm",
+      sourcemap: true,
+    },
   ],
   external: (path) => {
     const [dep] = path.split("/");
@@ -27,6 +38,14 @@ export default {
     }),
     json(),
     commonjs(),
-    typescript({ tsconfig: "./tsconfig.esm.json" }),
+    typescript({ tsconfig: "./tsconfig.esm.json", declaration: false }),
   ],
 };
+
+const buildDTS = {
+  input: "src/index.ts",
+  output: [{ file: "dist/index.d.ts", format: "es" }],
+  plugins: [dts()],
+};
+
+export default [buildJS, buildDTS];
